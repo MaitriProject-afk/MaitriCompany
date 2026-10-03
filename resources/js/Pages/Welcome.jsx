@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 const TRUCK_TYPES = [
     {
@@ -85,6 +85,18 @@ const INTERIOR_PACKAGES = [
 export default function Welcome({ auth, canLogin, canRegister }) {
     // Tab State
     const [calcTab, setCalcTab] = useState('truk');
+
+    // Navigation & Scroll State
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     // Truck Calculator State
     const [selectedTruck, setSelectedTruck] = useState(TRUCK_TYPES[0]);
@@ -184,136 +196,267 @@ export default function Welcome({ auth, canLogin, canRegister }) {
             </Head>
 
             <div className="bg-[#f8fafc] text-slate-800 font-sans antialiased selection:bg-brand-600 selection:text-white min-h-screen">
-                {/* TOP BAR INFO & WHATSAPP QUICK ACCESS */}
-                <div className="bg-brand-900 text-white text-xs py-2 px-4 border-b border-brand-800">
+                {/* MODERN SLIM TOP BAR */}
+                <div className="bg-slate-950 text-slate-300 text-xs py-2 px-4 border-b border-slate-800/80 relative z-50">
                     <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
-                                Unit Siap Jalan &amp; Tim Desain Siaga
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-xs">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Divisi Siaga 24 Jam
                             </span>
-                            <span className="text-slate-200">
-                                Solusi Sewa Truk Logistik &amp; Perancangan Ruang Berkualitas
+                            <span className="text-slate-600 hidden md:inline">•</span>
+                            <span className="text-slate-300 font-medium text-[11px] sm:text-xs">
+                                Sewa Armada Truk Niaga &amp; Studio Desain Interior Arsitektur
                             </span>
                         </div>
-                        <div className="flex items-center gap-4 text-slate-300">
+                        <div className="flex items-center gap-3 sm:gap-4 text-slate-300 text-xs">
                             <a
                                 href="tel:+622158904100"
-                                className="hover:text-white flex items-center gap-1 transition-colors"
+                                className="hover:text-white flex items-center gap-1.5 transition-colors"
                             >
-                                <span className="material-symbols-outlined text-[15px] text-cyan-300">call</span>
-                                <span>(021) 5890-4100</span>
+                                <span className="material-symbols-outlined text-[15px] text-cyan-400">call</span>
+                                <span className="font-medium">(021) 5890-4100</span>
                             </a>
-                            <span className="text-slate-600">|</span>
+                            <span className="text-slate-700">|</span>
                             <a
                                 href="https://wa.me/628119000123"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="hover:text-white flex items-center gap-1 text-emerald-300 font-semibold transition-colors"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 border border-emerald-500/30 transition-all font-semibold"
                             >
-                                <span className="material-symbols-outlined text-[15px]">chat</span>
-                                <span>WhatsApp Hotline: 0811-9000-123</span>
+                                <span className="material-symbols-outlined text-[14px]">chat</span>
+                                <span>WA Hotline: 0811-9000-123</span>
                             </a>
                         </div>
                     </div>
                 </div>
 
-                {/* MAIN NAVIGATION */}
-                <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-                        {/* Logo Maitri Company */}
-                        <a href="#" className="flex items-center gap-3 group">
-                            <img
-                                src="/images/maitricomplogo.png"
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuD2AyTy_956YsCyDzbyJyxe_WMQ28JTgDJLi0bCf71kyK1CcShfFI2BUBDEmkmTGQDQ9FBrUaDjdD4luuaxdkn3iymsEEo5-LXiv8V-xC7YER6Fsh0yeQTfqRVe5o1Bhi4rA3AwsvC4nu46PMcb7VH35xojVP3uMDP5nk9BMJyT-t397tP4LsKE-Xpcyr8Ydci7nErbBd9nbTaljxyyWQtUI2Ep5aBTYMM4zXCWCECQ79tx7kdlKpClQg14NAZ34hWZww';
-                                }}
-                                alt="Maitri Company Logo"
-                                className="h-12 w-auto object-contain transition-transform group-hover:scale-105 duration-200"
-                            />
-                            <div className="flex flex-col">
-                                <span className="text-xl font-extrabold tracking-tight text-slate-900 leading-none">
-                                    MAITRI <span className="text-brand-600">COMPANY</span>
-                                </span>
-                                <span className="text-[11px] font-medium text-slate-500 tracking-wider uppercase mt-1">
-                                    Armada Niaga &amp; Studio Desain
-                                </span>
-                            </div>
-                        </a>
-
-                        {/* Navigation Links */}
-                        <nav className="hidden lg:flex items-center gap-1">
-                            <a
-                                href="#layanan-truk"
-                                className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-slate-50 rounded-lg transition-colors"
-                            >
-                                Layanan Truk
-                            </a>
-                            <a
-                                href="#desain-interior"
-                                className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-slate-50 rounded-lg transition-colors"
-                            >
-                                Desain Interior
-                            </a>
-                            <a
-                                href="#kalkulator-pemesanan"
-                                className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-slate-50 rounded-lg transition-colors"
-                            >
-                                Cek Estimasi Biaya
-                            </a>
-                            <a
-                                href="#cara-kerja"
-                                className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-slate-50 rounded-lg transition-colors"
-                            >
-                                Alur Pemesanan
-                            </a>
-                            <a
-                                href="#testimoni"
-                                className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-slate-50 rounded-lg transition-colors"
-                            >
-                                Testimoni Klien
-                            </a>
-                        </nav>
-
-                        {/* CTA & Auth Action */}
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={() => scrollToCalc('truk')}
-                                className="hidden sm:inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-lg transition-colors border border-brand-200"
-                            >
-                                Simulasi Biaya
-                            </button>
-
-                            <a
-                                href="https://wa.me/628119000123?text=Halo%20Maitri%20Company,%20saya%20tertarik%20dengan%20layanan%20Anda"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm hover:shadow transition-all"
-                            >
-                                <span className="material-symbols-outlined text-[18px]">chat</span>
-                                <span>Hubungi Sales</span>
+                {/* FLOATING MODERN NAVBAR */}
+                <header className="sticky top-0 sm:top-2.5 z-40 transition-all duration-300 px-3 sm:px-6 lg:px-8">
+                    <div
+                        className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
+                            isScrolled
+                                ? 'bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_12px_36px_-6px_rgba(0,0,0,0.12)] py-2 sm:py-2.5 px-4 sm:px-6'
+                                : 'bg-white/90 backdrop-blur-lg border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] py-3 sm:py-3.5 px-4 sm:px-6'
+                        }`}
+                    >
+                        <div className="flex items-center justify-between gap-4">
+                            {/* Logo Section */}
+                            <a href="#" className="flex items-center gap-3 group shrink-0">
+                                <div className="relative flex items-center justify-center p-1 rounded-xl bg-slate-50 border border-slate-100 shadow-2xs group-hover:border-brand-200 group-hover:bg-blue-50/50 transition-all">
+                                    <img
+                                        src="/images/maitricomplogo.png"
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuD2AyTy_956YsCyDzbyJyxe_WMQ28JTgDJLi0bCf71kyK1CcShfFI2BUBDEmkmTGQDQ9FBrUaDjdD4luuaxdkn3iymsEEo5-LXiv8V-xC7YER6Fsh0yeQTfqRVe5o1Bhi4rA3AwsvC4nu46PMcb7VH35xojVP3uMDP5nk9BMJyT-t397tP4LsKE-Xpcyr8Ydci7nErbBd9nbTaljxyyWQtUI2Ep5aBTYMM4zXCWCECQ79tx7kdlKpClQg14NAZ34hWZww';
+                                        }}
+                                        alt="Maitri Company Logo"
+                                        className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                </div>
+                                <div className="flex flex-col">
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 leading-tight">
+                                            MAITRI <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-cyanAccent">COMPANY</span>
+                                        </span>
+                                    </div>
+                                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest leading-none mt-0.5">
+                                        Armada Niaga &amp; Studio Desain
+                                    </span>
+                                </div>
                             </a>
 
-                            {/* Optional Auth Link */}
-                            {auth?.user ? (
-                                <Link
-                                    href={route('dashboard')}
-                                    className="hidden md:inline-flex text-xs font-semibold px-3 py-2 text-slate-600 hover:text-slate-900 border border-slate-200 rounded-lg"
+                            {/* Desktop Navigation Links */}
+                            <nav className="hidden lg:flex items-center gap-1 bg-slate-100/70 p-1.5 rounded-xl border border-slate-200/50">
+                                <a
+                                    href="#layanan-truk"
+                                    className="px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-white rounded-lg transition-all flex items-center gap-1.5 shadow-xs shadow-transparent hover:shadow-slate-200/50"
                                 >
-                                    Dashboard
-                                </Link>
-                            ) : (
-                                canLogin && (
+                                    <span className="material-symbols-outlined text-[17px] text-slate-400">local_shipping</span>
+                                    <span>Layanan Truk</span>
+                                </a>
+                                <a
+                                    href="#desain-interior"
+                                    className="px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-white rounded-lg transition-all flex items-center gap-1.5 shadow-xs shadow-transparent hover:shadow-slate-200/50"
+                                >
+                                    <span className="material-symbols-outlined text-[17px] text-slate-400">apartment</span>
+                                    <span>Desain Interior</span>
+                                </a>
+                                <a
+                                    href="#kalkulator-pemesanan"
+                                    className="px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-white rounded-lg transition-all flex items-center gap-1.5 shadow-xs shadow-transparent hover:shadow-slate-200/50"
+                                >
+                                    <span className="material-symbols-outlined text-[17px] text-slate-400">calculate</span>
+                                    <span>Cek Estimasi</span>
+                                </a>
+                                <a
+                                    href="#cara-kerja"
+                                    className="px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-white rounded-lg transition-all flex items-center gap-1.5 shadow-xs shadow-transparent hover:shadow-slate-200/50"
+                                >
+                                    <span className="material-symbols-outlined text-[17px] text-slate-400">route</span>
+                                    <span>Alur Pesan</span>
+                                </a>
+                                <a
+                                    href="#testimoni"
+                                    className="px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-brand-600 hover:bg-white rounded-lg transition-all flex items-center gap-1.5 shadow-xs shadow-transparent hover:shadow-slate-200/50"
+                                >
+                                    <span className="material-symbols-outlined text-[17px] text-slate-400">star</span>
+                                    <span>Testimoni</span>
+                                </a>
+                            </nav>
+
+                            {/* Desktop Action Buttons */}
+                            <div className="hidden sm:flex items-center gap-2.5 shrink-0">
+                                <button
+                                    onClick={() => scrollToCalc('truk')}
+                                    className="px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-brand-700 bg-slate-100/80 hover:bg-brand-50 border border-slate-200/80 hover:border-brand-300 rounded-xl transition-all flex items-center gap-1.5 active:scale-95"
+                                >
+                                    <span className="material-symbols-outlined text-[16px] text-brand-600">tune</span>
+                                    <span>Simulasi Biaya</span>
+                                </button>
+
+                                <a
+                                    href="https://wa.me/628119000123?text=Halo%20Maitri%20Company,%20saya%20tertarik%20dengan%20layanan%20Anda"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-brand-600 via-brand-700 to-cyan-600 hover:from-brand-500 hover:to-cyan-500 rounded-xl shadow-sm hover:shadow-md hover:shadow-brand-600/25 transition-all duration-200 active:scale-95"
+                                >
+                                    <span className="material-symbols-outlined text-[17px]">chat</span>
+                                    <span>Hubungi Sales</span>
+                                </a>
+
+                                {auth?.user ? (
                                     <Link
-                                        href={route('login')}
-                                        className="hidden md:inline-flex text-xs font-semibold px-3 py-2 text-slate-600 hover:text-slate-900 border border-slate-200 rounded-lg"
+                                        href={route('dashboard')}
+                                        className="text-xs font-semibold px-3 py-2 text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl hover:bg-slate-50 transition"
                                     >
-                                        Log In
+                                        Dashboard
                                     </Link>
-                                )
-                            )}
+                                ) : (
+                                    canLogin && (
+                                        <Link
+                                            href={route('login')}
+                                            className="text-xs font-semibold px-3 py-2 text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl hover:bg-slate-50 transition"
+                                        >
+                                            Log In
+                                        </Link>
+                                    )
+                                )}
+                            </div>
+
+                            {/* Mobile Hamburger Toggle */}
+                            <div className="flex items-center gap-2 lg:hidden">
+                                <a
+                                    href="https://wa.me/628119000123"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="p-2 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-xs"
+                                    aria-label="WhatsApp"
+                                >
+                                    <span className="material-symbols-outlined text-[20px]">chat</span>
+                                </a>
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center justify-center focus:outline-none"
+                                    aria-label="Toggle Navigation"
+                                >
+                                    <span className="material-symbols-outlined text-[22px]">
+                                        {mobileMenuOpen ? 'close' : 'menu'}
+                                    </span>
+                                </button>
+                            </div>
                         </div>
+
+                        {/* Mobile Dropdown Drawer */}
+                        {mobileMenuOpen && (
+                            <div className="lg:hidden mt-3 pt-3 border-t border-slate-100 pb-2 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                                <nav className="flex flex-col space-y-1">
+                                    <a
+                                        href="#layanan-truk"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-xl flex items-center gap-2.5"
+                                    >
+                                        <span className="material-symbols-outlined text-brand-600 text-[20px]">local_shipping</span>
+                                        <span>Layanan Truk Niaga</span>
+                                    </a>
+                                    <a
+                                        href="#desain-interior"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-xl flex items-center gap-2.5"
+                                    >
+                                        <span className="material-symbols-outlined text-cyan-600 text-[20px]">apartment</span>
+                                        <span>Desain Interior &amp; Arsitektur</span>
+                                    </a>
+                                    <a
+                                        href="#kalkulator-pemesanan"
+                                        onClick={() => {
+                                            setMobileMenuOpen(false);
+                                            scrollToCalc('truk');
+                                        }}
+                                        className="px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-xl flex items-center gap-2.5"
+                                    >
+                                        <span className="material-symbols-outlined text-indigo-600 text-[20px]">calculate</span>
+                                        <span>Kalkulator Estimasi Biaya</span>
+                                    </a>
+                                    <a
+                                        href="#cara-kerja"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-xl flex items-center gap-2.5"
+                                    >
+                                        <span className="material-symbols-outlined text-slate-600 text-[20px]">route</span>
+                                        <span>Alur Pemesanan 3 Langkah</span>
+                                    </a>
+                                    <a
+                                        href="#testimoni"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-xl flex items-center gap-2.5"
+                                    >
+                                        <span className="material-symbols-outlined text-amber-500 text-[20px]">star</span>
+                                        <span>Testimoni Klien</span>
+                                    </a>
+                                </nav>
+
+                                <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+                                    <button
+                                        onClick={() => {
+                                            setMobileMenuOpen(false);
+                                            scrollToCalc('truk');
+                                        }}
+                                        className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">tune</span>
+                                        <span>Buka Simulasi Biaya</span>
+                                    </button>
+                                    <a
+                                        href="https://wa.me/628119000123"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">chat</span>
+                                        <span>WhatsApp Sales (0811-9000-123)</span>
+                                    </a>
+                                    {auth?.user ? (
+                                        <Link
+                                            href={route('dashboard')}
+                                            className="w-full text-center py-2 text-xs font-semibold text-slate-600 border border-slate-200 rounded-xl"
+                                        >
+                                            Masuk ke Dashboard
+                                        </Link>
+                                    ) : (
+                                        canLogin && (
+                                            <Link
+                                                href={route('login')}
+                                                className="w-full text-center py-2 text-xs font-semibold text-slate-600 border border-slate-200 rounded-xl"
+                                            >
+                                                Log In Akun
+                                            </Link>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </header>
 
