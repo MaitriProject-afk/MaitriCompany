@@ -1,273 +1,597 @@
 <!DOCTYPE html>
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"surface-container":"#e5eeff","on-tertiary-fixed":"#001d31","tertiary":"#004870","secondary-fixed-dim":"#bec6e0","surface":"#f8f9ff","tertiary-fixed":"#cce5ff","on-tertiary-container":"#b2d9ff","on-secondary-fixed-variant":"#3f465c","on-primary-container":"#cad3ff","error":"#ba1a1a","on-tertiary":"#ffffff","on-tertiary-fixed-variant":"#004b73","tertiary-container":"#006194","surface-container-highest":"#d3e4fe","surface-variant":"#d3e4fe","on-secondary":"#ffffff","inverse-surface":"#213145","on-error":"#ffffff","on-secondary-container":"#5c647a","surface-dim":"#cbdbf5","on-surface-variant":"#434655","error-container":"#ffdad6","on-surface":"#0b1c30","surface-tint":"#2151da","secondary":"#565e74","surface-container-low":"#eff4ff","on-background":"#0b1c30","primary-fixed-dim":"#b7c4ff","tertiary-fixed-dim":"#93ccff","inverse-on-surface":"#eaf1ff","on-error-container":"#93000a","primary-fixed":"#dce1ff","surface-container-lowest":"#ffffff","outline":"#747686","surface-container-high":"#dce9ff","outline-variant":"#c4c5d7","surface-bright":"#f8f9ff","on-secondary-fixed":"#131b2e","inverse-primary":"#b7c4ff","secondary-fixed":"#dae2fd","background":"#f8f9ff","on-primary":"#ffffff","secondary-container":"#dae2fd","primary-container":"#1d4ed8","primary":"#0037b0","on-primary-fixed":"#001551","on-primary-fixed-variant":"#0039b5"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-xs":"0.25rem","space-lg":"1.5rem","margin-mobile":"1rem","space-sm":"0.5rem","gutter":"1.5rem","space-md":"1rem","gutter-mobile":"1rem","margin":"2.5rem","space-xl":"2.5rem"},"fontFamily":{"display-lg":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"]},"fontSize":{"display-lg":["3.5rem",{"lineHeight":"4rem","letterSpacing":"-0.03em","fontWeight":"800"}],"display-lg-mobile":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"800"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"body-md":["1rem",{"lineHeight":"1.5rem","letterSpacing":"0em","fontWeight":"400"}],"headline-lg":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-lg":["0.875rem",{"lineHeight":"1.25rem","letterSpacing":"0.01em","fontWeight":"600"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.015em","fontWeight":"700"}],"body-sm":["0.875rem",{"lineHeight":"1.25rem","letterSpacing":"0em","fontWeight":"400"}],"label-sm":["0.6875rem",{"lineHeight":"0.875rem","letterSpacing":"0.04em","fontWeight":"700"}],"body-lg":["1.125rem",{"lineHeight":"1.75rem","letterSpacing":"-0.005em","fontWeight":"400"}],"headline-md":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between"><div class="flex items-center gap-space-md"><img alt="maitricomplogo.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1U1mH8sFfJRsAkLVZUb5BRKuS3XCFKlcIo918KGaVc7nPxY3vxQs43ikPhHCFMnUuw1W868Aof8aF1Xv0cCzJWsqEhOKEoO5PAmPULM9HHlotn66QznZeLQ_K3PB5AM-k9N7EID7_0JAOGh_CLAEb8IMUjvuGYC_te_ml0z50T9wPiGSZGDPUqVmbovfQoWInK-xwJKqA1fB5BSK3MYeUU7wTu0D18KDDBfbKUBeHCB8pZn0b89_4f72V7aJH5hdEWwdDTmltVw"/><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Maitri Company</span><div class="hidden sm:flex items-center gap-space-xs pl-space-sm bg-surface-container-low px-space-sm py-space-xs rounded-full"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-label-sm text-label-sm text-secondary">Portal Active</span></div></div><nav class="hidden md:flex items-center gap-space-lg" data-active-classes="bg-primary-container text-on-primary font-label-lg rounded-lg"><a aria-current="page" class="transition-colors bg-primary-container text-on-primary font-label-lg rounded-lg" data-path="portal-login" href="#">Sign In</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="portal-register" href="#">Register</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="security-verification" href="#">Verification</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="account-recovery" href="#">Recovery</a></nav><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" href="#"><span class="material-symbols-outlined text-[18px] text-primary-container">chat</span><span class="hidden lg:inline font-label-md text-label-md">Helpdesk &amp; WhatsApp</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full pt-16 bg-surface"><div class="flex flex-col w-full">
-<div class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-10 lg:py-16">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-stretch">
-<!-- Left Column: Brand Trust & Operational Value (approx 45%) -->
-<div class="lg:col-span-5 flex flex-col justify-between rounded-xl bg-surface-container-low p-space-xl relative overflow-hidden shadow-sm">
-<!-- Subtle ambient radial highlight -->
-<div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-primary-container/10 blur-3xl pointer-events-none"></div>
-<div class="absolute -bottom-20 -right-20 w-80 h-80 rounded-full bg-surface-container-highest/60 blur-2xl pointer-events-none"></div>
-<div class="relative z-10 flex flex-col gap-space-lg">
-<!-- Authority Badge -->
-<div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-lowest text-primary font-label-md shadow-sm w-fit">
-<span class="w-2 h-2 rounded-full bg-primary-container"></span>
-<span>Portal Akses Resmi Maitri Company</span>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"tertiary-fixed":"#cce5ff","surface-container-lowest":"#ffffff","tertiary-container":"#006194","tertiary":"#004870","surface-tint":"#2151da","surface":"#f8f9ff","secondary-container":"#dae2fd","on-secondary-container":"#5c647a","on-error-container":"#93000a","inverse-on-surface":"#eaf1ff","on-primary-fixed-variant":"#0039b5","on-primary":"#ffffff","on-tertiary-fixed-variant":"#004b73","on-background":"#0b1c30","surface-bright":"#f8f9ff","on-primary-fixed":"#001551","error":"#ba1a1a","outline-variant":"#c4c5d7","background":"#f8f9ff","on-tertiary-fixed":"#001d31","surface-variant":"#d3e4fe","error-container":"#ffdad6","primary":"#0037b0","surface-container-high":"#dce9ff","inverse-surface":"#213145","primary-fixed-dim":"#b7c4ff","surface-container-low":"#eff4ff","outline":"#747686","on-tertiary-container":"#b2d9ff","on-error":"#ffffff","tertiary-fixed-dim":"#93ccff","primary-fixed":"#dce1ff","on-primary-container":"#cad3ff","secondary-fixed":"#dae2fd","secondary":"#565e74","on-secondary-fixed":"#131b2e","secondary-fixed-dim":"#bec6e0","on-secondary":"#ffffff","on-surface":"#0b1c30","on-surface-variant":"#434655","inverse-primary":"#b7c4ff","surface-container":"#e5eeff","on-secondary-fixed-variant":"#3f465c","on-tertiary":"#ffffff","surface-container-highest":"#d3e4fe","surface-dim":"#cbdbf5","primary-container":"#1d4ed8"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{margin:"2.5rem","space-sm":"0.5rem","gutter-mobile":"1rem",gutter:"1.5rem","space-xl":"2.5rem","space-md":"1rem","space-lg":"1.5rem","margin-mobile":"1rem","space-xs":"0.25rem"},fontFamily:{"headline-lg":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"],"display-lg":["Plus Jakarta Sans"]},fontSize:{"headline-lg":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.02em",fontWeight:"700"}],"body-lg":["1.125rem",{lineHeight:"1.75rem",letterSpacing:"-0.005em",fontWeight:"400"}],"body-md":["1rem",{lineHeight:"1.5rem",letterSpacing:"0em",fontWeight:"400"}],"headline-sm":["1.25rem",{lineHeight:"1.75rem",letterSpacing:"-0.01em",fontWeight:"600"}],"headline-md":["1.5rem",{lineHeight:"2rem",letterSpacing:"-0.015em",fontWeight:"600"}],"label-sm":["0.6875rem",{lineHeight:"0.875rem",letterSpacing:"0.04em",fontWeight:"700"}],"body-sm":["0.875rem",{lineHeight:"1.25rem",letterSpacing:"0em",fontWeight:"400"}],"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.015em",fontWeight:"700"}],"label-lg":["0.875rem",{lineHeight:"1.25rem",letterSpacing:"0.01em",fontWeight:"600"}],"label-md":["0.75rem",{lineHeight:"1rem",letterSpacing:"0.02em",fontWeight:"600"}],"display-lg-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.02em",fontWeight:"800"}],"display-lg":["3.5rem",{lineHeight:"4rem",letterSpacing:"-0.03em",fontWeight:"800"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col flex-1"><div class="h-16 px-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="maitricomplogo.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1U1mH8sFfJRsAkLVZUb5BRKuS3XCFKlcIo918KGaVc7nPxY3vxQs43ikPhHCFMnUuw1W868Aof8aF1Xv0cCzJWsqEhOKEoO5PAmPULM9HHlotn66QznZeLQ_K3PB5AM-k9N7EID7_0JAOGh_CLAEb8IMUjvuGYC_te_ml0z50T9wPiGSZGDPUqVmbovfQoWInK-xwJKqA1fB5BSK3MYeUU7wTu0D18KDDBfbKUBeHCB8pZn0b89_4f72V7aJH5hdEWwdDTmltVw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">Maitri</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-0.5">Enterprise OS</span></div></div><button class="text-on-surface-variant hover:text-on-surface p-space-xs rounded transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">dock_to_left</span></button></div><div class="px-space-md py-space-sm"><div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-2.5 rounded-lg"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Operations Active</span><span class="ml-auto font-label-sm text-label-sm text-primary font-bold">PROD v2.4</span></div></div><nav class="flex-1 px-space-md py-space-sm space-y-1 overflow-y-auto" data-active-classes="bg-primary text-on-primary shadow-sm font-semibold"><div class="px-space-sm pb-1 pt-2"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Core Navigation</span></div><a aria-current="page" class="flex items-center gap-space-md px-space-md py-2.5 rounded-lg transition-all bg-primary text-on-primary shadow-sm font-semibold" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">grid_view</span><span>Overview / Ringkasan</span></a><a class="flex items-center gap-space-md px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="divisi-armada-muatan" href="#"><span class="material-symbols-outlined text-[20px]">local_shipping</span><span>Divisi Armada &amp; Muatan</span></a><a class="flex items-center gap-space-md px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="divisi-proyek-desain-interior" href="#"><span class="material-symbols-outlined text-[20px]">architecture</span><span>Divisi Proyek Desain &amp; Interior</span></a><a class="flex items-center gap-space-md px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="jadwal-dispatch" href="#"><span class="material-symbols-outlined text-[20px]">calendar_clock</span><span>Jadwal &amp; Dispatch</span></a><div class="px-space-sm pb-1 pt-4"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Finance &amp; Governance</span></div><a class="flex items-center gap-space-md px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="keuangan-invoice" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span>Keuangan &amp; Invoice</span></a><a class="flex items-center gap-space-md px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="manajemen-tim-mitra" href="#"><span class="material-symbols-outlined text-[20px]">group_work</span><span>Manajemen Tim &amp; Mitra</span></a><a class="flex items-center gap-space-md px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="pengaturan-log-sistem" href="#"><span class="material-symbols-outlined text-[20px]">settings_account_box</span><span>Pengaturan &amp; Log Sistem</span></a></nav></div><div class="p-space-md bg-surface-container-lowest"><div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-bold leading-tight">Maitri Core Admin</span><span class="font-label-sm text-label-sm text-on-surface-variant leading-none">admin@maitri.co.id</span></div></div><button class="text-on-surface-variant hover:text-error transition-colors p-1" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-md flex-1 max-w-xl"><div class="relative w-full"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span><input class="w-full h-10 pl-10 pr-space-md bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-lg focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 placeholder:text-outline transition-all" placeholder="Cari nomor invoice, armada, dispatch, kontrak klien... (⌘K)" type="text"/></div></div><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-label-sm font-label-sm font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span><span>System Online</span></div><button class="inline-flex items-center gap-1.5 h-9 px-space-md bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg rounded-lg shadow-sm transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Tindakan Cepat</span></button><button class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span></button><div class="h-6 w-px bg-outline-variant/60 mx-1"></div><div class="flex items-center gap-space-sm pl-1 cursor-pointer"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden md:flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface leading-tight font-semibold">Direktur Operasional</span><span class="font-label-sm text-label-sm text-on-surface-variant">HQ Jakarta</span></div><span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-4rem)] px-space-lg py-space-xl"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-space-lg mb-space-xl">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline">Konsol Manajemen Terintegrasi</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+            Sistem Aktif — Sinkronisasi Real-Time
+          </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+            Selasa, 18 Maret 2025 • 09:42 WIB
+          </span>
 </div>
-<!-- Headline -->
-<div class="flex flex-col gap-space-xs">
-<h1 class="font-headline-lg text-headline-lg text-on-surface leading-tight">
-              Satu Akses Terpadu untuk Kendali Armada &amp; Proyek Desain Anda
-            </h1>
-<p class="font-body-md text-body-md text-secondary">
-              Platform enterprise terintegrasi yang menghubungkan operasional logistik darat dengan pengawasan eksekusi proyek arsitektural.
-            </p>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
+          Selamat Datang, Administrator Utama
+        </h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-3xl">
+          Pemantauan operasional dua pilar bisnis PT Maitri Global Solusindo: 
+          <span class="font-semibold text-primary">Divisi Logistik &amp; Armada Niaga</span> serta 
+          <span class="font-semibold text-tertiary">Divisi Studio Desain Arsitektur &amp; Interior</span>.
+        </p>
 </div>
-<!-- Feature Image Anchor -->
-<div class="relative w-full h-52 rounded-lg overflow-hidden shadow-md group">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A pristine fleet of modern white commercial heavy-duty logistics trucks aligned outside an architectural enterprise hub during warm dusk twilight. Cinematic ambient lighting, clean asphalt, sharp reflections on metallic truck cabs, royal cobalt enterprise tones, sharp commercial realism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1pK0bvdu3ixd1h3jRn4_srLArNWUWfdKvE-PZjU9zIkyHPbplJpTb0NNmAYVhCBgE3MAZCh4u5PlPk91QMNGwvbPsLzCOHNX1SRVDfzTZPTuOmuMVdKbkUWBERiSkw6jagqCrFTHOfSURqQSsKG-xdRCmawAkGN4oEqafND-s09-rR1N0Ik7pZEhS-u2Ht5wUVjYDjrK2wZ5wjsidjdwwvdvy-J5aHW0OyAkldEsldyR43ZI29_Pp"/>
-<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent flex items-end p-space-md">
-<div class="flex items-center justify-between w-full text-on-primary">
-<div class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-[18px]">verified</span>
-<span class="font-label-sm text-label-sm uppercase tracking-wider">Fleet Hub &amp; Project Cloud</span>
+<div class="flex items-center gap-space-sm flex-wrap self-start lg:self-center">
+<button class="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span>Ekspor Laporan</span>
+</button>
+<button class="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-secondary-container hover:bg-secondary-fixed text-on-secondary-container font-label-md text-label-md transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">architecture</span>
+<span>+ Proyek Desain</span>
+</button>
+<button class="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+<span>+ Penugasan Armada</span>
+</button>
 </div>
-<span class="font-label-sm text-label-sm bg-surface-container-lowest/20 backdrop-blur-md px-space-xs py-0.5 rounded">v4.8 Live</span>
+</div>
+<!-- 4 KPI Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold">Total Pendapatan (Bln Ini)</span>
+<span class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none mb-1">
+            Rp 1.482,5 M
+          </div>
+<div class="flex items-center gap-2 mt-2">
+<span class="inline-flex items-center gap-0.5 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+              +14.8% MoM
+            </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">vs target Rp 1.35 M</span>
+</div>
+</div>
+<div class="w-full mt-4 pt-2">
+<svg class="w-full h-8 overflow-visible text-primary" fill="none" preserveaspectratio="none" viewbox="0 0 200 30">
+<path d="M0 24 Q 25 18, 50 20 T 100 12 T 150 15 T 200 4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"></path>
+<path d="M0 24 Q 25 18, 50 20 T 100 12 T 150 15 T 200 4 L 200 30 L 0 30 Z" fill="currentColor" fill-opacity="0.08"></path>
+</svg>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold">Armada Aktif Operasi</span>
+<span class="w-9 h-9 rounded-lg bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none">418</span>
+<span class="font-headline-sm text-headline-sm text-outline">/ 520 Unit</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<span class="font-label-sm text-label-sm font-semibold text-primary">80.4% Tingkat Utilisasi</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/40 px-2 py-0.5 rounded font-medium">12 Unit Perawatan</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 mt-4 overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 80.4%"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold">Proyek Desain &amp; Interior</span>
+<span class="w-9 h-9 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">brush</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none">38</span>
+<span class="font-headline-sm text-headline-sm text-outline">Proyek Aktif</span>
+</div>
+<div class="flex items-center gap-2 mt-2 flex-wrap">
+<span class="font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded font-semibold">
+              9 Review Klien
+            </span>
+<span class="font-label-sm text-label-sm text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-semibold">
+              5 Serah Terima W12
+            </span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-outline mt-4 text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span>98.4% Tepat Waktu Milestone</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold">Mitra Kru &amp; Teknisi Lapangan</span>
+<span class="w-9 h-9 rounded-lg bg-surface-container text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none">395</span>
+<span class="font-label-lg text-label-lg text-outline">Personil Siap</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<div class="flex items-center text-amber-500 text-label-md font-label-md font-bold">
+<span class="material-symbols-outlined text-[16px] fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="ml-1 text-on-surface">4.9 / 5.0</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Kepuasan Klien</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-4 pt-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="text-emerald-700 font-semibold">• 312 Driver On-Trip</span>
+<span>• 83 Arsitek &amp; Mandor</span>
 </div>
 </div>
 </div>
-<!-- Core Value Bullet Points -->
-<div class="flex flex-col gap-space-md">
-<div class="flex items-start gap-space-md bg-surface-container-lowest/80 p-space-md rounded-lg shadow-sm">
-<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-primary-container">
+</div>
+<!-- Two Core Pillars Split Section -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg mb-space-xl">
+<!-- LEFT PILLAR: Divisi Armada Niaga (7 Cols) -->
+<div class="xl:col-span-7 flex flex-col gap-space-md">
+<!-- Header Divisi Armada -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center shadow-sm">
 <span class="material-symbols-outlined text-[22px]">local_shipping</span>
 </div>
-<div class="flex flex-col gap-0.5 min-w-0">
-<span class="font-label-lg text-label-lg text-on-surface">Mitra Pengemudi &amp; Logistik</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                  Akses jadwal jalan seketika, surat jalan digital (e-POD), telemetri GPS armada aktif, serta rincian slip insentif transparan.
-                </p>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Divisi Logistik &amp; Armada Niaga</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pantauan Perjalanan Muatan Nasional, GPS &amp; Status Bongkar</p>
 </div>
 </div>
-<div class="flex items-start gap-space-md bg-surface-container-lowest/80 p-space-md rounded-lg shadow-sm">
-<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-primary-container">
+<div class="flex items-center gap-2 self-start sm:self-center">
+<span class="font-label-sm text-label-sm text-primary bg-primary-fixed px-2.5 py-1 rounded-full font-bold">
+            182 Rute Terjadwal Hari Ini
+          </span>
+</div>
+</div>
+<!-- Live Dispatches Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-bold">Manifest Dispatch Berjalan</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm" type="button">
+              Filter Hub
+            </button>
+<button class="text-primary hover:underline text-label-sm font-label-sm font-semibold" type="button">
+              Lihat Semua (84) →
+            </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest text-outline font-label-sm text-label-sm uppercase tracking-wider h-10">
+<th class="px-space-md font-semibold">ID &amp; Unit</th>
+<th class="px-space-md font-semibold">Rute &amp; Kargo</th>
+<th class="px-space-md font-semibold">Status / GPS</th>
+<th class="px-space-md font-semibold text-right">ETA Tujuan</th>
+<th class="px-space-md font-semibold text-center">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-body-sm text-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-space-md py-3">
+<div class="font-label-md text-label-md font-bold text-on-surface">#DSP-99214</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">B 9421 UXT • Scania R450 Wingbox</div>
+</td>
+<td class="px-space-md py-3">
+<div class="font-semibold text-on-surface flex items-center gap-1.5">
+<span>Jakarta (Marunda)</span>
+<span class="material-symbols-outlined text-[14px] text-outline">trending_flat</span>
+<span>Surabaya (Tanjung Perak)</span>
+</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">FMCG Retail Unilever • 24.5 Ton</div>
+</td>
+<td class="px-space-md py-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">satellite_alt</span>
+                    Dalam Perjalanan (Tol Cipali KM 164)
+                  </span>
+</td>
+<td class="px-space-md py-3 text-right">
+<div class="font-bold text-on-surface">19:30 WIB</div>
+<div class="text-emerald-600 font-label-sm text-label-sm">Sesuai Jadwal</div>
+</td>
+<td class="px-space-md py-3 text-center">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-primary" title="Lacak GPS" type="button">
+<span class="material-symbols-outlined text-[18px]">location_searching</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-space-md py-3">
+<div class="font-label-md text-label-md font-bold text-on-surface">#DSP-99208</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">B 8820 KLO • Reefer ThermoKing 20ft</div>
+</td>
+<td class="px-space-md py-3">
+<div class="font-semibold text-on-surface flex items-center gap-1.5">
+<span>Medan (Belawan)</span>
+<span class="material-symbols-outlined text-[14px] text-outline">trending_flat</span>
+<span>Pekanbaru (Riau Hub)</span>
+</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">Bahan Farmasi &amp; Vaksin • Temp -18°C</div>
+</td>
+<td class="px-space-md py-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">inventory_2</span>
+                    Bongkar Muatan (DC Pekanbaru)
+                  </span>
+</td>
+<td class="px-space-md py-3 text-right">
+<div class="font-bold text-on-surface">11:15 WIB</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">Progress 65%</div>
+</td>
+<td class="px-space-md py-3 text-center">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-primary" title="Lacak GPS" type="button">
+<span class="material-symbols-outlined text-[18px]">location_searching</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-space-md py-3">
+<div class="font-label-md text-label-md font-bold text-on-surface">#DSP-99195</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">L 7712 AA • Trailer Scania 40ft Multi-Axle</div>
+</td>
+<td class="px-space-md py-3">
+<div class="font-semibold text-on-surface flex items-center gap-1.5">
+<span>Cikarang Dry Port</span>
+<span class="material-symbols-outlined text-[14px] text-outline">trending_flat</span>
+<span>Semarang (KIK Kendal)</span>
+</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">Material Konstruksi Besi &amp; Fabrikasi Interior</div>
+</td>
+<td class="px-space-md py-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">forklift</span>
+                    Siap Muat (Menunggu Timbang)
+                  </span>
+</td>
+<td class="px-space-md py-3 text-right">
+<div class="font-bold text-on-surface">Besok 06:00</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">Estimasi Rute</div>
+</td>
+<td class="px-space-md py-3 text-center">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-primary" title="Lacak GPS" type="button">
+<span class="material-symbols-outlined text-[18px]">location_searching</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Mini Fleet Hub Health Card -->
+<div class="p-space-md bg-surface-container-lowest flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md w-full md:w-auto">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline font-semibold">HUB LOGISTIK MARUNDA</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">88 / 95 Unit Siap Jalan</span>
+</div>
+<div class="h-6 w-px bg-surface-container"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline font-semibold">HUB MEGA KUNINGAN</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">24 Unit Shuttle On-Duty</span>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end">
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              99.2% Kepatuhan e-POD
+            </span>
+</div>
+</div>
+</div>
+<!-- Scania Fleet Showcase Card -->
+<div class="relative rounded-xl overflow-hidden shadow-sm h-48 bg-inverse-surface text-inverse-on-surface flex items-end p-space-lg">
+<div class="absolute inset-0 bg-cover bg-center opacity-40" data-alt="A row of modern white Scania heavy duty cargo transport trucks parked in an illuminated logistics depot at dusk, industrial architecture, clean commercial fleet photography, hyper realistic cinematic lighting with soft golden hour glow" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA1Jylk7k-QnSZhOd7d57tNLw_oSOKadFl5oQrWDu4GTJ4_SyvHH6x_2jOIu19bUPhKs9Ai_P90VmbIp6wNy9Zygn0AbyynkwoNtrlcOSmGAiqXrVAqwXcGqOUcozv09Mh2R853Hvx6AR-_YWWtDP0XcoivkbKOnJ68ezEcJFxbQzbaj8tA-uSGjdtIUvp_POEbnkorWdWDLHMCOdT4J4sVxVGcm_as1e7d_kKtmJcRLE2r3Rt1y-4z')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface via-inverse-surface/60 to-transparent"></div>
+<div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm w-full">
+<div>
+<span class="font-label-sm text-label-sm text-tertiary-fixed font-bold uppercase tracking-wider">Peremajaan Armada Tahap III</span>
+<h3 class="font-headline-sm text-headline-sm text-on-primary font-bold">Tambahan 25 Unit Scania Euro-5 Tiba di Jakarta Hub</h3>
+<p class="font-body-sm text-body-sm text-inverse-on-surface/80">Dilengkapi sensor telemetri pintar &amp; pemantau suhu digital real-time.</p>
+</div>
+<button class="shrink-0 bg-surface-container-lowest text-on-surface hover:bg-surface-container px-3.5 py-2 rounded-lg font-label-md text-label-md font-bold shadow-sm transition-colors" type="button">
+            Detail Alokasi Unit
+          </button>
+</div>
+</div>
+</div>
+<!-- RIGHT PILLAR: Divisi Desain & Rancang Bangun (5 Cols) -->
+<div class="xl:col-span-5 flex flex-col gap-space-md">
+<!-- Header Divisi Desain -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-tertiary text-on-tertiary flex items-center justify-center shadow-sm">
 <span class="material-symbols-outlined text-[22px]">architecture</span>
 </div>
-<div class="flex flex-col gap-0.5 min-w-0">
-<span class="font-label-lg text-label-lg text-on-surface">Klien Desain &amp; Bangun Interior</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                  Pantau progres visual 3D render, digital approval RAB, milestone jadwal renovasi, dan jalur komunikasi real-time tim lapangan.
-                </p>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Divisi Studio &amp; Interior</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rancang Bangun Korporat, 3D Rendering &amp; MEP</p>
 </div>
 </div>
+<button class="text-tertiary font-label-sm text-label-sm font-bold hover:underline" type="button">
+          Lihat Portofolio
+        </button>
 </div>
+<!-- Active Projects Cards Container -->
+<div class="flex flex-col gap-space-sm">
+<!-- Project 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold bg-primary-fixed px-2 py-0.5 rounded">Commercial Tower</span>
+<span class="font-label-sm text-label-sm text-outline">Kode: #ARC-2025-018</span>
 </div>
-<!-- Trust Anchor Footer -->
-<div class="relative z-10 pt-space-lg flex items-center justify-between text-secondary">
-<div class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-primary-container text-[18px]">lock</span>
-<span class="font-label-sm text-label-sm">Enkripsi 256-Bit SSL</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1 font-bold">
+                Headquarters Fintech Tower — SCBD Lot 8
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Klien: PT Digital Finansial Nusantara • Luas: 4.800 m² (4 Lantai)
+              </p>
 </div>
-<span class="w-1 h-1 rounded-full bg-secondary-fixed-dim"></span>
-<div class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-primary-container text-[18px]">support_agent</span>
-<span class="font-label-sm text-label-sm">Layanan Siaga 24 Jam</span>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-label-sm text-label-sm font-bold shrink-0">
+              3D Rendering Stage
+            </span>
 </div>
-</div>
-</div>
-<!-- Right Column: Interactive Login Container (approx 55%) -->
-<div class="lg:col-span-7 flex flex-col justify-center">
-<div class="w-full max-w-xl mx-auto bg-surface-container-lowest rounded-xl p-space-xl shadow-lg flex flex-col gap-space-lg">
-<!-- Card Header -->
-<div class="flex flex-col gap-space-xs">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Portal Otentikasi</span>
-<span class="font-label-sm text-label-sm text-secondary bg-surface-container-low px-2 py-0.5 rounded">IDN / EN</span>
-</div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface">Selamat Datang Kembali</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">
-              Silakan masuk ke akun Maitri Company Anda untuk melanjutkan aktivitas.
-            </p>
-</div>
-<!-- Role Segment Switcher -->
-<div class="flex flex-col gap-space-xs">
-<span class="font-label-sm text-label-sm text-secondary font-semibold">Tipe Akun Pengguna</span>
-<div class="grid grid-cols-2 p-1 bg-surface-container-low rounded-lg gap-1" id="roleSelector">
-<button class="flex items-center justify-center gap-space-xs py-2.5 px-space-sm rounded font-label-lg text-label-lg transition-all shadow-sm bg-surface-container-lowest text-primary" id="tabMitra" onclick="switchRole('mitra')" type="button">
-<span class="material-symbols-outlined text-[18px]">local_shipping</span>
-<span>Mitra Logistik</span>
-</button>
-<button class="flex items-center justify-center gap-space-xs py-2.5 px-space-sm rounded font-label-lg text-label-lg transition-all text-secondary hover:text-on-surface" id="tabKlien" onclick="switchRole('klien')" type="button">
-<span class="material-symbols-outlined text-[18px]">apartment</span>
-<span>Klien &amp; Proyek</span>
-</button>
-</div>
-</div>
-<!-- Dynamic Role Instruction Notice -->
-<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container text-on-tertiary-fixed font-body-sm text-body-sm transition-all" id="roleNotice">
-<span class="material-symbols-outlined text-primary-container text-[20px]" id="roleIcon">badge</span>
-<span id="roleText">Akses pengemudi, armada vendor, dan pengelola gudang Maitri Logistik.</span>
-</div>
-<!-- Main Input Form -->
-<form class="flex flex-col gap-space-md" onsubmit="event.preventDefault(); simulateLogin();">
-<!-- Identifier Field -->
 <div class="flex flex-col gap-1.5">
-<label class="font-label-lg text-label-lg text-on-surface flex justify-between" for="identifier">
-<span id="labelIdentifier">Nomor Telepon atau Email Terdaftar</span>
-<span class="text-secondary font-normal font-body-sm text-body-sm">Wajib</span>
-</label>
-<div class="relative flex items-center">
-<span class="absolute left-3 text-secondary material-symbols-outlined text-[20px]">account_circle</span>
-<input class="w-full h-11 pl-10 pr-4 bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline/70 focus:outline-none focus:ring-2 focus:ring-primary-container/30 bg-surface-container-lowest shadow-sm" id="identifier" placeholder="0812xxxx atau nama@perusahaan.com" required="" type="text"/>
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Kemajuan Konstruksi &amp; Desain</span>
+<span class="font-bold text-on-surface">75% (Milestone 3 dari 4)</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-2 rounded-full transition-all" style="width: 75%"></div>
 </div>
 </div>
-<!-- Password / PIN Field -->
+<div class="flex items-center justify-between pt-2 text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">assignment_turned_in</span>
+<span>RAB: Rp 4.250.000.000 (Disetujui)</span>
+</div>
+<div class="flex items-center gap-1 font-semibold text-primary">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Review VR Render</span>
+</div>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary font-bold bg-tertiary-fixed px-2 py-0.5 rounded">Automotive Showroom</span>
+<span class="font-label-sm text-label-sm text-outline">Kode: #ARC-2025-014</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1 font-bold">
+                Showroom Surya Kencana EV — Surabaya Barat
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Klien: Surya Kencana Motor Group • Luas: 2.150 m²
+              </p>
+</div>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 font-label-sm text-label-sm font-bold shrink-0">
+              MEP &amp; Interior Fitout
+            </span>
+</div>
 <div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Instalasi Akustik &amp; Lighting System</span>
+<span class="font-bold text-on-surface">40%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full transition-all" style="width: 40%"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-amber-600">pending</span>
+<span>Revisi Tambahan: Fasad ACP Lantai 2</span>
+</div>
+<button class="text-on-surface hover:text-primary font-bold" type="button">Detail Pekerja →</button>
+</div>
+</div>
+<!-- Project 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold bg-secondary-container px-2 py-0.5 rounded">Luxury Hospitality</span>
+<span class="font-label-sm text-label-sm text-outline">Kode: #ARC-2025-009</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1 font-bold">
+                Villa Privat Nuansa Tropis — Uluwatu, Bali
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Klien: PT Maitri Horizon Realty • Serah Terima Kunci: 28 Mar 2025
+              </p>
+</div>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-bold shrink-0">
+              Finalisasi RAB 90%
+            </span>
+</div>
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Penyelesaian Handover &amp; Furniture Loose</span>
+<span class="font-bold text-on-surface">90%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-emerald-600 h-2 rounded-full transition-all" style="width: 90%"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5 text-emerald-700 font-semibold">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Audit Kualitas 100% Lulus</span>
+</div>
+<button class="text-primary hover:underline font-bold" type="button">Cetak Berita Acara</button>
+</div>
+</div>
+</div>
+<!-- Studio HQ Visual Card -->
+<div class="relative rounded-xl overflow-hidden shadow-sm h-36 bg-surface-container-highest flex items-end p-space-md">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Modern architectural glass facade corporate office headquarters building at dusk, warm interior illumination, cantilevered steel and warm wood features, minimalist reflecting pond, clean contemporary enterprise architecture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC0OVv04fgKBOUxnBODUMuHWbiOkFmPE4dXBzx_AUfEWxft9rQSKqiK_3-xfeDQv5Lc0JypX4tO11psmmsfFKYNTriHQx8CwJgdg1OqLKejADR6zAJqbpqKyYDxRVpmZdCnVOoy7-C8ijKX7L5TO7BS3mx70Zjl8pF1y7ltSTOoQP3LR2LddUKu7NKzBs-P2-j-62MVE9OJCAtrLVyiPiwZJq9bn2yrKeh3aax4k5vxK_QYI1FShKB8')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-on-background/80 via-on-background/40 to-transparent"></div>
+<div class="relative z-10 text-on-primary">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-surface-variant font-bold">Arsitektur Terpadu</span>
+<h4 class="font-headline-sm text-headline-sm font-bold text-surface-container-lowest">Aura Global HQ • Desain Terbaik Tahun Ini</h4>
+<p class="font-body-sm text-body-sm text-surface-container-high/90">Kategori Kantor Korporat Ramah Lingkungan</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Financial Overview & Division Comparison Section -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg mb-space-xl">
+<!-- Revenue Breakdown & Ratio (7 cols) -->
+<div class="xl:col-span-7 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold">Analisis Finansial Terpadu</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Distribusi Pendapatan Antar Divisi</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm font-bold">Q1 2025</span>
+</div>
+</div>
+<!-- Visual Bar Ratio -->
+<div class="flex flex-col gap-2 mb-space-lg">
+<div class="h-4 w-full rounded-full overflow-hidden flex shadow-inner bg-surface-container">
+<div class="bg-primary h-full transition-all" style="width: 68%" title="Divisi Logistik: 68%"></div>
+<div class="bg-tertiary-container h-full transition-all" style="width: 32%" title="Divisi Rancang Bangun: 32%"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm pt-1">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="font-semibold text-on-surface">Divisi Logistik &amp; Armada (68%)</span>
+<span class="text-outline">• Rp 1.008.100.000</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-tertiary-container"></span>
+<span class="font-semibold text-on-surface">Divisi Rancang Bangun &amp; Desain (32%)</span>
+<span class="text-outline">• Rp 474.400.000</span>
+</div>
+</div>
+</div>
+<!-- 3 Financial Metrics Columns -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md pt-space-sm bg-surface-container-low p-space-md rounded-xl">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase">Tingkat Penagihan (Collection Rate)</span>
+<span class="font-headline-md text-headline-md text-emerald-700 font-bold mt-1">96.2%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sangat Sehat (+2.4% vs Q4)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase">Faktur Tertagih (Aging &lt; 30 Hari)</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold mt-1">Rp 1.426 M</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">112 Faktur Terlunasi</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase">Pending Invoicing Alert</span>
+<span class="font-headline-md text-headline-md text-amber-700 font-bold mt-1">Rp 56,5 Jt</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 Kontrak Menunggu e-Faktur</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-md mt-space-md border-t border-surface-container text-label-sm font-label-sm text-on-surface-variant">
+<span>Rekonsiliasi Bank Mandiri Corporate &amp; BCA KlikBisnis • Terhubung</span>
+<button class="text-primary hover:underline font-bold" type="button">
+          Buka Modul Keuangan →
+        </button>
+</div>
+</div>
+<!-- Quick System Logs & Operational Alerts (5 cols) -->
+<div class="xl:col-span-5 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Log &amp; Peringatan Sistem</h3>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm" type="button">
+            Tandai Dibaca
+          </button>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Alert 1 -->
+<div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">build</span>
+</span>
+<div class="flex flex-col flex-1">
 <div class="flex items-center justify-between">
-<label class="font-label-lg text-label-lg text-on-surface" for="passwordField" id="labelPassword">Kata Sandi / PIN Operasional</label>
-<a class="font-label-sm text-label-sm text-primary-container hover:text-primary transition-colors font-semibold" href="#">Lupa Kata Sandi?</a>
+<span class="font-label-md text-label-md font-bold text-on-surface">Jadwal Servis Berkala Armada</span>
+<span class="font-label-sm text-label-sm text-outline">10 mnt lalu</span>
 </div>
-<div class="relative flex items-center">
-<span class="absolute left-3 text-secondary material-symbols-outlined text-[20px]">key</span>
-<input class="w-full h-11 pl-10 pr-11 bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline/70 focus:outline-none focus:ring-2 focus:ring-primary-container/30 shadow-sm" id="passwordField" placeholder="Ketik kata sandi akun Anda" required="" type="password"/>
-<button aria-label="Tampilkan atau sembunyikan kata sandi" class="absolute right-3 text-secondary hover:text-on-surface p-1 rounded transition-colors focus:outline-none" onclick="togglePasswordVisibility()" type="button">
-<span class="material-symbols-outlined text-[20px]" id="eyeIcon">visibility</span>
-</button>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                8 Unit Scania Heavy Duty di Hub Cikampek memerlukan inspeksi oli gardan &amp; kalibrasi rem ABS.
+              </p>
 </div>
 </div>
-<!-- Persistence and Device Session -->
-<div class="flex items-center justify-between pt-1">
-<label class="flex items-center gap-space-xs cursor-pointer select-none">
-<input checked="" class="w-4 h-4 rounded text-primary-container accent-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Ingat saya di perangkat ini</span>
-</label>
-<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">timer</span> Sesi 30 Hari
-              </span>
+<!-- Alert 2 -->
+<div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+</span>
+<div class="flex flex-col flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-on-surface">Persetujuan Desain 3D Diterima</span>
+<span class="font-label-sm text-label-sm text-outline">42 mnt lalu</span>
 </div>
-<!-- Primary Submit Action Button -->
-<button class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary rounded-lg font-label-lg text-label-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-space-xs group mt-2" id="submitBtn" type="submit">
-<span>Masuk ke Portal Resmi</span>
-<span class="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-1">arrow_forward</span>
-</button>
-</form>
-<!-- Alternative Fast Authentication Flow -->
-<div class="flex flex-col gap-space-md pt-space-xs">
-<div class="relative flex items-center justify-center">
-<div class="w-full h-px bg-surface-container-high"></div>
-<span class="absolute bg-surface-container-lowest px-space-md font-label-sm text-label-sm text-secondary">
-                atau masuk instan dengan
-              </span>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
-<!-- WhatsApp OTP (High Adoption in ID Fleet & On-site Teams) -->
-<button class="flex items-center justify-center gap-space-xs h-11 px-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-all text-on-surface font-label-md text-label-md" type="button">
-<span class="material-symbols-outlined text-[#15803d] text-[20px]">chat</span>
-<span class="truncate">WhatsApp OTP</span>
-</button>
-<!-- Google Workspace SSO for Enterprise Clients -->
-<button class="flex items-center justify-center gap-space-xs h-11 px-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-all text-on-surface font-label-md text-label-md" type="button">
-<svg class="w-4 h-4 shrink-0" viewbox="0 0 24 24">
-<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
-<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
-<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"></path>
-<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
-</svg>
-<span class="truncate">Google Workspace</span>
-</button>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Klien Fintech SCBD telah menyetujui layout mezzanine executive lounge. Pengadaan material dimulai.
+              </p>
 </div>
 </div>
-<!-- Footer Registration CTA -->
-<div class="text-center pt-space-xs">
-<p class="font-body-sm text-body-sm text-secondary">
-              Belum memiliki akun akses terdaftar?
-              <a class="font-label-sm text-label-sm text-primary-container hover:text-primary font-bold ml-1 transition-colors" href="#">
-                Daftar Kemitraan Baru
-              </a>
-</p>
+<!-- Alert 3 -->
+<div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</span>
+<div class="flex flex-col flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-on-surface">Surat Jalan e-POD #MT-8812 Valid</span>
+<span class="font-label-sm text-label-sm text-outline">1 jam lalu</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Penerima di Semarang telah menandatangani digital receipt lengkap dengan foto stempel gudang.
+              </p>
 </div>
 </div>
 </div>
 </div>
+<div class="pt-space-md mt-space-md border-t border-surface-container flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Integritas Basis Data: Sinkron 100%</span>
+<button class="text-primary hover:underline font-bold" type="button">
+          Lihat Riwayat Audit Trail →
+        </button>
 </div>
-<!-- Operational Feedback Modal/Toast Scripting -->
-<script>
-    let currentRole = 'mitra';
-
-    function switchRole(role) {
-      currentRole = role;
-      const tabMitra = document.getElementById('tabMitra');
-      const tabKlien = document.getElementById('tabKlien');
-      const roleNotice = document.getElementById('roleNotice');
-      const roleIcon = document.getElementById('roleIcon');
-      const roleText = document.getElementById('roleText');
-      const identifierInput = document.getElementById('identifier');
-      const labelIdentifier = document.getElementById('labelIdentifier');
-      const labelPassword = document.getElementById('labelPassword');
-
-      if (role === 'mitra') {
-        // Active Mitra Tab
-        tabMitra.className = "flex items-center justify-center gap-space-xs py-2.5 px-space-sm rounded font-label-lg text-label-lg transition-all shadow-sm bg-surface-container-lowest text-primary";
-        tabKlien.className = "flex items-center justify-center gap-space-xs py-2.5 px-space-sm rounded font-label-lg text-label-lg transition-all text-secondary hover:text-on-surface";
-        
-        roleIcon.innerText = "local_shipping";
-        roleText.innerText = "Akses pengemudi, armada vendor, dan pengelola gudang Maitri Logistik.";
-        labelIdentifier.innerText = "Nomor Ponsel Pengemudi / ID Mitra";
-        identifierInput.placeholder = "Contoh: 08123456789 atau ML-9842";
-        labelPassword.innerText = "PIN Operasional / Kata Sandi";
-      } else {
-        // Active Klien Tab
-        tabKlien.className = "flex items-center justify-center gap-space-xs py-2.5 px-space-sm rounded font-label-lg text-label-lg transition-all shadow-sm bg-surface-container-lowest text-primary";
-        tabMitra.className = "flex items-center justify-center gap-space-xs py-2.5 px-space-sm rounded font-label-lg text-label-lg transition-all text-secondary hover:text-on-surface";
-        
-        roleIcon.innerText = "corporate_fare";
-        roleText.innerText = "Portal khusus klien interior, pimpinan proyek, dan arsitek penanggung jawab.";
-        labelIdentifier.innerText = "Email Korporat / ID Proyek";
-        identifierInput.placeholder = "Contoh: budi@ptcipta.com atau PRJ-2024-JKT";
-        labelPassword.innerText = "Kata Sandi Akun Proyek";
-      }
-    }
-
-    function togglePasswordVisibility() {
-      const passwordField = document.getElementById('passwordField');
-      const eyeIcon = document.getElementById('eyeIcon');
-      
-      if (passwordField.type === 'password') {
-        passwordField.type = 'text';
-        eyeIcon.innerText = 'visibility_off';
-      } else {
-        passwordField.type = 'password';
-        eyeIcon.innerText = 'visibility';
-      }
-    }
-
-    function simulateLogin() {
-      const submitBtn = document.getElementById('submitBtn');
-      const originalHTML = submitBtn.innerHTML;
-      
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `
-        <span class="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></span>
-        <span>Memverifikasi Akses...</span>
-      `;
-
-      setTimeout(() => {
-        submitBtn.innerHTML = `
-          <span class="material-symbols-outlined text-[18px]">check_circle</span>
-          <span>Berhasil Masuk</span>
-        `;
-        submitBtn.classList.remove('bg-primary-container');
-        submitBtn.classList.add('bg-[#15803d]');
-
-        setTimeout(() => {
-          submitBtn.innerHTML = originalHTML;
-          submitBtn.disabled = false;
-          submitBtn.classList.add('bg-primary-container');
-          submitBtn.classList.remove('bg-[#15803d]');
-          alert("Otentikasi " + (currentRole === 'mitra' ? "Mitra Logistik" : "Klien Desain") + " Terverifikasi. Mengarahkan ke Dashboard Operasional Maitri...");
-        }, 1200);
-      }, 1000);
-    }
-  </script>
-</div></main><footer class="w-full bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] py-space-lg mt-auto"><div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-wrap items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-full"><span class="material-symbols-outlined text-[16px] text-primary-container">lock</span><span class="font-label-sm text-label-sm text-on-surface-variant">256-Bit SSL Encrypted</span></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-full"><span class="material-symbols-outlined text-[16px] text-primary-container">verified_user</span><span class="font-label-sm text-label-sm text-on-surface-variant">ISO 9001 Certified</span></div></div><div class="flex items-center gap-space-lg"><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacy-policy" href="#">Privacy Policy</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="terms-of-service" href="#">Terms of Service</a><span class="font-label-sm text-label-sm text-outline">© 2024 Maitri Company. All rights reserved.</span></div></div></footer></body></html>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-lowest py-space-md px-space-lg shadow-[0_-1px_6px_rgba(0,0,0,0.02)]"><div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-label-sm text-label-sm"><div class="flex items-center gap-space-sm"><img alt="maitricomplogo.png" class="h-4 w-auto object-contain opacity-70" src="https://lh3.googleusercontent.com/aida/AEtjO1U1mH8sFfJRsAkLVZUb5BRKuS3XCFKlcIo918KGaVc7nPxY3vxQs43ikPhHCFMnUuw1W868Aof8aF1Xv0cCzJWsqEhOKEoO5PAmPULM9HHlotn66QznZeLQ_K3PB5AM-k9N7EID7_0JAOGh_CLAEb8IMUjvuGYC_te_ml0z50T9wPiGSZGDPUqVmbovfQoWInK-xwJKqA1fB5BSK3MYeUU7wTu0D18KDDBfbKUBeHCB8pZn0b89_4f72V7aJH5hdEWwdDTmltVw"/><span>© 2025 PT Maitri Global Solusindo. Seluruh hak cipta dilindungi undang-undang.</span></div><div class="flex items-center gap-space-md"><a class="hover:text-primary transition-colors" href="#">Dokumentasi API</a><a class="hover:text-primary transition-colors" href="#">Bantuan Support</a><a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi</a></div></div></footer></div></body></html>
