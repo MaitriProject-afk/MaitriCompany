@@ -29,8 +29,39 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => User::ROLE_WARGA,
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * Indicate that the user is an admin.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_ADMIN,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a staff member.
+     */
+    public function staff(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_STAFF,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a warga.
+     */
+    public function warga(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_WARGA,
+        ]);
     }
 
     /**
