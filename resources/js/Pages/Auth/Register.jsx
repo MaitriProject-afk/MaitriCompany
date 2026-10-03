@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
-    const [role, setRole] = useState('mitra'); // 'mitra' | 'klien'
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [fastAuthNotice, setFastAuthNotice] = useState('');
@@ -26,11 +25,11 @@ export default function Register() {
         if (provider === 'wa') {
             const waNumber = '6281234567890';
             const waText = encodeURIComponent(
-                `Halo Admin Maitri Company, saya ingin bantuan pendaftaran akun baru untuk ${role === 'mitra' ? 'Kemitraan Logistik Armada' : 'Klien Proyek Interior'}.`
+                'Halo Admin Maitri Company, saya ingin bantuan pendaftaran akun baru di portal resmi.'
             );
             window.open(`https://wa.me/${waNumber}?text=${waText}`, '_blank');
         } else if (provider === 'google') {
-            setFastAuthNotice('Pendaftaran instan Google Workspace SSO sedang menghubungkan ke direktori korporat...');
+            setFastAuthNotice('Pendaftaran instan Google Workspace SSO sedang menghubungkan ke direktori akun...');
             setTimeout(() => setFastAuthNotice(''), 4000);
         }
     };
@@ -113,16 +112,16 @@ export default function Register() {
                                 {/* Authority Badge */}
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-brand-700 text-xs font-bold border border-blue-200/80 shadow-xs w-fit">
                                     <span className="w-2 h-2 rounded-full bg-brand-600"></span>
-                                    <span>Pendaftaran Akses Resmi Maitri Company</span>
+                                    <span>Pendaftaran Akun Resmi Maitri Company</span>
                                 </div>
 
                                 {/* Headline & Subtitle */}
                                 <div className="space-y-2">
                                     <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight tracking-tight">
-                                        Bergabung dalam Ekosistem Logistik &amp; Desain Modern
+                                        Bergabung dalam Ekosistem Terpadu Maitri
                                     </h1>
                                     <p className="text-slate-600 text-sm leading-relaxed">
-                                        Daftarkan diri atau perusahaan Anda untuk kemudahan pelacakan armada truk terintegrasi dan monitoring proyek interior terpadu.
+                                        Daftarkan akun baru Anda untuk menikmati akses lengkap ke layanan logistik darat dan konsultasi manajemen proyek interior arsitektural.
                                     </p>
                                 </div>
 
@@ -153,9 +152,9 @@ export default function Register() {
                                             <span className="material-symbols-outlined text-[22px]">local_shipping</span>
                                         </div>
                                         <div className="flex flex-col gap-0.5 min-w-0">
-                                            <span className="text-xs font-bold text-slate-900">Keuntungan Mitra Logistik</span>
+                                            <span className="text-xs font-bold text-slate-900">Solusi Logistik &amp; Armada</span>
                                             <p className="text-xs text-slate-600 leading-relaxed">
-                                                Jalur pesanan muatan prioritas antarkota/antarprovinsi, e-POD surat jalan digital real-time, dan transparansi pencairan trip.
+                                                Layanan armada sewa terpercaya, telemetri live GPS, dan pemantauan distribusi muatan secara real-time.
                                             </p>
                                         </div>
                                     </div>
@@ -165,9 +164,9 @@ export default function Register() {
                                             <span className="material-symbols-outlined text-[22px]">architecture</span>
                                         </div>
                                         <div className="flex flex-col gap-0.5 min-w-0">
-                                            <span className="text-xs font-bold text-slate-900">Keuntungan Klien Interior</span>
+                                            <span className="text-xs font-bold text-slate-900">Desain &amp; Bangun Interior</span>
                                             <p className="text-xs text-slate-600 leading-relaxed">
-                                                Konsultasi arsitek gratis, simulasi estimasi RAB transparan, monitoring progress 3D berkala tanpa biaya tersembunyi.
+                                                Visualisasi 3D fotorealistis, digital approval anggaran RAB, dan jadwal pelaksanaan renovasi rapi.
                                             </p>
                                         </div>
                                     </div>
@@ -188,7 +187,7 @@ export default function Register() {
                             </div>
                         </div>
 
-                        {/* RIGHT COLUMN: INTERACTIVE REGISTRATION CONTAINER (55%) */}
+                        {/* RIGHT COLUMN: UNIFIED REGISTRATION CONTAINER (55%) */}
                         <div className="lg:col-span-7 flex flex-col justify-center">
                             <div className="w-full max-w-xl mx-auto bg-white rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl shadow-slate-200/60 border border-slate-200/90 flex flex-col gap-6">
                                 
@@ -206,7 +205,7 @@ export default function Register() {
                                         Buat Akun Baru
                                     </h2>
                                     <p className="text-sm text-slate-600">
-                                        Lengkapi data formulir di bawah ini untuk mengaktifkan akses layanan Anda.
+                                        Lengkapi data formulir di bawah ini untuk membuat akun baru Anda di portal Maitri Company.
                                     </p>
                                 </div>
 
@@ -217,61 +216,13 @@ export default function Register() {
                                     </div>
                                 )}
 
-                                {/* Role Segment Switcher */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs font-bold text-slate-700">Tipe Pendaftaran</span>
-                                        <span className="text-[11px] text-slate-400">Pilih jenis kemitraan Anda</span>
-                                    </div>
-                                    <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl gap-1 border border-slate-200/70">
-                                        <button
-                                            type="button"
-                                            onClick={() => setRole('mitra')}
-                                            className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs font-bold transition-all ${
-                                                role === 'mitra'
-                                                    ? 'bg-white text-brand-700 shadow-sm border border-slate-200/80'
-                                                    : 'text-slate-600 hover:text-slate-900'
-                                            }`}
-                                        >
-                                            <span className="material-symbols-outlined text-[18px]">local_shipping</span>
-                                            <span>Mitra Logistik</span>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => setRole('klien')}
-                                            className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs font-bold transition-all ${
-                                                role === 'klien'
-                                                    ? 'bg-white text-brand-700 shadow-sm border border-slate-200/80'
-                                                    : 'text-slate-600 hover:text-slate-900'
-                                            }`}
-                                        >
-                                            <span className="material-symbols-outlined text-[18px]">apartment</span>
-                                            <span>Klien &amp; Proyek</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Dynamic Role Instruction Notice */}
-                                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-blue-50/80 border border-blue-200/60 text-xs text-brand-900">
-                                    <span className="material-symbols-outlined text-brand-600 text-[20px] shrink-0">
-                                        {role === 'mitra' ? 'local_shipping' : 'corporate_fare'}
-                                    </span>
-                                    <span>
-                                        {role === 'mitra'
-                                            ? 'Pendaftaran mitra armada mandiri, driver logistik, dan pemilik unit truk ekspedisi.'
-                                            : 'Pendaftaran klien personal, perusahaan rekanan proyek, dan pengembang arsitektur.'}
-                                    </span>
-                                </div>
-
-                                {/* Real Inertia Register Form */}
+                                {/* Unified Inertia Register Form */}
                                 <form onSubmit={submit} className="space-y-4">
                                     {/* Name Field */}
                                     <div className="space-y-1.5">
                                         <div className="flex items-center justify-between">
                                             <label htmlFor="name" className="text-xs font-bold text-slate-800">
-                                                {role === 'mitra'
-                                                    ? 'Nama Lengkap Pemilik / Pengemudi'
-                                                    : 'Nama Lengkap / Nama Perusahaan (PIC)'}
+                                                Nama Lengkap
                                             </label>
                                             <span className="text-[11px] text-slate-400">Wajib diisi</span>
                                         </div>
@@ -286,11 +237,7 @@ export default function Register() {
                                                 value={data.name}
                                                 autoComplete="name"
                                                 required
-                                                placeholder={
-                                                    role === 'mitra'
-                                                        ? 'Contoh: Bambang Hariyanto'
-                                                        : 'Contoh: PT Cipta Kreasi Mandiri (Budi)'
-                                                }
+                                                placeholder="Ketik nama lengkap Anda"
                                                 onChange={(e) => setData('name', e.target.value)}
                                                 className={`w-full h-11 pl-10 pr-4 bg-slate-50/80 hover:bg-slate-50 focus:bg-white rounded-xl text-sm text-slate-900 placeholder:text-slate-400 border transition-all ${
                                                     errors.name
@@ -313,7 +260,7 @@ export default function Register() {
                                             <label htmlFor="email" className="text-xs font-bold text-slate-800">
                                                 Alamat Email Aktif
                                             </label>
-                                            <span className="text-[11px] text-slate-400">Untuk verifikasi</span>
+                                            <span className="text-[11px] text-slate-400">Untuk verifikasi akun</span>
                                         </div>
                                         <div className="relative flex items-center">
                                             <span className="absolute left-3 text-slate-400 material-symbols-outlined text-[20px] pointer-events-none">
@@ -326,7 +273,7 @@ export default function Register() {
                                                 value={data.email}
                                                 autoComplete="username"
                                                 required
-                                                placeholder="nama@domain.com"
+                                                placeholder="nama@email.com"
                                                 onChange={(e) => setData('email', e.target.value)}
                                                 className={`w-full h-11 pl-10 pr-4 bg-slate-50/80 hover:bg-slate-50 focus:bg-white rounded-xl text-sm text-slate-900 placeholder:text-slate-400 border transition-all ${
                                                     errors.email
@@ -374,7 +321,7 @@ export default function Register() {
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
                                                 aria-label="Tampilkan atau sembunyikan kata sandi"
-                                                className="absolute right-3 text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors"
+                                                className="absolute right-3 text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors cursor-pointer"
                                             >
                                                 <span className="material-symbols-outlined text-[20px]">
                                                     {showPassword ? 'visibility_off' : 'visibility'}
@@ -420,7 +367,7 @@ export default function Register() {
                                                 type="button"
                                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                                 aria-label="Tampilkan atau sembunyikan konfirmasi kata sandi"
-                                                className="absolute right-3 text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors"
+                                                className="absolute right-3 text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors cursor-pointer"
                                             >
                                                 <span className="material-symbols-outlined text-[20px]">
                                                     {showConfirmPassword ? 'visibility_off' : 'visibility'}
@@ -467,11 +414,7 @@ export default function Register() {
                                             </>
                                         ) : (
                                             <>
-                                                <span>
-                                                    {role === 'mitra'
-                                                        ? 'Daftar Sebagai Mitra Logistik'
-                                                        : 'Daftar Sebagai Klien Proyek'}
-                                                </span>
+                                                <span>Daftar Akun Baru</span>
                                                 <span className="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-1">
                                                     arrow_forward
                                                 </span>
@@ -494,7 +437,7 @@ export default function Register() {
                                         <button
                                             type="button"
                                             onClick={() => handleFastAuth('wa')}
-                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300"
+                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300 cursor-pointer"
                                         >
                                             <span className="material-symbols-outlined text-emerald-600 text-[20px]">
                                                 chat
@@ -506,7 +449,7 @@ export default function Register() {
                                         <button
                                             type="button"
                                             onClick={() => handleFastAuth('google')}
-                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300"
+                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300 cursor-pointer"
                                         >
                                             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                                                 <path

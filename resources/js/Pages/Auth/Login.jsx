@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
-    const [role, setRole] = useState('mitra'); // 'mitra' | 'klien'
     const [showPassword, setShowPassword] = useState(false);
     const [fastAuthNotice, setFastAuthNotice] = useState('');
 
@@ -24,11 +23,11 @@ export default function Login({ status, canResetPassword }) {
         if (provider === 'wa') {
             const waNumber = '6281234567890';
             const waText = encodeURIComponent(
-                `Halo Admin Maitri Company, saya ingin verifikasi login OTP akun ${role === 'mitra' ? 'Mitra Logistik' : 'Klien Proyek'}.`
+                'Halo Admin Maitri Company, saya butuh bantuan verifikasi login ke portal akun.'
             );
             window.open(`https://wa.me/${waNumber}?text=${waText}`, '_blank');
         } else if (provider === 'google') {
-            setFastAuthNotice('Integrasi Google Workspace SSO sedang menghubungkan ke direktori korporat...');
+            setFastAuthNotice('Integrasi Google Workspace SSO sedang menghubungkan ke direktori akun...');
             setTimeout(() => setFastAuthNotice(''), 4000);
         }
     };
@@ -117,10 +116,10 @@ export default function Login({ status, canResetPassword }) {
                                 {/* Headline & Subtitle */}
                                 <div className="space-y-2">
                                     <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight tracking-tight">
-                                        Satu Akses Terpadu untuk Kendali Armada &amp; Proyek Desain Anda
+                                        Satu Akses Terpadu untuk Seluruh Layanan Anda
                                     </h1>
                                     <p className="text-slate-600 text-sm leading-relaxed">
-                                        Platform enterprise terintegrasi yang menghubungkan operasional logistik darat dengan pengawasan eksekusi proyek arsitektural.
+                                        Platform terintegrasi yang menghubungkan operasional logistik darat dan manajemen proyek arsitektural. Masuk untuk mengelola aktivitas Anda.
                                     </p>
                                 </div>
 
@@ -151,9 +150,9 @@ export default function Login({ status, canResetPassword }) {
                                             <span className="material-symbols-outlined text-[22px]">local_shipping</span>
                                         </div>
                                         <div className="flex flex-col gap-0.5 min-w-0">
-                                            <span className="text-xs font-bold text-slate-900">Mitra Pengemudi &amp; Logistik</span>
+                                            <span className="text-xs font-bold text-slate-900">Operasional Logistik &amp; Armada</span>
                                             <p className="text-xs text-slate-600 leading-relaxed">
-                                                Akses jadwal jalan seketika, surat jalan digital (e-POD), telemetri GPS armada aktif, serta rincian slip insentif transparan.
+                                                Akses jadwal jalan, telemetri live GPS 24/7, surat jalan digital (e-POD), dan rincian tarif transparan.
                                             </p>
                                         </div>
                                     </div>
@@ -163,9 +162,9 @@ export default function Login({ status, canResetPassword }) {
                                             <span className="material-symbols-outlined text-[22px]">architecture</span>
                                         </div>
                                         <div className="flex flex-col gap-0.5 min-w-0">
-                                            <span className="text-xs font-bold text-slate-900">Klien Desain &amp; Bangun Interior</span>
+                                            <span className="text-xs font-bold text-slate-900">Desain &amp; Bangun Interior</span>
                                             <p className="text-xs text-slate-600 leading-relaxed">
-                                                Pantau progres visual 3D render, digital approval RAB, milestone jadwal renovasi, dan jalur komunikasi real-time tim lapangan.
+                                                Pantau progres visual 3D fotorealistis, digital approval RAB, dan jadwal pelaksanaan renovasi.
                                             </p>
                                         </div>
                                     </div>
@@ -186,7 +185,7 @@ export default function Login({ status, canResetPassword }) {
                             </div>
                         </div>
 
-                        {/* RIGHT COLUMN: INTERACTIVE LOGIN CONTAINER (55%) */}
+                        {/* RIGHT COLUMN: UNIFIED LOGIN CONTAINER (55%) */}
                         <div className="lg:col-span-7 flex flex-col justify-center">
                             <div className="w-full max-w-xl mx-auto bg-white rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl shadow-slate-200/60 border border-slate-200/90 flex flex-col gap-6">
                                 
@@ -204,7 +203,7 @@ export default function Login({ status, canResetPassword }) {
                                         Selamat Datang Kembali
                                     </h2>
                                     <p className="text-sm text-slate-600">
-                                        Silakan masuk ke akun Maitri Company Anda untuk melanjutkan aktivitas operasional.
+                                        Silakan masuk ke akun Maitri Company Anda. Sistem akan secara otomatis mengarahkan Anda ke dashboard sesuai hak akses Anda.
                                     </p>
                                 </div>
 
@@ -223,61 +222,13 @@ export default function Login({ status, canResetPassword }) {
                                     </div>
                                 )}
 
-                                {/* Role Segment Switcher */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs font-bold text-slate-700">Tipe Akun Pengguna</span>
-                                        <span className="text-[11px] text-slate-400">Pilih akses akun Anda</span>
-                                    </div>
-                                    <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl gap-1 border border-slate-200/70">
-                                        <button
-                                            type="button"
-                                            onClick={() => setRole('mitra')}
-                                            className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs font-bold transition-all ${
-                                                role === 'mitra'
-                                                    ? 'bg-white text-brand-700 shadow-sm border border-slate-200/80'
-                                                    : 'text-slate-600 hover:text-slate-900'
-                                            }`}
-                                        >
-                                            <span className="material-symbols-outlined text-[18px]">local_shipping</span>
-                                            <span>Mitra Logistik</span>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => setRole('klien')}
-                                            className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs font-bold transition-all ${
-                                                role === 'klien'
-                                                    ? 'bg-white text-brand-700 shadow-sm border border-slate-200/80'
-                                                    : 'text-slate-600 hover:text-slate-900'
-                                            }`}
-                                        >
-                                            <span className="material-symbols-outlined text-[18px]">apartment</span>
-                                            <span>Klien &amp; Proyek</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Dynamic Role Instruction Notice */}
-                                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-blue-50/80 border border-blue-200/60 text-xs text-brand-900">
-                                    <span className="material-symbols-outlined text-brand-600 text-[20px] shrink-0">
-                                        {role === 'mitra' ? 'local_shipping' : 'corporate_fare'}
-                                    </span>
-                                    <span>
-                                        {role === 'mitra'
-                                            ? 'Akses pengemudi, armada vendor, dan pengelola gudang Maitri Logistik.'
-                                            : 'Portal khusus klien interior, pimpinan proyek, dan arsitek penanggung jawab.'}
-                                    </span>
-                                </div>
-
-                                {/* Real Inertia Login Form */}
+                                {/* Unified Inertia Login Form */}
                                 <form onSubmit={submit} className="space-y-4">
                                     {/* Email / Identifier Field */}
                                     <div className="space-y-1.5">
                                         <div className="flex items-center justify-between">
                                             <label htmlFor="email" className="text-xs font-bold text-slate-800">
-                                                {role === 'mitra'
-                                                    ? 'Nomor Telepon atau Email Terdaftar'
-                                                    : 'Email Korporat / Akun Klien'}
+                                                Alamat Email Terdaftar
                                             </label>
                                             <span className="text-[11px] text-slate-400">Wajib diisi</span>
                                         </div>
@@ -292,11 +243,7 @@ export default function Login({ status, canResetPassword }) {
                                                 value={data.email}
                                                 autoComplete="username"
                                                 required
-                                                placeholder={
-                                                    role === 'mitra'
-                                                        ? 'nama@mitralogistik.com atau email terdaftar'
-                                                        : 'nama@perusahaan.com'
-                                                }
+                                                placeholder="nama@email.com atau akun terdaftar"
                                                 onChange={(e) => setData('email', e.target.value)}
                                                 className={`w-full h-11 pl-10 pr-4 bg-slate-50/80 hover:bg-slate-50 focus:bg-white rounded-xl text-sm text-slate-900 placeholder:text-slate-400 border transition-all ${
                                                     errors.email
@@ -317,9 +264,7 @@ export default function Login({ status, canResetPassword }) {
                                     <div className="space-y-1.5">
                                         <div className="flex items-center justify-between">
                                             <label htmlFor="password" className="text-xs font-bold text-slate-800">
-                                                {role === 'mitra'
-                                                    ? 'PIN Operasional / Kata Sandi'
-                                                    : 'Kata Sandi Akun Proyek'}
+                                                Kata Sandi Akun
                                             </label>
                                             {canResetPassword && (
                                                 <Link
@@ -353,7 +298,7 @@ export default function Login({ status, canResetPassword }) {
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
                                                 aria-label="Tampilkan atau sembunyikan kata sandi"
-                                                className="absolute right-3 text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors"
+                                                className="absolute right-3 text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors cursor-pointer"
                                             >
                                                 <span className="material-symbols-outlined text-[20px]">
                                                     {showPassword ? 'visibility_off' : 'visibility'}
@@ -424,7 +369,7 @@ export default function Login({ status, canResetPassword }) {
                                         <button
                                             type="button"
                                             onClick={() => handleFastAuth('wa')}
-                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300"
+                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300 cursor-pointer"
                                         >
                                             <span className="material-symbols-outlined text-emerald-600 text-[20px]">
                                                 chat
@@ -436,7 +381,7 @@ export default function Login({ status, canResetPassword }) {
                                         <button
                                             type="button"
                                             onClick={() => handleFastAuth('google')}
-                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300"
+                                            className="flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-slate-700 text-xs font-bold shadow-2xs hover:border-slate-300 cursor-pointer"
                                         >
                                             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                                                 <path
@@ -469,7 +414,7 @@ export default function Login({ status, canResetPassword }) {
                                             href={route('register')}
                                             className="text-brand-600 hover:text-brand-700 font-bold ml-1 transition-colors"
                                         >
-                                            Daftar Kemitraan Baru
+                                            Daftar Akun Baru
                                         </Link>
                                     </p>
                                 </div>
