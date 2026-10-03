@@ -460,80 +460,24 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                     </div>
                 </header>
 
-                {/* HERO SECTION: CINEMATIC, ANIMATED & IMMERSIVE */}
-                <section className="relative bg-slate-950 text-white pt-8 pb-16 lg:pt-12 lg:pb-24 overflow-hidden border-b border-slate-800">
-                    {/* Ambient Background Glows */}
-                    <div className="absolute top-0 left-1/4 w-[500px] h-[300px] bg-brand-600/25 blur-[140px] rounded-full pointer-events-none animate-pulse-glow"></div>
-                    <div className="absolute top-40 right-10 w-[450px] h-[320px] bg-cyan-500/20 blur-[130px] rounded-full pointer-events-none animate-pulse-glow"></div>
-                    <div className="absolute -bottom-20 left-1/3 w-[600px] h-[250px] bg-indigo-600/15 blur-[150px] rounded-full pointer-events-none"></div>
-
-                    {/* Subtle Grid Background Pattern */}
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none opacity-40"></div>
-
-                    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        {/* Hero Header & Headline */}
-                        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-10 sm:mb-12">
-                            {/* Animated Shimmer Badge */}
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 shadow-lg shadow-brand-500/10 mb-6 relative overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
-                                <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <span className="text-xs font-bold text-slate-200 tracking-wider uppercase">
-                                    EST. 2026 • INTEGRASI LOGISTIK NIAGA &amp; STUDIO ARSITEKTUR
-                                </span>
-                            </div>
-
-                            {/* Main Punchy Headline */}
-                            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12]">
-                                Solusi Handal{' '}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-sky-200">
-                                    Sewa Truk Niaga
-                                </span>{' '}
-                                &amp;{' '}
-                                <br className="hidden sm:inline" />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-emerald-300 to-amber-200">
-                                    Desain Interior Arsitektur
-                                </span>
-                            </h1>
-
-                            {/* Subheadline */}
-                            <p className="mt-5 text-base sm:text-lg text-slate-300 leading-relaxed max-w-3xl font-normal">
-                                Maitri Company memadukan keandalan armada transportasi logistik kelas berat (Tronton Wingbox, Trailer, Reefer) dengan sentuhan artistik studio perancangan ruang bergaransi dan visualisasi 3D fotorealistis.
-                            </p>
-
-                            {/* Quick CTA Action Buttons */}
-                            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-                                <button
-                                    onClick={() => scrollToCalc('truk')}
-                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 via-brand-700 to-cyan-600 hover:from-brand-500 hover:to-cyan-500 text-white font-bold text-base shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 hover:scale-[1.02] active:scale-95 transition-all duration-200"
-                                >
-                                    <span className="material-symbols-outlined text-[22px]">local_shipping</span>
-                                    <span>Pesan Sewa Truk Sekarang</span>
-                                </button>
-                                <button
-                                    onClick={() => scrollToCalc('interior')}
-                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-100 font-bold text-base border border-slate-700/80 shadow-md hover:border-slate-600 hover:scale-[1.02] active:scale-95 transition-all duration-200"
-                                >
-                                    <span className="material-symbols-outlined text-[22px] text-cyan-400">apartment</span>
-                                    <span>Konsultasi Desain Interior</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* CINEMATIC SHOWCASE BANNER CONTAINER */}
+                {/* HERO SECTION: WHITE CLEAN THEME WITH CINEMATIC BANNER ON TOP */}
+                <section className="relative bg-white pt-6 pb-16 lg:pt-8 lg:pb-20 border-b border-slate-200 overflow-hidden">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        {/* 1. CINEMATIC BANNER ON TOP */}
                         <div className="relative max-w-6xl mx-auto">
                             {/* Ambient Glow behind Image */}
-                            <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-600/30 via-cyan-500/20 to-teal-500/30 rounded-3xl blur-xl opacity-70 group-hover:opacity-100 transition duration-1000"></div>
+                            <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-600/20 via-cyan-500/15 to-teal-500/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-90 transition duration-700 pointer-events-none"></div>
 
                             {/* Banner Glass Frame */}
-                            <div className="relative rounded-3xl overflow-hidden border border-slate-700/80 bg-slate-900/90 shadow-2xl shadow-black/80 group">
+                            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 bg-slate-900 shadow-xl shadow-slate-900/10 group">
                                 <img
                                     src="/images/maitricompbanner.jpg"
                                     alt="Maitri Company Banner - Trucking & Interior Design"
-                                    className="w-full h-auto object-cover max-h-[580px] transform group-hover:scale-[1.02] transition-transform duration-700 select-none"
+                                    className="w-full h-auto object-cover max-h-[580px] transform group-hover:scale-[1.015] transition-transform duration-700 select-none"
                                 />
 
                                 {/* Subtle Overlay Vignette */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20 pointer-events-none"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/20 pointer-events-none"></div>
 
                                 {/* FLOATING CARD LEFT: TRUCKING DIVISION */}
                                 <div className="absolute top-4 sm:top-8 left-4 sm:left-8 max-w-[260px] sm:max-w-xs animate-float-slow hidden md:block">
@@ -596,7 +540,7 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                                 </div>
 
                                 {/* BOTTOM BANNER OVERLAY RIBBON */}
-                                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs border-t border-slate-800/60">
+                                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs border-t border-slate-800/60">
                                     <div className="flex items-center gap-2 text-slate-300">
                                         <span className="material-symbols-outlined text-cyan-400 text-[18px]">verified</span>
                                         <span className="font-semibold text-slate-200">
@@ -615,45 +559,63 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                             </div>
                         </div>
 
-                        {/* SOCIAL PROOF STATS TILES */}
-                        <div className="mt-10 sm:mt-14 w-full grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                            <div className="bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-slate-800 hover:border-slate-700 shadow-lg transition-all flex items-center gap-3.5">
-                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-cyan-400 border border-blue-500/20 flex items-center justify-center shrink-0">
+                        {/* 2. CALL-TO-ACTION BUTTONS UNDER BANNER */}
+                        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
+                            <button
+                                onClick={() => scrollToCalc('truk')}
+                                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow-lg shadow-brand-600/25 hover:shadow-brand-600/40 hover:scale-[1.02] active:scale-95 transition-all"
+                            >
+                                <span className="material-symbols-outlined text-[22px]">local_shipping</span>
+                                <span>Pesan Sewa Truk Sekarang</span>
+                            </button>
+                            <button
+                                onClick={() => scrollToCalc('interior')}
+                                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-base border border-slate-300 shadow-sm hover:border-slate-400 hover:scale-[1.02] active:scale-95 transition-all"
+                            >
+                                <span className="material-symbols-outlined text-[22px] text-brand-600">apartment</span>
+                                <span>Konsultasi Desain Interior</span>
+                            </button>
+                        </div>
+
+                        {/* 3. SOCIAL PROOF STATS TILES UNDER CTA */}
+                        <div className="mt-10 sm:mt-12 w-full grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
+                            <div className="bg-slate-50 hover:bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-all flex items-center gap-3.5">
+                                <div className="w-12 h-12 rounded-xl bg-blue-100 text-brand-600 flex items-center justify-center shrink-0">
                                     <span className="material-symbols-outlined text-[28px]">local_shipping</span>
                                 </div>
                                 <div className="text-left">
-                                    <div className="text-2xl sm:text-3xl font-black text-white leading-none">520+</div>
-                                    <div className="text-xs text-slate-400 font-medium mt-1">Armada Siap Jalan</div>
+                                    <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-none">520+</div>
+                                    <div className="text-xs text-slate-500 font-medium mt-1">Armada Siap Jalan</div>
                                 </div>
                             </div>
 
-                            <div className="bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-slate-800 hover:border-slate-700 shadow-lg transition-all flex items-center gap-3.5">
-                                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                            <div className="bg-slate-50 hover:bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-all flex items-center gap-3.5">
+                                <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
                                     <span className="material-symbols-outlined text-[28px]">draw</span>
                                 </div>
                                 <div className="text-left">
-                                    <div className="text-2xl sm:text-3xl font-black text-white leading-none">140+</div>
-                                    <div className="text-xs text-slate-400 font-medium mt-1">Proyek Desain Selesai</div>
+                                    <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-none">140+</div>
+                                    <div className="text-xs text-slate-500 font-medium mt-1">Proyek Desain Selesai</div>
                                 </div>
                             </div>
 
-                            <div className="bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-slate-800 hover:border-slate-700 shadow-lg transition-all flex items-center gap-3.5">
-                                <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0">
+                            <div className="bg-slate-50 hover:bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-all flex items-center gap-3.5">
+                                <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
                                     <span className="material-symbols-outlined text-[28px]">star</span>
                                 </div>
                                 <div className="text-left">
-                                    <div className="text-2xl sm:text-3xl font-black text-white leading-none">4.9 / 5.0</div>
-                                    <div className="text-xs text-slate-400 font-medium mt-1">Kepuasan Pelanggan</div>
+                                    <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-none">4.9 / 5.0</div>
+                                    <div className="text-xs text-slate-500 font-medium mt-1">Kepuasan Pelanggan</div>
                                 </div>
                             </div>
 
-                            <div className="bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-slate-800 hover:border-slate-700 shadow-lg transition-all flex items-center gap-3.5">
-                                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                            <div className="bg-slate-50 hover:bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-all flex items-center gap-3.5">
+                                <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
                                     <span className="material-symbols-outlined text-[28px]">verified_user</span>
                                 </div>
                                 <div className="text-left">
-                                    <div className="text-2xl sm:text-3xl font-black text-white leading-none">24/7</div>
-                                    <div className="text-xs text-slate-400 font-medium mt-1">GPS Telemetri Aktif</div>
+                                    <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-none">24/7</div>
+                                    <div className="text-xs text-slate-500 font-medium mt-1">GPS Telemetri Aktif</div>
                                 </div>
                             </div>
                         </div>
