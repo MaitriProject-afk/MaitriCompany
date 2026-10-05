@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable(['name', 'slug', 'description', 'rental_price_per_day', 'icon'])]
+#[Fillable(['name', 'slug', 'description', 'rental_price_per_hour', 'rental_price_per_day', 'rental_price_per_trip', 'icon'])]
 class VehicleCategory extends Model
 {
     use HasFactory;
@@ -21,7 +21,9 @@ class VehicleCategory extends Model
     protected function casts(): array
     {
         return [
+            'rental_price_per_hour' => 'decimal:2',
             'rental_price_per_day' => 'decimal:2',
+            'rental_price_per_trip' => 'decimal:2',
         ];
     }
 

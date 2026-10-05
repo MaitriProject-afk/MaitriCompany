@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->decimal('rental_price_per_day', 15, 2)->default(0);
+            $table->decimal('rental_price_per_hour', 15, 2)->nullable();
+            $table->decimal('rental_price_per_day', 15, 2)->nullable();
+            $table->decimal('rental_price_per_trip', 15, 2)->nullable();
             $table->string('icon')->nullable();
             $table->timestamps();
         });

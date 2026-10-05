@@ -125,7 +125,7 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                             Manajemen Armada &amp; Tarif Sewa
                         </h1>
                         <p className="text-xs sm:text-sm text-slate-500 max-w-3xl leading-relaxed">
-                            Kelola unit kendaraan hauling, hubungkan unit ke beberapa personil atau driver penanggung jawab, serta sesuaikan kategori dan tarif sewa per hari secara fleksibel.
+                            Kelola unit kendaraan hauling, hubungkan unit ke beberapa personil atau driver penanggung jawab, serta sesuaikan opsi waktu penyewaan (per jam, per hari, atau per trip) secara fleksibel.
                         </p>
                     </div>
 
@@ -242,7 +242,7 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                         }`}
                     >
                         <span className="material-symbols-outlined text-[18px]">payments</span>
-                        <span>Kategori &amp; Tarif Sewa Harian ({categories.length})</span>
+                        <span>Kategori &amp; Tarif Sewa Fleksibel ({categories.length})</span>
                     </button>
                 </div>
 
@@ -388,12 +388,31 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                                                 {/* Category & Rental Rate */}
                                                 <td className="px-4 py-3.5">
                                                     <div>
-                                                        <span className="inline-block px-2.5 py-0.5 rounded-lg text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200/80">
+                                                        <span className="inline-block px-2 py-0.5 rounded-md text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200/80">
                                                             {v.category?.name || 'Tanpa Kategori'}
                                                         </span>
-                                                        <div className="text-[11px] font-bold text-slate-700 mt-1">
-                                                            Rp {Number(v.category?.rental_price_per_day || 0).toLocaleString('id-ID')}
-                                                            <span className="text-slate-400 font-normal"> / hari</span>
+                                                        <div className="flex flex-col gap-0.5 mt-1 text-[11px] font-semibold text-slate-700">
+                                                            {v.category?.rental_price_per_hour && (
+                                                                <span>
+                                                                    Rp {Number(v.category.rental_price_per_hour).toLocaleString('id-ID')}
+                                                                    <span className="text-slate-400 font-normal"> / jam</span>
+                                                                </span>
+                                                            )}
+                                                            {v.category?.rental_price_per_day && (
+                                                                <span>
+                                                                    Rp {Number(v.category.rental_price_per_day).toLocaleString('id-ID')}
+                                                                    <span className="text-slate-400 font-normal"> / hari</span>
+                                                                </span>
+                                                            )}
+                                                            {v.category?.rental_price_per_trip && (
+                                                                <span>
+                                                                    Rp {Number(v.category.rental_price_per_trip).toLocaleString('id-ID')}
+                                                                    <span className="text-slate-400 font-normal"> / trip</span>
+                                                                </span>
+                                                            )}
+                                                            {!v.category?.rental_price_per_hour && !v.category?.rental_price_per_day && !v.category?.rental_price_per_trip && (
+                                                                <span className="text-slate-400 italic">Tarif belum diatur</span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </td>
@@ -531,14 +550,40 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                                         </div>
                                     </div>
 
-                                    {/* Rental Price Badge */}
-                                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
-                                            Tarif Sewa Harian (Rental Rate)
+                                    {/* Flexible Rental Rates Breakdown */}
+                                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                                            <span>Opsi Tarif &amp; Waktu Sewa</span>
+                                            <span className="material-symbols-outlined text-[14px] text-slate-400">tune</span>
                                         </div>
-                                        <div className="text-lg font-black text-brand-700 mt-0.5">
-                                            Rp {Number(cat.rental_price_per_day).toLocaleString('id-ID')}
-                                            <span className="text-xs font-normal text-slate-500"> / hari</span>
+                                        <div className="space-y-1 text-xs">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-slate-500 flex items-center gap-1 text-[11px]">
+                                                    <span className="material-symbols-outlined text-[13px] text-slate-400">schedule</span>
+                                                    <span>Per Jam</span>
+                                                </span>
+                                                <span className={`text-[11px] ${cat.rental_price_per_hour ? 'font-bold text-slate-900' : 'text-slate-400 italic'}`}>
+                                                    {cat.rental_price_per_hour ? `Rp ${Number(cat.rental_price_per_hour).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-slate-500 flex items-center gap-1 text-[11px]">
+                                                    <span className="material-symbols-outlined text-[13px] text-slate-400">today</span>
+                                                    <span>Per Hari</span>
+                                                </span>
+                                                <span className={`text-[11px] ${cat.rental_price_per_day ? 'font-bold text-slate-900' : 'text-slate-400 italic'}`}>
+                                                    {cat.rental_price_per_day ? `Rp ${Number(cat.rental_price_per_day).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-slate-500 flex items-center gap-1 text-[11px]">
+                                                    <span className="material-symbols-outlined text-[13px] text-slate-400">route</span>
+                                                    <span>Per Trip</span>
+                                                </span>
+                                                <span className={`text-[11px] ${cat.rental_price_per_trip ? 'font-black text-brand-700' : 'text-slate-400 italic'}`}>
+                                                    {cat.rental_price_per_trip ? `Rp ${Number(cat.rental_price_per_trip).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
 

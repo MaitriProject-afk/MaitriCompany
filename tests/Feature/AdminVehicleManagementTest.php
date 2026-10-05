@@ -46,26 +46,68 @@ class AdminVehicleManagementTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_admin_can_create_vehicle_category_with_custom_rental_price(): void
+    public function test_admin_can_create_vehicle_category_with_only_per_trip_pricing(): void
     {
         $admin = User::factory()->admin()->create();
 
+        // Testing the exact user scenario: "jika cuman mau per trip aja berarti ya lain nya null gitu"
         $response = $this->actingAs($admin)->post('/admin/vehicle-categories', [
-            'name' => 'Roadtrain Heavy Haul',
-            'rental_price_per_day' => 8500000,
-            'description' => 'Truk konfigurasi multi trailer kapasitas ekstra.',
+            'name' => 'Roadtrain Heavy Haulage',
+            'rental_price_per_hour' => null,
+            'rental_price_per_day' => null,
+            'rental_price_per_trip' => 12500000,
+            'description' => 'Khusus rute hauling tambang sekali trip.',
             'icon' => 'train',
         ]);
 
         $response->assertSessionHas('success');
         $this->assertDatabaseHas('vehicle_categories', [
-            'name' => 'Roadtrain Heavy Haul',
-            'rental_price_per_day' => 8500000,
+            'name' => 'Roadtrain Heavy Haulage',
+            'rental_price_per_hour' => null,
+            'rental_price_per_day' => null,
+            'rental_price_per_trip' => 12500000,
             'icon' => 'train',
         ]);
     }
 
-    public function test_admin_can_update_vehicle_category_rental_price(): void
+    public function test_admin_can_create_vehicle_category_with_hourly_daily_and_trip_rates(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->actingAs($admin)->post('/admin/vehicle-categories', [
+            'name' => 'Pickup Truck Express',
+            'rental_price_per_hour' => 120000,
+            'rental_price_per_day' => 850000,
+            'rental_price_per_trip' => 500000,
+            'description' => 'Pickup serbaguna dalam kota.',
+            'icon' => 'local_shipping',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('vehicle_categories', [
+            'name' => 'Pickup Truck Express',
+            'rental_price_per_hour' => 120000,
+            'rental_price_per_day' => 850000,
+            'rental_price_per_trip' => 500000,
+        ]);
+    }
+
+    public function test_admin_cannot_create_vehicle_category_without_any_pricing_option(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->actingAs($admin)->post('/admin/vehicle-categories', [
+            'name' => 'Dummy Category',
+            'rental_price_per_hour' => null,
+            'rental_price_per_day' => null,
+            'rental_price_per_trip' => null,
+            'icon' => 'local_shipping',
+        ]);
+
+        $response->assertSessionHasErrors(['rental_price_per_day']);
+    }
+
+    public function test_admin_can_update_vehicle_category_flexible_rates(): void
     {
         $admin = User::factory()->admin()->create();
         $category = VehicleCategory::create([
@@ -75,16 +117,20 @@ class AdminVehicleManagementTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)->put("/admin/vehicle-categories/{$category->id}", [
-            'name' => 'Pickup Truck Super',
-            'rental_price_per_day' => 900000,
+            'name' => 'Pickup Truck Multi Option',
+            'rental_price_per_hour' => 100000,
+            'rental_price_per_day' => 800000,
+            'rental_price_per_trip' => 450000,
             'icon' => 'rv_hookup',
         ]);
 
         $response->assertSessionHas('success');
         $this->assertDatabaseHas('vehicle_categories', [
             'id' => $category->id,
-            'name' => 'Pickup Truck Super',
-            'rental_price_per_day' => 900000,
+            'name' => 'Pickup Truck Multi Option',
+            'rental_price_per_hour' => 100000,
+            'rental_price_per_day' => 800000,
+            'rental_price_per_trip' => 450000,
         ]);
     }
 
@@ -120,7 +166,7 @@ class AdminVehicleManagementTest extends TestCase
 
         $category = VehicleCategory::create([
             'name' => 'Heavy Truck',
-            'rental_price_per_day' => 4500000,
+            'rental_price_per_trip' => 4500000,
             'icon' => 'forklift',
         ]);
 
@@ -157,6 +203,7 @@ class AdminVehicleManagementTest extends TestCase
         $category = VehicleCategory::create([
             'name' => 'Box Car',
             'rental_price_per_day' => 1200000,
+            'rental_price_per_trip' => 900000,
             'icon' => 'inventory_2',
         ]);
 

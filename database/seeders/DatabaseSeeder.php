@@ -76,7 +76,9 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Pickup Truck',
                 'description' => 'Kendaraan bak terbuka muatan ringan s.d 1.5 ton untuk mobilitas cepat perkotaan.',
+                'rental_price_per_hour' => 120000,
                 'rental_price_per_day' => 850000,
+                'rental_price_per_trip' => 500000,
                 'icon' => 'local_shipping',
             ]
         );
@@ -86,7 +88,9 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Lorry',
                 'description' => 'Truk medium cargo muatan hingga 5-8 ton lintas kabupaten/provinsi.',
+                'rental_price_per_hour' => null,
                 'rental_price_per_day' => 1750000,
+                'rental_price_per_trip' => 1200000,
                 'icon' => 'rv_hookup',
             ]
         );
@@ -96,7 +100,9 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Box Car',
                 'description' => 'Truk tertutup boks pendingin atau kering tahan cuaca muatan 10-15 ton.',
+                'rental_price_per_hour' => null,
                 'rental_price_per_day' => 2400000,
+                'rental_price_per_trip' => 1800000,
                 'icon' => 'inventory_2',
             ]
         );
@@ -106,7 +112,9 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Heavy Truck',
                 'description' => 'Truk berat tronton wingbox & trailer multi-axle muatan 25-35 ton.',
+                'rental_price_per_hour' => null,
                 'rental_price_per_day' => 4800000,
+                'rental_price_per_trip' => 3500000,
                 'icon' => 'local_shipping',
             ]
         );
@@ -116,7 +124,9 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Roadtrain',
                 'description' => 'Rangkaian truk hauling ganda kapasitas super heavy haulage 40-70 ton rute khusus tambang/industri.',
-                'rental_price_per_day' => 8500000,
+                'rental_price_per_hour' => null,
+                'rental_price_per_day' => null,
+                'rental_price_per_trip' => 12500000,
                 'icon' => 'train',
             ]
         );

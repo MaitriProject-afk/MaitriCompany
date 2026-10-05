@@ -176,14 +176,34 @@ export default function VehicleModal({ isOpen, onClose, vehicle = null, categori
                                 <option value="" disabled>Pilih Kategori</option>
                                 {categories.map((cat) => (
                                     <option key={cat.id} value={cat.id}>
-                                        {cat.name} — Rp {Number(cat.rental_price_per_day).toLocaleString('id-ID')}/hari
+                                        {cat.name}
                                     </option>
                                 ))}
                             </select>
                             {selectedCategory && (
-                                <p className="text-[11px] text-amber-700 bg-amber-50 px-2 py-1 rounded-lg inline-block">
-                                    Tarif: <strong>Rp {Number(selectedCategory.rental_price_per_day).toLocaleString('id-ID')} / hari</strong>
-                                </p>
+                                <div className="text-[11px] text-amber-900 bg-amber-50/80 p-2.5 rounded-xl border border-amber-200/60 space-y-1 mt-1">
+                                    <div className="font-bold text-amber-800 flex items-center gap-1">
+                                        <span className="material-symbols-outlined text-[14px]">payments</span>
+                                        <span>Tarif Sewa Kategori:</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-1.5 pt-0.5">
+                                        {selectedCategory.rental_price_per_hour ? (
+                                            <span className="bg-white px-2 py-0.5 rounded-md border border-amber-200/80 text-slate-800 font-bold">
+                                                Rp {Number(selectedCategory.rental_price_per_hour).toLocaleString('id-ID')} <span className="text-slate-500 font-normal">/jam</span>
+                                            </span>
+                                        ) : null}
+                                        {selectedCategory.rental_price_per_day ? (
+                                            <span className="bg-white px-2 py-0.5 rounded-md border border-amber-200/80 text-slate-800 font-bold">
+                                                Rp {Number(selectedCategory.rental_price_per_day).toLocaleString('id-ID')} <span className="text-slate-500 font-normal">/hari</span>
+                                            </span>
+                                        ) : null}
+                                        {selectedCategory.rental_price_per_trip ? (
+                                            <span className="bg-white px-2 py-0.5 rounded-md border border-amber-200/80 text-slate-800 font-bold">
+                                                Rp {Number(selectedCategory.rental_price_per_trip).toLocaleString('id-ID')} <span className="text-slate-500 font-normal">/trip</span>
+                                            </span>
+                                        ) : null}
+                                    </div>
+                                </div>
                             )}
                             {errors.vehicle_category_id && (
                                 <p className="text-xs text-rose-600 font-semibold">{errors.vehicle_category_id}</p>
