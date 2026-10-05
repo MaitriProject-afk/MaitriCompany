@@ -22,7 +22,7 @@ export default function AdminLayout({ children, activeMenu = 'overview' }) {
             section: 'Finance & Governance',
             items: [
                 { id: 'keuangan', label: 'Keuangan & Invoice', icon: 'receipt_long', href: '#keuangan' },
-                { id: 'tim', label: 'Manajemen Tim & Mitra', icon: 'group_work', href: '#tim' },
+                { id: 'users', label: 'Manajemen Pengguna & Role', icon: 'manage_accounts', href: route('admin.users.index') },
                 { id: 'sistem', label: 'Pengaturan & Log Sistem', icon: 'settings_account_box', href: '#sistem' },
             ],
         },
@@ -96,7 +96,7 @@ export default function AdminLayout({ children, activeMenu = 'overview' }) {
                                 {group.items.map((item) => {
                                     const isActive = activeMenu === item.id;
                                     return (
-                                        <a
+                                        <Link
                                             key={item.id}
                                             href={item.href}
                                             className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-xs font-semibold ${
@@ -109,7 +109,7 @@ export default function AdminLayout({ children, activeMenu = 'overview' }) {
                                                 {item.icon}
                                             </span>
                                             <span>{item.label}</span>
-                                        </a>
+                                        </Link>
                                     );
                                 })}
                             </div>
