@@ -1,39 +1,17 @@
-export default function FleetLogisticsPillar() {
-    const dispatches = [
-        {
-            id: '#DSP-99214',
-            unit: 'B 9421 UXT • Scania R450 Wingbox',
-            origin: 'Jakarta (Marunda)',
-            dest: 'Surabaya (Tanjung Perak)',
-            cargo: 'FMCG Retail Unilever • 24.5 Ton',
-            status: 'Dalam Perjalanan (Tol Cipali KM 164)',
-            statusType: 'success',
-            eta: '19:30 WIB',
-            etaNote: 'Sesuai Jadwal',
-        },
-        {
-            id: '#DSP-99208',
-            unit: 'B 8820 KLO • Reefer ThermoKing 20ft',
-            origin: 'Medan (Belawan)',
-            dest: 'Pekanbaru (Riau Hub)',
-            cargo: 'Bahan Farmasi & Vaksin • Temp -18°C',
-            status: 'Bongkar Muatan (DC Pekanbaru)',
-            statusType: 'info',
-            eta: '11:15 WIB',
-            etaNote: 'Progress 65%',
-        },
-        {
-            id: '#DSP-99195',
-            unit: 'L 7712 AA • Trailer Scania 40ft Multi-Axle',
-            origin: 'Cikarang Dry Port',
-            dest: 'Semarang (KIK Kendal)',
-            cargo: 'Material Konstruksi Besi & Fabrikasi',
-            status: 'Siap Muat (Menunggu Timbang)',
-            statusType: 'warning',
-            eta: 'Besok 06:00',
-            etaNote: 'Estimasi Rute',
-        },
-    ];
+import { Link } from '@inertiajs/react';
+
+export default function FleetLogisticsPillar({ dispatches = [], stats = {} }) {
+    const formatRupiah = (val) => {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(val || 0);
+    };
+
+    const activeCount = stats.rentals_active || 0;
+    const totalCount = stats.rentals_total || 0;
 
     return (
         <div className="flex flex-col gap-4">
@@ -48,154 +26,146 @@ export default function FleetLogisticsPillar() {
                             Divisi Logistik &amp; Armada Niaga
                         </h2>
                         <p className="text-xs text-slate-500">
-                            Pantauan Perjalanan Muatan Nasional, GPS &amp; Status Bongkar
+                            Pantauan Kontrak Sewa Truk, Dispatch Warga &amp; Validasi Pengembalian
                         </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2 self-start sm:self-center">
                     <span className="text-xs font-bold text-brand-700 bg-blue-50 border border-blue-200/60 px-3 py-1 rounded-full">
-                        182 Rute Terjadwal Hari Ini
+                        {activeCount} Sedang Disewa • {totalCount} Total Riwayat
                     </span>
                 </div>
             </div>
 
             {/* Live Dispatches Table Container */}
             <div className="bg-white rounded-2xl shadow-xs border border-slate-200/80 overflow-hidden flex flex-col">
-                <div className="p-4 bg-slate-50 border-b border-slate-200/70 flex items-center justify-between">
+                <div className="p-4 bg-slate-50 border-b border-slate-200/70 flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2">
                         <span className="text-xs uppercase tracking-wider text-slate-800 font-extrabold">
-                            Manifest Dispatch Berjalan
+                            Manifest Dispatch &amp; Sewa Terbaru
                         </span>
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        {activeCount > 0 && (
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        )}
                     </div>
                     <div className="flex items-center gap-2">
-                        <button
-                            type="button"
-                            className="text-slate-600 hover:text-slate-900 text-xs font-semibold px-2.5 py-1 rounded-lg bg-white border border-slate-200 shadow-2xs"
+                        <Link
+                            href={route('admin.vehicles.index')}
+                            className="text-brand-600 hover:text-brand-700 text-xs font-bold flex items-center gap-1 hover:underline"
                         >
-                            Filter Hub
-                        </button>
-                        <button
-                            type="button"
-                            className="text-brand-600 hover:underline text-xs font-bold"
-                        >
-                            Lihat Semua (84) →
-                        </button>
+                            <span>Kelola Seluruh Armada ({stats.vehicles_total || 0})</span>
+                            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </Link>
                     </div>
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="bg-white text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-100">
-                                <th className="px-4 py-3 font-bold">ID &amp; Unit</th>
-                                <th className="px-4 py-3 font-bold">Rute &amp; Kargo</th>
-                                <th className="px-4 py-3 font-bold">Status / GPS</th>
-                                <th className="px-4 py-3 font-bold text-right">ETA Tujuan</th>
-                                <th className="px-4 py-3 font-bold text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 text-xs">
-                            {dispatches.map((d, idx) => (
-                                <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                                    <td className="px-4 py-3.5">
-                                        <div className="font-bold text-slate-900">{d.id}</div>
-                                        <div className="text-[11px] text-slate-500 font-medium">{d.unit}</div>
-                                    </td>
-                                    <td className="px-4 py-3.5">
-                                        <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                                            <span>{d.origin}</span>
-                                            <span className="material-symbols-outlined text-[14px] text-slate-400">trending_flat</span>
-                                            <span>{d.dest}</span>
-                                        </div>
-                                        <div className="text-[11px] text-slate-500">{d.cargo}</div>
-                                    </td>
-                                    <td className="px-4 py-3.5">
-                                        {d.statusType === 'success' && (
-                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-[11px] border border-emerald-200/60">
-                                                <span className="material-symbols-outlined text-[14px]">satellite_alt</span>
-                                                {d.status}
-                                            </span>
-                                        )}
-                                        {d.statusType === 'info' && (
-                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-brand-700 font-semibold text-[11px] border border-blue-200/60">
-                                                <span className="material-symbols-outlined text-[14px]">inventory_2</span>
-                                                {d.status}
-                                            </span>
-                                        )}
-                                        {d.statusType === 'warning' && (
-                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 font-semibold text-[11px] border border-amber-200/60">
-                                                <span className="material-symbols-outlined text-[14px]">forklift</span>
-                                                {d.status}
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3.5 text-right">
-                                        <div className="font-bold text-slate-900">{d.eta}</div>
-                                        <div className="text-[11px] text-emerald-600 font-medium">{d.etaNote}</div>
-                                    </td>
-                                    <td className="px-4 py-3.5 text-center">
-                                        <button
-                                            type="button"
-                                            className="p-1.5 rounded-lg hover:bg-blue-50 text-brand-600 transition-colors"
-                                            title="Lacak Lokasi GPS Live"
-                                        >
-                                            <span className="material-symbols-outlined text-[18px]">location_searching</span>
-                                        </button>
-                                    </td>
+                    {dispatches.length === 0 ? (
+                        <div className="p-8 text-center text-slate-400">
+                            <span className="material-symbols-outlined text-4xl mb-2 text-slate-300">local_shipping</span>
+                            <p className="text-sm font-semibold text-slate-600">Belum ada riwayat sewa atau dispatch unit.</p>
+                            <p className="text-xs text-slate-400 mt-1">Sewa yang diterbitkan oleh Admin/Staff akan muncul otomatis di sini.</p>
+                        </div>
+                    ) : (
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="bg-white text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-100">
+                                    <th className="px-4 py-3 font-bold">No. Kontrak &amp; Unit</th>
+                                    <th className="px-4 py-3 font-bold">Penyewa</th>
+                                    <th className="px-4 py-3 font-bold">Durasi &amp; Status</th>
+                                    <th className="px-4 py-3 font-bold">Jadwal Selesai</th>
+                                    <th className="px-4 py-3 font-bold text-right">Biaya / Dokumen</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                {/* Mini Fleet Hub Health Card */}
-                <div className="p-4 bg-slate-50/80 border-t border-slate-200/60 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-4 w-full md:w-auto">
-                        <div className="flex flex-col">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase">HUB LOGISTIK MARUNDA</span>
-                            <span className="text-xs font-extrabold text-slate-800">88 / 95 Unit Siap Jalan</span>
-                        </div>
-                        <div className="h-6 w-px bg-slate-200"></div>
-                        <div className="flex flex-col">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase">HUB MEGA KUNINGAN</span>
-                            <span className="text-xs font-extrabold text-slate-800">24 Unit Shuttle On-Duty</span>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            99.2% Kepatuhan e-POD
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Scania Fleet Showcase Card */}
-            <div className="relative rounded-2xl overflow-hidden shadow-xs h-48 bg-slate-900 text-white flex items-end p-5 border border-slate-800">
-                <div
-                    className="absolute inset-0 bg-cover bg-center opacity-40 select-none"
-                    style={{ backgroundImage: `url('/images/maitricompbanner.jpg')` }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-                <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
-                    <div>
-                        <span className="text-[10px] text-cyan-400 font-extrabold uppercase tracking-wider">
-                            Peremajaan Armada Tahap III
-                        </span>
-                        <h3 className="text-sm sm:text-base font-extrabold text-white mt-0.5">
-                            Tambahan 25 Unit Scania Euro-5 Tiba di Jakarta Hub
-                        </h3>
-                        <p className="text-xs text-slate-300">
-                            Dilengkapi sensor telemetri pintar &amp; pemantau suhu digital real-time.
-                        </p>
-                    </div>
-                    <button
-                        type="button"
-                        className="shrink-0 bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors cursor-pointer"
-                    >
-                        Detail Alokasi Unit
-                    </button>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 text-xs">
+                                {dispatches.map((d) => (
+                                    <tr key={d.id} className="hover:bg-slate-50/80 transition-colors">
+                                        <td className="px-4 py-3.5">
+                                            <div className="font-bold text-slate-900 font-mono text-[11px]">
+                                                {d.contract_number}
+                                            </div>
+                                            <div className="text-slate-600 flex items-center gap-1.5 mt-0.5">
+                                                <span className="font-semibold text-slate-800">{d.vehicle_name}</span>
+                                                <span className="bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-mono text-[10px]">
+                                                    {d.plate_number}
+                                                </span>
+                                            </div>
+                                            <div className="text-[10px] text-slate-400">
+                                                Kategori: {d.category_name}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-3.5">
+                                            <div className="font-bold text-slate-900">
+                                                {d.renter_name}
+                                            </div>
+                                            <div className="text-slate-500 font-mono text-[11px]">
+                                                Telp: {d.san_andreas_phone || d.contact_phone || '-'}
+                                            </div>
+                                            <div className="text-[10px] text-slate-400">
+                                                Petugas: {d.admin_name}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-3.5">
+                                            <div className="mb-1 font-semibold text-slate-700 capitalize">
+                                                {d.duration} {d.rental_type}
+                                            </div>
+                                            {d.status === 'completed' ? (
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                                                    <span className="material-symbols-outlined text-[12px]">check</span>
+                                                    Selesai Dikembalikan
+                                                </span>
+                                            ) : d.is_overdue ? (
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200/60 animate-pulse">
+                                                    <span className="material-symbols-outlined text-[12px]">warning</span>
+                                                    Terlambat (+{d.overdue_hours}j)
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-brand-700 border border-blue-200/60">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span>
+                                                    Sedang Disewa
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3.5">
+                                            <div className="font-medium text-slate-700">
+                                                {d.status === 'completed' && d.actual_return_time ? d.actual_return_time : d.expected_return_time}
+                                            </div>
+                                            <div className="text-[10px] text-slate-400">
+                                                Mulai: {d.start_time}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-3.5 text-right">
+                                            <div className="font-extrabold text-slate-900">
+                                                {formatRupiah(d.total_cost)}
+                                            </div>
+                                            <div className="flex items-center justify-end gap-1.5 mt-1.5">
+                                                <a
+                                                    href={route('rentals.mou', d.mou_code)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1 px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[11px] transition-colors"
+                                                    title="Buka Dokumen MoU Publik"
+                                                >
+                                                    <span className="material-symbols-outlined text-[14px]">description</span>
+                                                    <span>MoU</span>
+                                                </a>
+                                                <a
+                                                    href={route('rentals.invoice', d.invoice_code)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1 px-2 py-1 rounded bg-brand-50 hover:bg-brand-100 text-brand-700 font-semibold text-[11px] transition-colors"
+                                                    title="Buka Invoice Resmi"
+                                                >
+                                                    <span className="material-symbols-outlined text-[14px]">receipt_long</span>
+                                                    <span>Invoice</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </div>

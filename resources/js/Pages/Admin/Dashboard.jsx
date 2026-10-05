@@ -1,4 +1,4 @@
-import { Head, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import KpiOverview from '@/Pages/Admin/Components/KpiOverview';
 import FleetLogisticsPillar from '@/Pages/Admin/Components/FleetLogisticsPillar';
@@ -6,20 +6,12 @@ import DesignStudioPillar from '@/Pages/Admin/Components/DesignStudioPillar';
 import FinancialOverview from '@/Pages/Admin/Components/FinancialOverview';
 import SystemLogsAlerts from '@/Pages/Admin/Components/SystemLogsAlerts';
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ stats = {}, recentDispatches = [], recentLogs = [] }) {
     const { auth } = usePage().props;
     const user = auth.user;
 
-    const handleExport = () => {
-        alert('Memulai ekspor rekap laporan operasional dan finansial Q1 2026 (PDF & XLSX)...');
-    };
-
-    const handleNewProject = () => {
-        alert('Membuka formulir registrasi proyek arsitektur / interior baru...');
-    };
-
-    const handleNewDispatch = () => {
-        alert('Membuka modal penugasan unit armada & manifest jalan...');
+    const handleDesignInfo = () => {
+        alert('Layanan Studio Desain Arsitektur & Workshop Maitri Company melayani konsultasi langsung di Maitri HQ Verona Beach No 12 Los Santos.');
     };
 
     return (
@@ -36,10 +28,10 @@ export default function AdminDashboard() {
                             </span>
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200/60">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                Sistem Aktif — Sinkronisasi Real-Time
+                                Sistem Aktif — Database Real-Time
                             </span>
                             <span className="text-[11px] text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full font-medium">
-                                Operasional 24/7 Aktif
+                                Maitri HQ Verona Beach
                             </span>
                         </div>
 
@@ -57,43 +49,41 @@ export default function AdminDashboard() {
 
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2.5 flex-wrap self-start lg:self-center">
-                        <button
-                            type="button"
-                            onClick={handleExport}
+                        <Link
+                            href={route('admin.finance.index')}
                             className="inline-flex items-center gap-1.5 h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all shadow-2xs cursor-pointer"
                         >
-                            <span className="material-symbols-outlined text-[18px] text-brand-600">download</span>
-                            <span>Ekspor Laporan</span>
-                        </button>
+                            <span className="material-symbols-outlined text-[18px] text-brand-600">receipt_long</span>
+                            <span>Laporan Keuangan</span>
+                        </Link>
 
                         <button
                             type="button"
-                            onClick={handleNewProject}
+                            onClick={handleDesignInfo}
                             className="inline-flex items-center gap-1.5 h-10 px-3.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 text-xs font-bold transition-all shadow-2xs cursor-pointer"
                         >
                             <span className="material-symbols-outlined text-[18px] text-amber-700">architecture</span>
-                            <span>+ Proyek Desain</span>
+                            <span>Studio Desain HQ</span>
                         </button>
 
-                        <button
-                            type="button"
-                            onClick={handleNewDispatch}
+                        <Link
+                            href={route('admin.vehicles.index')}
                             className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-xs font-bold transition-all shadow-sm shadow-brand-600/30 cursor-pointer"
                         >
                             <span className="material-symbols-outlined text-[18px]">local_shipping</span>
-                            <span>+ Penugasan Armada</span>
-                        </button>
+                            <span>+ Kelola &amp; Sewa Armada</span>
+                        </Link>
                     </div>
                 </div>
 
-                {/* 2. 4 CORE KPI CARDS GRID */}
-                <KpiOverview />
+                {/* 2. 4 CORE KPI CARDS GRID (REAL DATA) */}
+                <KpiOverview stats={stats} />
 
-                {/* 3. TWO CORE PILLARS SPLIT SECTION */}
+                {/* 3. TWO CORE PILLARS SPLIT SECTION (REAL DATA) */}
                 <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 sm:gap-8 items-start">
                     {/* Left Pillar: Divisi Logistik (7 Cols) */}
                     <div className="xl:col-span-7">
-                        <FleetLogisticsPillar />
+                        <FleetLogisticsPillar dispatches={recentDispatches} stats={stats} />
                     </div>
 
                     {/* Right Pillar: Divisi Desain (5 Cols) */}
@@ -102,16 +92,16 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
-                {/* 4. FINANCIAL OVERVIEW & OPERATIONAL LOGS SPLIT SECTION */}
+                {/* 4. FINANCIAL OVERVIEW & OPERATIONAL LOGS SPLIT SECTION (REAL DATA) */}
                 <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 sm:gap-8 items-stretch">
                     {/* Financial Overview (7 Cols) */}
                     <div className="xl:col-span-7 flex">
-                        <FinancialOverview />
+                        <FinancialOverview stats={stats} />
                     </div>
 
                     {/* System Logs & Alerts (5 Cols) */}
                     <div className="xl:col-span-5 flex">
-                        <SystemLogsAlerts />
+                        <SystemLogsAlerts logs={recentLogs} />
                     </div>
                 </div>
             </div>
