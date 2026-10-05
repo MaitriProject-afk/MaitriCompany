@@ -26,7 +26,11 @@ class VehicleCategoryController extends Controller
             'icon' => ['nullable', 'string', 'max:50'],
         ]);
 
-        if (empty($validated['rental_price_per_hour']) && empty($validated['rental_price_per_day']) && empty($validated['rental_price_per_trip'])) {
+        $hasHour = isset($validated['rental_price_per_hour']) && $validated['rental_price_per_hour'] !== '' && $validated['rental_price_per_hour'] !== null;
+        $hasDay = isset($validated['rental_price_per_day']) && $validated['rental_price_per_day'] !== '' && $validated['rental_price_per_day'] !== null;
+        $hasTrip = isset($validated['rental_price_per_trip']) && $validated['rental_price_per_trip'] !== '' && $validated['rental_price_per_trip'] !== null;
+
+        if (! $hasHour && ! $hasDay && ! $hasTrip) {
             throw ValidationException::withMessages([
                 'rental_price_per_day' => 'Setidaknya tentukan salah satu tarif sewa (per jam, per hari, atau per trip).',
             ]);
@@ -35,9 +39,9 @@ class VehicleCategoryController extends Controller
         $category = VehicleCategory::create([
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
-            'rental_price_per_hour' => ! empty($validated['rental_price_per_hour']) ? $validated['rental_price_per_hour'] : null,
-            'rental_price_per_day' => ! empty($validated['rental_price_per_day']) ? $validated['rental_price_per_day'] : null,
-            'rental_price_per_trip' => ! empty($validated['rental_price_per_trip']) ? $validated['rental_price_per_trip'] : null,
+            'rental_price_per_hour' => $hasHour ? $validated['rental_price_per_hour'] : null,
+            'rental_price_per_day' => $hasDay ? $validated['rental_price_per_day'] : null,
+            'rental_price_per_trip' => $hasTrip ? $validated['rental_price_per_trip'] : null,
             'description' => $validated['description'] ?? null,
             'icon' => $validated['icon'] ?? 'local_shipping',
         ]);
@@ -59,7 +63,11 @@ class VehicleCategoryController extends Controller
             'icon' => ['nullable', 'string', 'max:50'],
         ]);
 
-        if (empty($validated['rental_price_per_hour']) && empty($validated['rental_price_per_day']) && empty($validated['rental_price_per_trip'])) {
+        $hasHour = isset($validated['rental_price_per_hour']) && $validated['rental_price_per_hour'] !== '' && $validated['rental_price_per_hour'] !== null;
+        $hasDay = isset($validated['rental_price_per_day']) && $validated['rental_price_per_day'] !== '' && $validated['rental_price_per_day'] !== null;
+        $hasTrip = isset($validated['rental_price_per_trip']) && $validated['rental_price_per_trip'] !== '' && $validated['rental_price_per_trip'] !== null;
+
+        if (! $hasHour && ! $hasDay && ! $hasTrip) {
             throw ValidationException::withMessages([
                 'rental_price_per_day' => 'Setidaknya tentukan salah satu tarif sewa (per jam, per hari, atau per trip).',
             ]);
@@ -68,9 +76,9 @@ class VehicleCategoryController extends Controller
         $category->update([
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
-            'rental_price_per_hour' => ! empty($validated['rental_price_per_hour']) ? $validated['rental_price_per_hour'] : null,
-            'rental_price_per_day' => ! empty($validated['rental_price_per_day']) ? $validated['rental_price_per_day'] : null,
-            'rental_price_per_trip' => ! empty($validated['rental_price_per_trip']) ? $validated['rental_price_per_trip'] : null,
+            'rental_price_per_hour' => $hasHour ? $validated['rental_price_per_hour'] : null,
+            'rental_price_per_day' => $hasDay ? $validated['rental_price_per_day'] : null,
+            'rental_price_per_trip' => $hasTrip ? $validated['rental_price_per_trip'] : null,
             'description' => $validated['description'] ?? null,
             'icon' => $validated['icon'] ?? $category->icon ?? 'local_shipping',
         ]);

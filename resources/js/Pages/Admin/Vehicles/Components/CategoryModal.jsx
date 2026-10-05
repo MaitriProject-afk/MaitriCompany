@@ -54,18 +54,19 @@ export default function CategoryModal({ isOpen, onClose, category = null }) {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-5 sm:p-6 border border-slate-200 my-8 space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-slate-950/60 backdrop-blur-xs animate-fadeIn overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200/90 flex flex-col max-h-[92vh] sm:max-h-[88vh] overflow-hidden my-auto">
+                {/* Header (Pinned) */}
+                <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 bg-white shrink-0">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
                             <span className="material-symbols-outlined text-[22px]">category</span>
                         </div>
                         <div>
-                            <h3 className="text-base font-extrabold text-slate-900">
+                            <h3 className="text-base font-extrabold text-slate-900 leading-tight">
                                 {isEditing ? 'Edit Kategori & Tarif Rental' : 'Tambah Kategori Kendaraan Baru'}
                             </h3>
-                            <p className="text-xs text-slate-500">
+                            <p className="text-xs text-slate-500 mt-0.5">
                                 Konfigurasi jenis armada hauling dan tarif sewa fleksibel
                             </p>
                         </div>
@@ -73,13 +74,16 @@ export default function CategoryModal({ isOpen, onClose, category = null }) {
                     <button
                         type="button"
                         onClick={onClose}
-                        className="text-slate-400 hover:text-slate-700 p-1 rounded-lg cursor-pointer"
+                        className="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-1.5 rounded-xl cursor-pointer transition-colors"
+                        title="Tutup Modal"
                     >
                         <span className="material-symbols-outlined text-[20px]">close</span>
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+                    {/* Scrollable Form Body */}
+                    <div className="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1 min-h-0">
                     {/* Category Name */}
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-slate-800">
@@ -126,7 +130,7 @@ export default function CategoryModal({ isOpen, onClose, category = null }) {
                                     <input
                                         type="number"
                                         min="0"
-                                        step="1000"
+                                        step="any"
                                         value={data.rental_price_per_hour}
                                         onChange={(e) => setData('rental_price_per_hour', e.target.value)}
                                         placeholder="Kosongkan jika tidak disewakan per jam"
@@ -149,7 +153,7 @@ export default function CategoryModal({ isOpen, onClose, category = null }) {
                                     <input
                                         type="number"
                                         min="0"
-                                        step="10000"
+                                        step="any"
                                         value={data.rental_price_per_day}
                                         onChange={(e) => setData('rental_price_per_day', e.target.value)}
                                         placeholder="Kosongkan jika tidak disewakan per hari"
@@ -172,7 +176,7 @@ export default function CategoryModal({ isOpen, onClose, category = null }) {
                                     <input
                                         type="number"
                                         min="0"
-                                        step="10000"
+                                        step="any"
                                         value={data.rental_price_per_trip}
                                         onChange={(e) => setData('rental_price_per_trip', e.target.value)}
                                         placeholder="Kosongkan jika tidak disewakan per trip"
@@ -233,8 +237,10 @@ export default function CategoryModal({ isOpen, onClose, category = null }) {
                         )}
                     </div>
 
-                    {/* Footer Buttons */}
-                    <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+                    </div>
+
+                    {/* Footer Buttons (Pinned) */}
+                    <div className="flex items-center justify-end gap-2.5 px-5 sm:px-6 py-3.5 sm:py-4 border-t border-slate-100 bg-slate-50/95 rounded-b-2xl shrink-0">
                         <button
                             type="button"
                             onClick={onClose}
@@ -245,7 +251,7 @@ export default function CategoryModal({ isOpen, onClose, category = null }) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold transition-all shadow-sm shadow-brand-600/30 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                            className="px-4.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold transition-all shadow-sm shadow-brand-600/30 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                         >
                             {processing && <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>}
                             <span>{isEditing ? 'Simpan Perubahan' : 'Tambah Kategori'}</span>

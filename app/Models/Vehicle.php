@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable(['vehicle_category_id', 'name', 'plate_number', 'capacity', 'status', 'year', 'notes'])]
 class Vehicle extends Model
@@ -50,5 +52,21 @@ class Vehicle extends Model
         return $this->belongsToMany(User::class, 'vehicle_user')
             ->withPivot('role_note')
             ->withTimestamps();
+    }
+
+    /**
+     * All rental records for this vehicle.
+     */
+    public function rentals(): HasMany
+    {
+        return $this->hasMany(VehicleRental::class);
+    }
+
+    /**
+     * The currently active rental record.
+     */
+    public function activeRental(): HasOne
+    {
+        return $this->hasOne(VehicleRental::class)->where('status', VehicleRental::STATUS_ACTIVE)->latestOfMany();
     }
 }

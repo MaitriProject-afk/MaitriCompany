@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VehicleCategoryController;
 use App\Http\Controllers\Admin\VehicleController;
+use App\Http\Controllers\Admin\VehicleRentalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VehicleRentalMouController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +18,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+// Public Official Truck Rental MoU Contract
+Route::get('/mou/{code}', [VehicleRentalMouController::class, 'show'])->name('rentals.mou');
 
 Route::get('/dashboard', function () {
     $role = auth()->user()->role ?? 'warga';
@@ -41,11 +46,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
     Route::put('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
     Route::delete('/vehicles/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
+    Route::post('/vehicles/{vehicle}/complete-maintenance', [VehicleController::class, 'completeMaintenance'])->name('vehicles.complete-maintenance');
 
     // Vehicle Category & Rental Pricing
     Route::post('/vehicle-categories', [VehicleCategoryController::class, 'store'])->name('vehicle-categories.store');
     Route::put('/vehicle-categories/{category}', [VehicleCategoryController::class, 'update'])->name('vehicle-categories.update');
     Route::delete('/vehicle-categories/{category}', [VehicleCategoryController::class, 'destroy'])->name('vehicle-categories.destroy');
+
+    // Vehicle Rentals & Dispatch
+    Route::post('/rentals', [VehicleRentalController::class, 'store'])->name('rentals.store');
+    Route::post('/rentals/{rental}/return', [VehicleRentalController::class, 'processReturn'])->name('rentals.return');
 });
 
 // Protected Staff Routes

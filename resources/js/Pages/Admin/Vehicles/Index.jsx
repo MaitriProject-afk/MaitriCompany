@@ -3,11 +3,23 @@ import { Head, router, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import VehicleModal from './Components/VehicleModal';
 import CategoryModal from './Components/CategoryModal';
+import RentalModal from './Components/RentalModal';
+import ReturnModal from './Components/ReturnModal';
+import CompleteMaintenanceModal from './Components/CompleteMaintenanceModal';
+import RentalsTab from './Components/RentalsTab';
 
-export default function VehiclesIndex({ vehicles = [], categories = [], availableUsers = [], filters = {}, stats = {} }) {
+export default function VehiclesIndex({
+    vehicles = [],
+    categories = [],
+    availableUsers = [],
+    availableVehiclesForRent = [],
+    rentals = [],
+    filters = {},
+    stats = {},
+}) {
     const { flash } = usePage().props;
 
-    const [activeTab, setActiveTab] = useState('vehicles'); // 'vehicles' | 'categories'
+    const [activeTab, setActiveTab] = useState('vehicles'); // 'vehicles' | 'rentals' | 'categories'
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState(filters.category || '');
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(filters.status || '');
@@ -15,6 +27,9 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
     // Modal states
     const [vehicleModal, setVehicleModal] = useState({ isOpen: false, vehicle: null });
     const [categoryModal, setCategoryModal] = useState({ isOpen: false, category: null });
+    const [rentalModalOpen, setRentalModalOpen] = useState(false);
+    const [returnModal, setReturnModal] = useState({ isOpen: false, rental: null });
+    const [maintenanceModal, setMaintenanceModal] = useState({ isOpen: false, vehicle: null });
     const [deleteModal, setDeleteModal] = useState({ isOpen: false, type: '', item: null });
 
     const handleFilterSubmit = (e) => {
@@ -142,10 +157,18 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                         <button
                             type="button"
                             onClick={() => setVehicleModal({ isOpen: true, vehicle: null })}
-                            className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold transition-all shadow-sm shadow-brand-600/30 flex items-center gap-1.5 cursor-pointer"
+                            className="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-300/80 cursor-pointer"
                         >
-                            <span className="material-symbols-outlined text-[18px]">add_circle</span>
+                            <span className="material-symbols-outlined text-[18px] text-slate-600">add_circle</span>
                             <span>+ Tambah Unit Kendaraan</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setRentalModalOpen(true)}
+                            className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm shadow-emerald-600/30 flex items-center gap-1.5 cursor-pointer"
+                        >
+                            <span className="material-symbols-outlined text-[18px]">key</span>
+                            <span>+ Sewa Truk Baru</span>
                         </button>
                     </div>
                 </div>
@@ -165,13 +188,13 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                 )}
 
                 {/* 3. METRIC STATS TILES */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
                     <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
                             <span className="material-symbols-outlined text-[22px]">local_shipping</span>
                         </div>
                         <div>
-                            <div className="text-xl font-black text-slate-900 leading-none">{stats.total || 0}</div>
+                            <div className="text-xl font-black text-slate-900 leading-none">{stats.total ?? 0}</div>
                             <div className="text-[11px] text-slate-500 font-medium mt-1">Total Unit</div>
                         </div>
                     </div>
@@ -181,18 +204,42 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                             <span className="material-symbols-outlined text-[22px]">check_circle</span>
                         </div>
                         <div>
-                            <div className="text-xl font-black text-emerald-700 leading-none">{stats.available || 0}</div>
+                            <div className="text-xl font-black text-emerald-700 leading-none">{stats.available ?? stats.tersedia ?? 0}</div>
                             <div className="text-[11px] text-slate-500 font-medium mt-1">Unit Tersedia</div>
                         </div>
                     </div>
 
-                    <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
+                    <div
+                        onClick={() => setActiveTab('rentals')}
+                        className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3 cursor-pointer hover:border-blue-300 transition-colors"
+                    >
                         <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
                             <span className="material-symbols-outlined text-[22px]">key</span>
                         </div>
                         <div>
-                            <div className="text-xl font-black text-blue-700 leading-none">{stats.rented || 0}</div>
+                            <div className="text-xl font-black text-blue-700 leading-none">{stats.rented ?? stats.disewa ?? stats.active_rentals ?? 0}</div>
                             <div className="text-[11px] text-slate-500 font-medium mt-1">Sedang Disewa</div>
+                        </div>
+                    </div>
+
+                    <div
+                        onClick={() => setActiveTab('rentals')}
+                        className={`p-4 rounded-2xl border shadow-xs flex items-center gap-3 cursor-pointer transition-colors ${
+                            (stats.overdue_rentals || 0) > 0
+                                ? 'bg-rose-50/70 border-rose-200 hover:border-rose-400'
+                                : 'bg-white border-slate-200/80 hover:border-slate-300'
+                        }`}
+                    >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                            (stats.overdue_rentals || 0) > 0 ? 'bg-rose-100 text-rose-700 animate-pulse' : 'bg-slate-100 text-slate-500'
+                        }`}>
+                            <span className="material-symbols-outlined text-[22px]">alarm</span>
+                        </div>
+                        <div>
+                            <div className={`text-xl font-black leading-none ${
+                                (stats.overdue_rentals || 0) > 0 ? 'text-rose-700' : 'text-slate-900'
+                            }`}>{stats.overdue_rentals ?? 0}</div>
+                            <div className="text-[11px] text-slate-500 font-medium mt-1">Rental Telat</div>
                         </div>
                     </div>
 
@@ -201,24 +248,24 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                             <span className="material-symbols-outlined text-[22px]">build</span>
                         </div>
                         <div>
-                            <div className="text-xl font-black text-amber-800 leading-none">{stats.maintenance || 0}</div>
+                            <div className="text-xl font-black text-amber-800 leading-none">{stats.maintenance ?? stats.perawatan ?? 0}</div>
                             <div className="text-[11px] text-slate-500 font-medium mt-1">Perawatan</div>
                         </div>
                     </div>
 
-                    <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3 col-span-2 md:col-span-1">
+                    <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
                             <span className="material-symbols-outlined text-[22px]">category</span>
                         </div>
                         <div>
-                            <div className="text-xl font-black text-purple-700 leading-none">{stats.categories_count || 0}</div>
+                            <div className="text-xl font-black text-purple-700 leading-none">{stats.categories_count ?? stats.total_categories ?? 0}</div>
                             <div className="text-[11px] text-slate-500 font-medium mt-1">Kategori Armada</div>
                         </div>
                     </div>
                 </div>
 
                 {/* 4. MAIN NAVIGATION TABS */}
-                <div className="flex items-center gap-2 border-b border-slate-200">
+                <div className="flex flex-wrap items-center gap-2 border-b border-slate-200">
                     <button
                         type="button"
                         onClick={() => setActiveTab('vehicles')}
@@ -229,7 +276,25 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                         }`}
                     >
                         <span className="material-symbols-outlined text-[18px]">rv_hookup</span>
-                        <span>Daftar Unit Armada Hauling ({vehicles.length})</span>
+                        <span>Daftar Unit Armada ({vehicles.length})</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => setActiveTab('rentals')}
+                        className={`pb-3.5 px-4 text-xs font-extrabold flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+                            activeTab === 'rentals'
+                                ? 'border-brand-600 text-brand-700'
+                                : 'border-transparent text-slate-500 hover:text-slate-900'
+                        }`}
+                    >
+                        <span className="material-symbols-outlined text-[18px]">car_rental</span>
+                        <span>Sewa &amp; Monitoring Rental ({rentals.filter(r => r.status === 'active').length})</span>
+                        {(stats.overdue_rentals || 0) > 0 && (
+                            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-rose-500 text-white font-black animate-pulse">
+                                {stats.overdue_rentals} Telat
+                            </span>
+                        )}
                     </button>
 
                     <button
@@ -392,25 +457,25 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                                                             {v.category?.name || 'Tanpa Kategori'}
                                                         </span>
                                                         <div className="flex flex-col gap-0.5 mt-1 text-[11px] font-semibold text-slate-700">
-                                                            {v.category?.rental_price_per_hour && (
+                                                            {v.category?.rental_price_per_hour !== null && v.category?.rental_price_per_hour !== undefined && (
                                                                 <span>
                                                                     Rp {Number(v.category.rental_price_per_hour).toLocaleString('id-ID')}
                                                                     <span className="text-slate-400 font-normal"> / jam</span>
                                                                 </span>
                                                             )}
-                                                            {v.category?.rental_price_per_day && (
+                                                            {v.category?.rental_price_per_day !== null && v.category?.rental_price_per_day !== undefined && (
                                                                 <span>
                                                                     Rp {Number(v.category.rental_price_per_day).toLocaleString('id-ID')}
                                                                     <span className="text-slate-400 font-normal"> / hari</span>
                                                                 </span>
                                                             )}
-                                                            {v.category?.rental_price_per_trip && (
+                                                            {v.category?.rental_price_per_trip !== null && v.category?.rental_price_per_trip !== undefined && (
                                                                 <span>
                                                                     Rp {Number(v.category.rental_price_per_trip).toLocaleString('id-ID')}
                                                                     <span className="text-slate-400 font-normal"> / trip</span>
                                                                 </span>
                                                             )}
-                                                            {!v.category?.rental_price_per_hour && !v.category?.rental_price_per_day && !v.category?.rental_price_per_trip && (
+                                                            {v.category && v.category.rental_price_per_hour === null && v.category.rental_price_per_day === null && v.category.rental_price_per_trip === null && (
                                                                 <span className="text-slate-400 italic">Tarif belum diatur</span>
                                                             )}
                                                         </div>
@@ -451,12 +516,37 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
 
                                                 {/* Status */}
                                                 <td className="px-4 py-3.5">
-                                                    {getStatusBadge(v.status)}
+                                                    {v.status === 'perawatan' ? (
+                                                        <div className="flex flex-col gap-1.5 items-start">
+                                                            {getStatusBadge(v.status)}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setMaintenanceModal({ isOpen: true, vehicle: v })}
+                                                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-extrabold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition-colors shadow-2xs cursor-pointer"
+                                                                title="Tandai perbaikan selesai & aktifkan unit kembali"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[13px]">check_circle</span>
+                                                                <span>Selesai Servis</span>
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        getStatusBadge(v.status)
+                                                    )}
                                                 </td>
 
                                                 {/* Actions */}
                                                 <td className="px-4 py-3.5 text-right">
                                                     <div className="inline-flex items-center gap-1">
+                                                        {v.status === 'perawatan' && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setMaintenanceModal({ isOpen: true, vehicle: v })}
+                                                                title="Tandai Selesai Perbaikan & Siap Disewakan"
+                                                                className="p-1.5 rounded-lg text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors cursor-pointer"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[18px]">build_circle</span>
+                                                            </button>
+                                                        )}
                                                         <button
                                                             type="button"
                                                             onClick={() => setVehicleModal({ isOpen: true, vehicle: v })}
@@ -484,7 +574,18 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                     </div>
                 )}
 
-                {/* 6. TAB 2: CATEGORIES & RENTAL PRICING */}
+                {/* 5.5 TAB 2: ACTIVE RENTALS & MONITORING */}
+                {activeTab === 'rentals' && (
+                    <RentalsTab
+                        rentals={rentals}
+                        onOpenRentalModal={() => setRentalModalOpen(true)}
+                        onOpenReturnModal={(rental) => setReturnModal({ isOpen: true, rental })}
+                        onProcessReturn={(rental) => setReturnModal({ isOpen: true, rental })}
+                        onCompleteMaintenance={(vehicle) => setMaintenanceModal({ isOpen: true, vehicle })}
+                    />
+                )}
+
+                {/* 6. TAB 3: CATEGORIES & RENTAL PRICING */}
                 {activeTab === 'categories' && (
                     <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xs border border-slate-200/80 space-y-4">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
@@ -562,8 +663,8 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                                                     <span className="material-symbols-outlined text-[13px] text-slate-400">schedule</span>
                                                     <span>Per Jam</span>
                                                 </span>
-                                                <span className={`text-[11px] ${cat.rental_price_per_hour ? 'font-bold text-slate-900' : 'text-slate-400 italic'}`}>
-                                                    {cat.rental_price_per_hour ? `Rp ${Number(cat.rental_price_per_hour).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
+                                                <span className={`text-[11px] ${cat.rental_price_per_hour !== null && cat.rental_price_per_hour !== undefined ? 'font-bold text-slate-900' : 'text-slate-400 italic'}`}>
+                                                    {cat.rental_price_per_hour !== null && cat.rental_price_per_hour !== undefined ? `Rp ${Number(cat.rental_price_per_hour).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between">
@@ -571,8 +672,8 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                                                     <span className="material-symbols-outlined text-[13px] text-slate-400">today</span>
                                                     <span>Per Hari</span>
                                                 </span>
-                                                <span className={`text-[11px] ${cat.rental_price_per_day ? 'font-bold text-slate-900' : 'text-slate-400 italic'}`}>
-                                                    {cat.rental_price_per_day ? `Rp ${Number(cat.rental_price_per_day).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
+                                                <span className={`text-[11px] ${cat.rental_price_per_day !== null && cat.rental_price_per_day !== undefined ? 'font-bold text-slate-900' : 'text-slate-400 italic'}`}>
+                                                    {cat.rental_price_per_day !== null && cat.rental_price_per_day !== undefined ? `Rp ${Number(cat.rental_price_per_day).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between">
@@ -580,8 +681,8 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                                                     <span className="material-symbols-outlined text-[13px] text-slate-400">route</span>
                                                     <span>Per Trip</span>
                                                 </span>
-                                                <span className={`text-[11px] ${cat.rental_price_per_trip ? 'font-black text-brand-700' : 'text-slate-400 italic'}`}>
-                                                    {cat.rental_price_per_trip ? `Rp ${Number(cat.rental_price_per_trip).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
+                                                <span className={`text-[11px] ${cat.rental_price_per_trip !== null && cat.rental_price_per_trip !== undefined ? 'font-black text-brand-700' : 'text-slate-400 italic'}`}>
+                                                    {cat.rental_price_per_trip !== null && cat.rental_price_per_trip !== undefined ? `Rp ${Number(cat.rental_price_per_trip).toLocaleString('id-ID')}` : 'Tidak aktif (null)'}
                                                 </span>
                                             </div>
                                         </div>
@@ -622,6 +723,24 @@ export default function VehiclesIndex({ vehicles = [], categories = [], availabl
                 isOpen={categoryModal.isOpen}
                 onClose={() => setCategoryModal({ isOpen: false, category: null })}
                 category={categoryModal.category}
+            />
+
+            <RentalModal
+                isOpen={rentalModalOpen}
+                onClose={() => setRentalModalOpen(false)}
+                availableVehicles={availableVehiclesForRent}
+            />
+
+            <ReturnModal
+                isOpen={returnModal.isOpen}
+                onClose={() => setReturnModal({ isOpen: false, rental: null })}
+                rental={returnModal.rental}
+            />
+
+            <CompleteMaintenanceModal
+                isOpen={maintenanceModal.isOpen}
+                onClose={() => setMaintenanceModal({ isOpen: false, vehicle: null })}
+                vehicle={maintenanceModal.vehicle}
             />
 
             {/* DELETE CONFIRMATION MODAL */}

@@ -44,6 +44,13 @@ class AdminVehicleManagementTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/vehicles');
 
         $response->assertStatus(200);
+        $response->assertInertia(fn ($page) => $page
+            ->component('Admin/Vehicles/Index')
+            ->has('stats.total')
+            ->has('stats.available')
+            ->has('stats.maintenance')
+            ->has('stats.categories_count')
+        );
     }
 
     public function test_admin_can_create_vehicle_category_with_only_per_trip_pricing(): void
@@ -259,5 +266,34 @@ class AdminVehicleManagementTest extends TestCase
         $this->assertDatabaseMissing('vehicles', [
             'id' => $vehicle->id,
         ]);
+    }
+
+    public function test_admin_can_complete_vehicle_maintenance(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $category = VehicleCategory::create([
+            'name' => 'Pickup Truck',
+            'rental_price_per_day' => 600000,
+        ]);
+
+        $vehicle = Vehicle::create([
+            'vehicle_category_id' => $category->id,
+            'name' => 'Burrito Maintenance Unit',
+            'plate_number' => 'MA-777-BRT',
+            'status' => Vehicle::STATUS_MAINTENANCE,
+            'notes' => '[INSIDEN] Unit rusak tabrakan saat sewa.',
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/vehicles/{$vehicle->id}/complete-maintenance", [
+            'maintenance_notes' => 'Mesin & bumper sudah selesai diganti di mechanic Palomino.',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $vehicle->refresh();
+        $this->assertEquals(Vehicle::STATUS_AVAILABLE, $vehicle->status);
+        $this->assertStringContainsString('SELESAI PERAWATAN', $vehicle->notes);
+        $this->assertStringContainsString('Mesin & bumper sudah selesai diganti', $vehicle->notes);
     }
 }
