@@ -21,7 +21,7 @@ export default function AdminLayout({ children, activeMenu = 'overview' }) {
         {
             section: 'Finance & Governance',
             items: [
-                { id: 'keuangan', label: 'Keuangan & Invoice', icon: 'receipt_long', href: '#keuangan' },
+                { id: 'keuangan', label: 'Keuangan & Invoice', icon: 'receipt_long', href: route('admin.finance.index') },
                 { id: 'users', label: 'Manajemen Pengguna & Role', icon: 'manage_accounts', href: route('admin.users.index') },
                 { id: 'sistem', label: 'Pengaturan & Log Sistem', icon: 'settings_account_box', href: '#sistem' },
             ],

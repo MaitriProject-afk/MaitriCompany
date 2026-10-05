@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role', 'position'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -62,6 +62,26 @@ class User extends Authenticatable
     public function isWarga(): bool
     {
         return $this->role === self::ROLE_WARGA;
+    }
+
+    /**
+     * Get real or default position title for the user.
+     */
+    public function getPositionTitle(): ?string
+    {
+        if (! empty($this->position)) {
+            return $this->position;
+        }
+
+        if ($this->isAdmin()) {
+            return 'Chief Executive Officer';
+        }
+
+        if ($this->isStaff()) {
+            return 'Fleet Operations Manager';
+        }
+
+        return null;
     }
 
     /**

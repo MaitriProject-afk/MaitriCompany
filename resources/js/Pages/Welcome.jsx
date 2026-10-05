@@ -1,48 +1,47 @@
 import { Head, Link } from '@inertiajs/react';
 import { useState, useMemo, useEffect } from 'react';
 
-const TRUCK_TYPES = [
+const DEFAULT_VEHICLE_CATEGORIES = [
     {
-        id: 'wingbox',
-        name: 'Tronton Wingbox',
-        capacity: 'Kapasitas 20 Ton / 45 m³',
-        basePrice: 4500000,
-        fullName: 'Tronton Wingbox (45 m³ / 20 Ton)',
+        id: 1,
+        name: 'Pickup Truck',
+        slug: 'pickup-truck',
+        description: 'Kendaraan bak terbuka muatan ringan s.d 1.5 ton untuk mobilitas cepat perkotaan.',
+        rental_price_per_hour: 120000,
+        rental_price_per_day: 850000,
+        rental_price_per_trip: 500000,
+        icon: 'local_shipping',
     },
     {
-        id: 'trailer',
-        name: 'Trailer 40ft',
-        capacity: 'Container / Flatbed 32 Ton',
-        basePrice: 5500000,
-        fullName: 'Trailer 40ft (Container / Flatbed)',
+        id: 2,
+        name: 'Lorry',
+        slug: 'lorry',
+        description: 'Truk medium cargo muatan hingga 5-8 ton lintas rute San Andreas.',
+        rental_price_per_hour: null,
+        rental_price_per_day: 1750000,
+        rental_price_per_trip: 1200000,
+        icon: 'rv_hookup',
     },
     {
-        id: 'reefer',
-        name: 'Box Reefer Dingin',
-        capacity: 'Frozen Food / Makanan Segar',
-        basePrice: 4800000,
-        fullName: 'Box Pendingin / Reefer (-20°C)',
+        id: 3,
+        name: 'Box Car',
+        slug: 'box-car',
+        description: 'Truk tertutup boks tahan cuaca muatan 10-15 ton untuk logistik kargo.',
+        rental_price_per_hour: null,
+        rental_price_per_day: 2400000,
+        rental_price_per_trip: 1800000,
+        icon: 'inventory_2',
     },
     {
-        id: 'cdd',
-        name: 'Engkel CDD Long',
-        capacity: 'Kapasitas 5 Ton / Distribusi Kota',
-        basePrice: 2200000,
-        fullName: 'Engkel CDD Long Box (5 Ton)',
+        id: 4,
+        name: 'Heavy Truck',
+        slug: 'heavy-truck',
+        description: 'Truk berat tronton wingbox & trailer multi-axle muatan 25-35 ton (Roadtrain / Linerunner).',
+        rental_price_per_hour: 150000,
+        rental_price_per_day: 1200000,
+        rental_price_per_trip: 500000,
+        icon: 'local_shipping',
     },
-];
-
-const ROUTE_OPTIONS = [
-    { value: '1.0', label: 'Jabodetabek & Sekitarnya' },
-    { value: '1.6', label: 'Jawa - Bali (Lintas Jalur Tol)' },
-    { value: '2.3', label: 'Trans Sumatra Koridor' },
-    { value: '3.1', label: 'Antar Pulau Luar Jawa' },
-];
-
-const DURATION_OPTIONS = [
-    { value: 'trip', label: 'Per Trip / Harian' },
-    { value: 'bulan', label: 'Sewa Bulanan (Hemat 15%)' },
-    { value: 'tahun', label: 'Kontrak Tahunan Terpadu' },
 ];
 
 const SPACE_TYPES = [
@@ -82,7 +81,7 @@ const INTERIOR_PACKAGES = [
     { value: 'build', label: 'Paket Design & Build (All-In dari Gambar hingga Jadi)' },
 ];
 
-export default function Welcome({ auth, canLogin, canRegister }) {
+export default function Welcome({ auth, canLogin, canRegister, vehicleCategories = [] }) {
     // Tab State
     const [calcTab, setCalcTab] = useState('truk');
 
@@ -98,12 +97,37 @@ export default function Welcome({ auth, canLogin, canRegister }) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Dynamic Categories from database or fallback defaults
+    const categories = useMemo(() => {
+        if (vehicleCategories && vehicleCategories.length > 0) {
+            return vehicleCategories;
+        }
+        return DEFAULT_VEHICLE_CATEGORIES;
+    }, [vehicleCategories]);
+
     // Truck Calculator State
-    const [selectedTruck, setSelectedTruck] = useState(TRUCK_TYPES[0]);
-    const [selectedRoute, setSelectedRoute] = useState(ROUTE_OPTIONS[1].value);
-    const [selectedDuration, setSelectedDuration] = useState(DURATION_OPTIONS[1].value);
-    const [trukNama, setTrukNama] = useState('');
-    const [trukWa, setTrukWa] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState(categories[0] || DEFAULT_VEHICLE_CATEGORIES[0]);
+    const [selectedRentalType, setSelectedRentalType] = useState('jam');
+    const [duration, setDuration] = useState(1);
+
+    // Auto switch rental type if the selected category does not offer it
+    useEffect(() => {
+        if (!selectedCategory) return;
+        const hasHour = selectedCategory.rental_price_per_hour !== null && Number(selectedCategory.rental_price_per_hour) > 0;
+        const hasDay = selectedCategory.rental_price_per_day !== null && Number(selectedCategory.rental_price_per_day) > 0;
+        const hasTrip = selectedCategory.rental_price_per_trip !== null && Number(selectedCategory.rental_price_per_trip) > 0;
+
+        if (selectedRentalType === 'jam' && !hasHour) {
+            if (hasDay) setSelectedRentalType('hari');
+            else if (hasTrip) setSelectedRentalType('trip');
+        } else if (selectedRentalType === 'hari' && !hasDay) {
+            if (hasHour) setSelectedRentalType('jam');
+            else if (hasTrip) setSelectedRentalType('trip');
+        } else if (selectedRentalType === 'trip' && !hasTrip) {
+            if (hasHour) setSelectedRentalType('jam');
+            else if (hasDay) setSelectedRentalType('hari');
+        }
+    }, [selectedCategory, selectedRentalType]);
 
     // Interior Calculator State
     const [selectedSpace, setSelectedSpace] = useState(SPACE_TYPES[0]);
@@ -112,64 +136,44 @@ export default function Welcome({ auth, canLogin, canRegister }) {
     const [interiorNama, setInteriorNama] = useState('');
     const [interiorWa, setInteriorWa] = useState('');
 
-    // Calculations: Truck
+    // Calculations: Truck Rates
     const truckCalculation = useMemo(() => {
-        const ruteVal = parseFloat(selectedRoute);
-        let finalPrice = 0;
-        let note = '';
-
-        if (selectedDuration === 'trip') {
-            finalPrice = selectedTruck.basePrice * ruteVal;
-            note = 'Estimasi per 1 trip perjalanan (termasuk tol & sopir).';
-        } else if (selectedDuration === 'bulan') {
-            finalPrice = selectedTruck.basePrice * 6.5 * (ruteVal * 0.9);
-            note = 'Estimasi sewa bulanan, sudah termasuk diskon kontrak 15% & servis.';
-        } else {
-            finalPrice = selectedTruck.basePrice * 70 * (ruteVal * 0.85);
-            note = 'Kontrak tahunan terpadu dengan SLA armada pengganti 24 jam.';
+        if (!selectedCategory) {
+            return {
+                unitRate: 0,
+                unitLabel: 'Jam',
+                safeDuration: 1,
+                total: 0,
+                totalFormatted: 'Rp 0',
+                rateFormatted: 'Rp 0',
+            };
         }
 
-        return {
-            totalFormatted: 'Rp ' + Math.round(finalPrice).toLocaleString('id-ID'),
-            note,
-        };
-    }, [selectedTruck, selectedRoute, selectedDuration]);
-
-    // Calculations: Interior
-    const interiorCalculation = useMemo(() => {
-        let baseM2 = 280000;
-        let waktuText = '3 - 4 Minggu';
-
-        if (interiorPaket === 'konsep') {
-            baseM2 = 150000;
-            waktuText = '1 - 2 Minggu';
-        } else if (interiorPaket === 'build') {
-            baseM2 = 3500000;
-            waktuText = '6 - 10 Minggu';
-        } else {
-            baseM2 = 280000;
-            waktuText = interiorLuas > 300 ? '4 - 6 Minggu' : '3 - 4 Minggu';
+        let unitRate = 0;
+        let unitLabel = 'Jam';
+        if (selectedRentalType === 'jam') {
+            unitRate = Number(selectedCategory.rental_price_per_hour) || 0;
+            unitLabel = 'Jam';
+        } else if (selectedRentalType === 'hari') {
+            unitRate = Number(selectedCategory.rental_price_per_day) || 0;
+            unitLabel = 'Hari';
+        } else if (selectedRentalType === 'trip') {
+            unitRate = Number(selectedCategory.rental_price_per_trip) || 0;
+            unitLabel = 'Trip';
         }
 
-        const total = interiorLuas * baseM2 * selectedSpace.multiplier;
+        const safeDuration = Math.max(1, parseInt(duration, 10) || 1);
+        const total = unitRate * safeDuration;
 
         return {
+            unitRate,
+            unitLabel,
+            safeDuration,
+            total,
             totalFormatted: 'Rp ' + Math.round(total).toLocaleString('id-ID'),
-            waktuText,
+            rateFormatted: 'Rp ' + Math.round(unitRate).toLocaleString('id-ID'),
         };
-    }, [selectedSpace, interiorLuas, interiorPaket]);
-
-    // WhatsApp Dispatch Handlers
-    const handleSendTruckWA = (e) => {
-        e.preventDefault();
-        const nama = trukNama.trim() || 'Calon Klien';
-        const wa = trukWa.trim() || '-';
-        const ruteObj = ROUTE_OPTIONS.find((r) => r.value === selectedRoute);
-        const durasiObj = DURATION_OPTIONS.find((d) => d.value === selectedDuration);
-
-        const message = `Halo Maitri Company, saya ingin pesan/sewa truk:\n\n- Nama: ${nama}\n- WhatsApp: ${wa}\n- Jenis Unit: ${selectedTruck.fullName}\n- Rute: ${ruteObj?.label || selectedRoute}\n- Durasi: ${durasiObj?.label || selectedDuration}\n- Estimasi Web: ${truckCalculation.totalFormatted}\n\nMohon informasi ketersediaan unit dan jadwalnya. Terima kasih.`;
-        window.open(`https://wa.me/628119000123?text=${encodeURIComponent(message)}`, '_blank');
-    };
+    }, [selectedCategory, selectedRentalType, duration]);
 
     const handleSendInteriorWA = (e) => {
         e.preventDefault();
@@ -544,7 +548,7 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                                     <div className="flex items-center gap-2 text-slate-300">
                                         <span className="material-symbols-outlined text-cyan-400 text-[18px]">verified</span>
                                         <span className="font-semibold text-slate-200">
-                                            PT Maitri Perkasa Indonesia • Solusi Logistik &amp; Desain Terintegrasi
+                                            Maitri Company • Solusi Logistik &amp; Desain Terintegrasi
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3 text-slate-400 text-[11px]">
@@ -802,13 +806,13 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center max-w-2xl mx-auto mb-8">
                             <span className="text-xs font-bold text-brand-600 uppercase tracking-widest bg-blue-100/70 px-3 py-1 rounded-full border border-blue-200">
-                                Estimasi Instan &amp; Pemesanan Cepat
+                                Simulasi Tarif Resmi &amp; Transparan
                             </span>
                             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
-                                Kalkulator Biaya &amp; Formulir Booking
+                                Kalkulator &amp; Cek Tarif Sewa Armada
                             </h2>
                             <p className="text-slate-600 text-sm mt-1">
-                                Dapatkan simulasi biaya transparan hanya dalam hitungan detik dan hubungkan langsung dengan tim operasional Maitri Company.
+                                Cek simulasi tarif sewa unit truk niaga dan estimasi biaya operasional berdasarkan kategori armada serta durasi kebutuhan Anda.
                             </p>
                         </div>
 
@@ -818,19 +822,19 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                                 <button
                                     type="button"
                                     onClick={() => setCalcTab('truk')}
-                                    className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
+                                    className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
                                         calcTab === 'truk'
                                             ? 'bg-brand-600 text-white shadow-xs'
                                             : 'text-slate-600 hover:text-slate-900'
                                     }`}
                                 >
                                     <span className="material-symbols-outlined text-[18px]">local_shipping</span>
-                                    <span>Pesan / Sewa Truk</span>
+                                    <span>Simulasi Sewa Truk</span>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setCalcTab('interior')}
-                                    className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
+                                    className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
                                         calcTab === 'interior'
                                             ? 'bg-brand-600 text-white shadow-xs'
                                             : 'text-slate-600 hover:text-slate-900'
@@ -844,41 +848,65 @@ export default function Welcome({ auth, canLogin, canRegister }) {
 
                         {/* CALCULATOR CARD CONTAINER */}
                         <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-6 sm:p-8">
-                            {/* MODULE 1: FORM SEWA TRUK */}
+                            {/* MODULE 1: SIMULATOR TARIF SEWA TRUK */}
                             {calcTab === 'truk' && (
                                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                                     <div className="lg:col-span-7 space-y-5">
                                         <div className="border-b border-slate-100 pb-3">
                                             <h3 className="text-lg font-bold text-slate-900">
-                                                Konfigurasi Sewa Armada Truk
+                                                Konfigurasi Kategori &amp; Durasi Sewa
                                             </h3>
                                             <p className="text-xs text-slate-500">
-                                                Pilih jenis unit armada, rute jangkauan pengiriman, dan skema durasi kebutuhan Anda.
+                                                Pilih jenis unit armada dan skema waktu sewa yang Anda inginkan untuk melihat kalkulasi biaya terbuka.
                                             </p>
                                         </div>
 
-                                        {/* Pilih Jenis Truk */}
+                                        {/* 1. Pilih Kategori Truk */}
                                         <div>
                                             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                                                Pilih Jenis Truk
+                                                Pilih Kategori Truk
                                             </label>
-                                            <div className="grid grid-cols-2 gap-2.5">
-                                                {TRUCK_TYPES.map((truck) => {
-                                                    const isSelected = selectedTruck.id === truck.id;
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                                {categories.map((cat) => {
+                                                    const isSelected = selectedCategory?.id === cat.id;
                                                     return (
                                                         <button
-                                                            key={truck.id}
+                                                            key={cat.id}
                                                             type="button"
-                                                            onClick={() => setSelectedTruck(truck)}
-                                                            className={`p-3 rounded-xl border text-left text-xs font-semibold transition-all ${
+                                                            onClick={() => setSelectedCategory(cat)}
+                                                            className={`p-3.5 rounded-xl border text-left text-xs font-semibold transition-all cursor-pointer ${
                                                                 isSelected
-                                                                    ? 'border-brand-600 bg-blue-50/70 text-brand-900'
-                                                                    : 'border-slate-200 hover:border-slate-300 text-slate-700 bg-white'
+                                                                    ? 'border-brand-600 bg-blue-50/70 text-brand-900 shadow-xs ring-1 ring-brand-500'
+                                                                    : 'border-slate-200 hover:border-slate-300 text-slate-700 bg-white hover:bg-slate-50/60'
                                                             }`}
                                                         >
-                                                            <div className="font-bold text-sm">{truck.name}</div>
-                                                            <div className="text-slate-500 text-[11px] mt-0.5">
-                                                                {truck.capacity}
+                                                            <div className="flex items-center justify-between mb-1">
+                                                                <span className="font-bold text-sm text-slate-900">
+                                                                    {cat.name}
+                                                                </span>
+                                                                <span className="material-symbols-outlined text-[18px] text-brand-600">
+                                                                    {cat.icon || 'local_shipping'}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-slate-500 text-[11px] line-clamp-2 leading-relaxed">
+                                                                {cat.description || 'Armada logistik & hauling resmi'}
+                                                            </div>
+                                                            <div className="mt-2 flex flex-wrap gap-1">
+                                                                {cat.rental_price_per_hour !== null && (
+                                                                    <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-100 text-brand-800">
+                                                                        Rp {Number(cat.rental_price_per_hour).toLocaleString('id-ID')}/jam
+                                                                    </span>
+                                                                )}
+                                                                {cat.rental_price_per_day !== null && (
+                                                                    <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800">
+                                                                        Rp {Number(cat.rental_price_per_day).toLocaleString('id-ID')}/hari
+                                                                    </span>
+                                                                )}
+                                                                {cat.rental_price_per_trip !== null && (
+                                                                    <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-100 text-amber-800">
+                                                                        Rp {Number(cat.rental_price_per_trip).toLocaleString('id-ID')}/trip
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                         </button>
                                                     );
@@ -886,126 +914,214 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                                             </div>
                                         </div>
 
-                                        {/* Rute dan Durasi Grid */}
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                                    Rute Pengiriman
-                                                </label>
-                                                <select
-                                                    value={selectedRoute}
-                                                    onChange={(e) => setSelectedRoute(e.target.value)}
-                                                    className="w-full text-sm rounded-lg border-slate-300 focus:border-brand-600 focus:ring-brand-600 bg-slate-50 p-2.5"
+                                        {/* 2. Pilih Skema Tarif Sewa */}
+                                        <div>
+                                            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                                Pilih Skema Tarif Sewa
+                                            </label>
+                                            <div className="grid grid-cols-3 gap-2">
+                                                {/* Opsi Per Jam */}
+                                                <button
+                                                    type="button"
+                                                    disabled={!selectedCategory?.rental_price_per_hour}
+                                                    onClick={() => setSelectedRentalType('jam')}
+                                                    className={`py-2.5 px-3 rounded-xl border text-center text-xs font-bold transition-all ${
+                                                        !selectedCategory?.rental_price_per_hour
+                                                            ? 'opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400'
+                                                            : selectedRentalType === 'jam'
+                                                            ? 'border-brand-600 bg-brand-600 text-white shadow-xs cursor-pointer'
+                                                            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer'
+                                                    }`}
                                                 >
-                                                    {ROUTE_OPTIONS.map((opt) => (
-                                                        <option key={opt.value} value={opt.value}>
-                                                            {opt.label}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                                    Skema Durasi Sewa
-                                                </label>
-                                                <select
-                                                    value={selectedDuration}
-                                                    onChange={(e) => setSelectedDuration(e.target.value)}
-                                                    className="w-full text-sm rounded-lg border-slate-300 focus:border-brand-600 focus:ring-brand-600 bg-slate-50 p-2.5"
+                                                    <span className="material-symbols-outlined text-[16px] block mb-0.5">schedule</span>
+                                                    <span>Per Jam</span>
+                                                </button>
+
+                                                {/* Opsi Per Hari */}
+                                                <button
+                                                    type="button"
+                                                    disabled={!selectedCategory?.rental_price_per_day}
+                                                    onClick={() => setSelectedRentalType('hari')}
+                                                    className={`py-2.5 px-3 rounded-xl border text-center text-xs font-bold transition-all ${
+                                                        !selectedCategory?.rental_price_per_day
+                                                            ? 'opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400'
+                                                            : selectedRentalType === 'hari'
+                                                            ? 'border-brand-600 bg-brand-600 text-white shadow-xs cursor-pointer'
+                                                            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer'
+                                                    }`}
                                                 >
-                                                    {DURATION_OPTIONS.map((opt) => (
-                                                        <option key={opt.value} value={opt.value}>
-                                                            {opt.label}
-                                                        </option>
-                                                    ))}
-                                                </select>
+                                                    <span className="material-symbols-outlined text-[16px] block mb-0.5">today</span>
+                                                    <span>Per Hari</span>
+                                                </button>
+
+                                                {/* Opsi Per Trip */}
+                                                <button
+                                                    type="button"
+                                                    disabled={!selectedCategory?.rental_price_per_trip}
+                                                    onClick={() => setSelectedRentalType('trip')}
+                                                    className={`py-2.5 px-3 rounded-xl border text-center text-xs font-bold transition-all ${
+                                                        !selectedCategory?.rental_price_per_trip
+                                                            ? 'opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400'
+                                                            : selectedRentalType === 'trip'
+                                                            ? 'border-brand-600 bg-brand-600 text-white shadow-xs cursor-pointer'
+                                                            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer'
+                                                    }`}
+                                                >
+                                                    <span className="material-symbols-outlined text-[16px] block mb-0.5">alt_route</span>
+                                                    <span>Per Trip</span>
+                                                </button>
                                             </div>
                                         </div>
 
-                                        {/* Kontak Cepat Nama & WhatsApp */}
-                                        <div className="pt-2 border-t border-slate-100">
-                                            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                                                Kontak Pemesan Cepat
-                                            </label>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                                <input
-                                                    type="text"
-                                                    value={trukNama}
-                                                    onChange={(e) => setTrukNama(e.target.value)}
-                                                    placeholder="Nama Anda / Perusahaan"
-                                                    className="text-sm rounded-lg border-slate-300 focus:border-brand-600 focus:ring-brand-600 p-2.5 border"
-                                                />
-                                                <input
-                                                    type="tel"
-                                                    value={trukWa}
-                                                    onChange={(e) => setTrukWa(e.target.value)}
-                                                    placeholder="Nomor WhatsApp (Contoh: 0812xxx)"
-                                                    className="text-sm rounded-lg border-slate-300 focus:border-brand-600 focus:ring-brand-600 p-2.5 border"
-                                                />
+                                        {/* 3. Tentukan Durasi Waktu Sewa */}
+                                        <div>
+                                            <div className="flex items-center justify-between mb-2">
+                                                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                                    Tentukan Jumlah Durasi ({truckCalculation.unitLabel})
+                                                </label>
+                                                <span className="text-xs text-brand-700 font-bold font-mono">
+                                                    {duration} {truckCalculation.unitLabel}
+                                                </span>
                                             </div>
+
+                                            {/* Quick Duration Buttons */}
+                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                {(selectedRentalType === 'jam'
+                                                    ? [1, 2, 3, 4, 6, 12, 24]
+                                                    : selectedRentalType === 'hari'
+                                                    ? [1, 2, 3, 7, 14, 30]
+                                                    : [1, 2, 3, 5, 10]
+                                                ).map((val) => (
+                                                    <button
+                                                        key={val}
+                                                        type="button"
+                                                        onClick={() => setDuration(val)}
+                                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                                            duration === val
+                                                                ? 'bg-slate-900 text-white shadow-2xs'
+                                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                        }`}
+                                                    >
+                                                        {val} {truckCalculation.unitLabel}
+                                                    </button>
+                                                ))}
+                                            </div>
+
+                                            {/* Stepper / Number Input */}
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setDuration(Math.max(1, duration - 1))}
+                                                        className="px-3 py-2 text-slate-600 hover:bg-slate-200 transition-colors font-bold text-sm cursor-pointer"
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <input
+                                                        type="number"
+                                                        min="1"
+                                                        max="100"
+                                                        value={duration}
+                                                        onChange={(e) => setDuration(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                                                        className="w-16 text-center border-none bg-transparent font-bold font-mono text-sm focus:ring-0 p-1"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setDuration(duration + 1)}
+                                                        className="px-3 py-2 text-slate-600 hover:bg-slate-200 transition-colors font-bold text-sm cursor-pointer"
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+                                                <span className="text-xs text-slate-500">
+                                                    Atau ketikkan angka durasi langsung sesuai kebutuhan Anda.
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5">
+                                            <span className="material-symbols-outlined text-[15px] text-emerald-600">verified</span>
+                                            <span>Tarif berlaku seragam di seluruh wilayah San Andreas sesuai regulasi operasional resmi Maitri Company.</span>
                                         </div>
                                     </div>
 
-                                    {/* Output Panel Truk */}
-                                    <div className="lg:col-span-5 bg-gradient-to-br from-slate-50 to-blue-50/50 p-6 rounded-2xl border border-slate-200 flex flex-col justify-between h-full">
+                                    {/* Output Panel Truk (No Booking Button, Pure Transparent Rates & Terms) */}
+                                    <div className="lg:col-span-5 bg-gradient-to-br from-slate-50 to-blue-50/50 p-6 rounded-2xl border border-slate-200 flex flex-col justify-between h-full space-y-6">
                                         <div>
                                             <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
                                                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                                                    Ringkasan Estimasi Biaya
+                                                    Ringkasan Tarif &amp; Ketentuan
                                                 </span>
                                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
                                                     Tarif Resmi Terbuka
                                                 </span>
                                             </div>
 
-                                            <div className="mt-4 space-y-3">
-                                                <div className="flex justify-between items-center text-sm">
-                                                    <span className="text-slate-600">Unit Terpilih:</span>
+                                            {/* Rincian Kategori Terpilih */}
+                                            <div className="mt-4 space-y-2.5 text-xs">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-slate-600">Kategori Armada:</span>
                                                     <span className="font-bold text-slate-900 text-right">
-                                                        {selectedTruck.name}
+                                                        {selectedCategory?.name}
                                                     </span>
                                                 </div>
-                                                <div className="flex justify-between items-center text-sm">
-                                                    <span className="text-slate-600">Status Kondisi:</span>
-                                                    <span className="font-semibold text-emerald-600 flex items-center gap-1">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-slate-600">Kondisi Serah Terima:</span>
+                                                    <span className="font-bold text-emerald-700 flex items-center gap-1 font-mono">
                                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{' '}
-                                                        Siap Jalan
+                                                        2000 HP (Mulus / Prima)
                                                     </span>
                                                 </div>
-                                                <div className="flex justify-between items-center text-sm">
-                                                    <span className="text-slate-600">Fasilitas Termasuk:</span>
-                                                    <span className="font-medium text-slate-700 text-right">
-                                                        Live GPS + Asuransi Muatan
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-slate-600">Tarif Satuan Berlaku:</span>
+                                                    <span className="font-mono font-bold text-slate-900">
+                                                        {truckCalculation.rateFormatted} / {truckCalculation.unitLabel}
                                                     </span>
                                                 </div>
                                             </div>
 
-                                            <div className="mt-6 p-4 rounded-xl bg-white border border-blue-200 shadow-2xs">
-                                                <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
-                                                    Perkiraan Biaya Transparan
+                                            {/* Kotak Estimasi Biaya Sewa Pokok */}
+                                            <div className="mt-5 p-4 rounded-xl bg-white border border-blue-200 shadow-2xs">
+                                                <div className="text-[11px] text-slate-500 uppercase tracking-wider font-bold">
+                                                    Total Estimasi Biaya Sewa Pokok
                                                 </div>
                                                 <div className="flex items-baseline gap-1 mt-1">
-                                                    <span className="text-3xl font-extrabold text-brand-700">
+                                                    <span className="text-3xl font-black text-brand-700 font-mono">
                                                         {truckCalculation.totalFormatted}
                                                     </span>
                                                 </div>
-                                                <p className="text-[11px] text-slate-500 mt-1">
-                                                    {truckCalculation.note}
+                                                <p className="text-[11px] text-slate-500 font-mono mt-1">
+                                                    {truckCalculation.safeDuration} {truckCalculation.unitLabel} × {truckCalculation.rateFormatted}
                                                 </p>
+                                            </div>
+
+                                            {/* Regulasi Sewa & Ketentuan Denda (Transparansi Bagi Warga) */}
+                                            <div className="mt-5 p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/60 text-[11px] text-amber-950 space-y-1.5">
+                                                <div className="font-bold flex items-center gap-1 text-amber-900 text-xs">
+                                                    <span className="material-symbols-outlined text-[15px]">gavel</span>
+                                                    <span>Ketentuan Denda &amp; Jaminan Unit:</span>
+                                                </div>
+                                                <ul className="space-y-1 text-[10px] text-amber-900/90 leading-relaxed">
+                                                    <li>• <strong>Bebas Denda:</strong> Penurunan health akibat baret pemakaian wajar <strong>≤ 100 HP</strong>.</li>
+                                                    <li>• <strong>Biaya Mechanic:</strong> Penurunan health <strong>&gt; 100 HP</strong> wajib mengganti biaya perbaikan bengkel mechanic.</li>
+                                                    <li>• <strong>Klaim Asuransi:</strong> Truk meledak / hancur total (0 HP) wajib membayar biaya tebus asuransi.</li>
+                                                    <li>• <strong>Keterlambatan:</strong> Dikenakan denda <strong>1.5x tarif per jam</strong> jika melebihi batas waktu sewa.</li>
+                                                </ul>
                                             </div>
                                         </div>
 
-                                        <div className="mt-6">
-                                            <button
-                                                type="button"
-                                                onClick={handleSendTruckWA}
-                                                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm hover:shadow transition-all"
-                                            >
-                                                <span className="material-symbols-outlined text-[18px]">chat</span>
-                                                <span>Kirim Pemesanan via WhatsApp</span>
-                                            </button>
-                                            <div className="text-center mt-2 text-[11px] text-slate-400">
-                                                Tim Dispatch Maitri Company akan membalas dalam ±5 menit.
+                                        {/* Info Lokasi Kantor & Serah Terima (Pengganti Tombol Booking) */}
+                                        <div className="p-4 rounded-xl bg-slate-900 text-white space-y-2 text-xs">
+                                            <div className="flex items-center gap-2">
+                                                <span className="material-symbols-outlined text-[18px] text-amber-400">store</span>
+                                                <span className="font-bold text-white text-xs">Prosedur Sewa Unit bagi Warga</span>
+                                            </div>
+                                            <p className="text-[11px] text-slate-300 leading-relaxed">
+                                                Warga yang membutuhkan unit dapat langsung datang ke kantor operasional <strong>Maitri HQ Verona Beach No 12 Los Santos</strong> atau menemui dispatcher yang bertugas.
+                                            </p>
+                                            <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                                                <span>✓ Diterbitkan MoU Resmi</span>
+                                                <span>✓ Terbit Surat Jalan IC</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1511,9 +1627,8 @@ export default function Welcome({ auth, canLogin, canRegister }) {
                                     Kantor Pusat &amp; Pool Logistik
                                 </h4>
                                 <p className="text-sm text-slate-600 leading-relaxed">
-                                    Maitri Tower, Lantai 12<br />
-                                    Kawasan Mega Kuningan, Jakarta Selatan 12950<br />
-                                    Indonesia
+                                    Maitri HQ Verona Beach No 12<br />
+                                    Los Santos, San Andreas
                                 </p>
                                 <div className="space-y-1.5 text-xs text-slate-600 pt-1">
                                     <div className="flex items-center gap-2">

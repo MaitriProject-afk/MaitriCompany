@@ -263,6 +263,10 @@ export default function ReturnModal({ isOpen, onClose, rental }) {
                                 <div className="text-slate-500 flex items-center gap-2">
                                     <span>No. Kontak: <strong>{rental.contact_phone || rental.san_andreas_phone}</strong></span>
                                 </div>
+                                <div className="text-[11px] text-purple-700 font-semibold flex items-center gap-1 pt-1">
+                                    <span className="material-symbols-outlined text-[15px]">badge</span>
+                                    <span>Penerbit Sewa: <strong>{rental.admin?.name || rental.admin_name}</strong> {rental.admin?.position ? `(${rental.admin.position})` : ''}</span>
+                                </div>
                             </div>
 
                             <div className="sm:text-right space-y-1 sm:border-l sm:border-slate-200 sm:pl-4">

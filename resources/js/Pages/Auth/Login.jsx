@@ -441,7 +441,7 @@ export default function Login({ status, canResetPassword }) {
                     <div className="flex items-center gap-6 text-xs text-slate-500 font-medium">
                         <a href="#privacy" className="hover:text-slate-800 transition-colors">Privacy Policy</a>
                         <a href="#terms" className="hover:text-slate-800 transition-colors">Terms of Service</a>
-                        <span className="text-slate-400">© 2026 PT Maitri Perkasa Indonesia. All rights reserved.</span>
+                        <span className="text-slate-400">© 2026 Maitri Company. All rights reserved.</span>
                     </div>
                 </div>
             </footer>

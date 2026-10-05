@@ -96,7 +96,7 @@ class VehicleController extends Controller
 
         $rentals = VehicleRental::with([
             'vehicle.category',
-            'admin:id,name,email',
+            'admin:id,name,email,position,role',
         ])->orderBy('id', 'desc')->get()->map(function (VehicleRental $r) use ($now) {
             $isOverdue = $r->status === VehicleRental::STATUS_ACTIVE && $now->isAfter($r->expected_return_time);
             $overdueHours = $isOverdue ? round($r->expected_return_time->diffInMinutes($now) / 60, 1) : 0;
@@ -139,10 +139,20 @@ class VehicleController extends Controller
                 'total_cost' => (float) $r->total_cost,
                 'notes' => $r->notes,
                 'return_notes' => $r->return_notes,
+                'admin_id' => $r->admin_id,
                 'admin_name' => $r->admin?->name ?? 'Admin',
-                'contract_number' => $r->contract_number ?: sprintf('MTR/MOU/TRK/%s/%04d', $r->created_at->format('Y'), $r->id),
-                'mou_code' => $r->mou_code ?: sprintf('MTR-MOU-%s-%04d', $r->created_at->format('Y'), $r->id),
+                'admin' => $r->admin ? [
+                    'id' => $r->admin->id,
+                    'name' => $r->admin->name,
+                    'email' => $r->admin->email,
+                    'position' => $r->admin->getPositionTitle(),
+                    'role' => $r->admin->role,
+                ] : null,
+                'contract_number' => $r->contract_number ?: sprintf('MTR/MOU/TRK/%s/%04d', $r->created_at?->format('Y') ?? date('Y'), $r->id),
+                'mou_code' => $r->mou_code ?: sprintf('MTR-MOU-%s-%04d', $r->created_at?->format('Y') ?? date('Y'), $r->id),
                 'mou_url' => route('rentals.mou', $r->mou_code ?: $r->id),
+                'invoice_number' => $r->getInvoiceNumber(),
+                'invoice_url' => route('rentals.invoice', $r->getInvoiceCode()),
                 'created_at' => $r->created_at?->format('d M Y, H:i'),
             ];
         });

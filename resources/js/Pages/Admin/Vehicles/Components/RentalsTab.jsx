@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { usePage } from '@inertiajs/react';
 
 export default function RentalsTab({
     rentals = [],
@@ -9,6 +10,9 @@ export default function RentalsTab({
     onCompleteMaintenance,
 }) {
     const handleReturnClick = onOpenReturnModal || onProcessReturn;
+    const { auth } = usePage().props;
+    const currentUser = auth?.user;
+
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('active'); // 'all' | 'active' | 'completed'
     const [copiedRentalId, setCopiedRentalId] = useState(null);
@@ -173,6 +177,7 @@ export default function RentalsTab({
                             <th className="px-4 py-3">Penyewa &amp; Lisensi</th>
                             <th className="px-4 py-3">Unit Armada Truk</th>
                             <th className="px-4 py-3">Skema &amp; Waktu Sewa</th>
+                            <th className="px-4 py-3">Petugas Penerbit</th>
                             <th className="px-4 py-3">Status &amp; Kondisi</th>
                             <th className="px-4 py-3">Biaya &amp; Denda</th>
                             <th className="px-4 py-3 text-right">Aksi</th>
@@ -181,7 +186,7 @@ export default function RentalsTab({
                     <tbody className="divide-y divide-slate-100">
                         {filteredRentals.length === 0 ? (
                             <tr>
-                                <td colSpan={6} className="text-center py-12 text-slate-400">
+                                <td colSpan={7} className="text-center py-12 text-slate-400">
                                     <div className="flex flex-col items-center gap-2">
                                         <span className="material-symbols-outlined text-[36px] text-slate-300">
                                             no_crash
@@ -204,237 +209,301 @@ export default function RentalsTab({
                                 </td>
                             </tr>
                         ) : (
-                            filteredRentals.map((r) => (
-                                <tr key={r.id} className={`hover:bg-slate-50/70 transition-colors ${r.is_overdue ? 'bg-rose-50/20' : ''}`}>
-                                    {/* 1. Renter & Licenses */}
-                                    <td className="px-4 py-3.5">
-                                        <div>
-                                            <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                                                <span>{r.renter_name}</span>
-                                            </div>
-                                            <div className="flex flex-col gap-0.5 mt-1 text-[11px] font-mono">
-                                                <div className="flex items-center gap-1 text-slate-600">
-                                                    <span className="material-symbols-outlined text-[13px] text-brand-600">badge</span>
-                                                    <span>KTP: <strong className="text-slate-800">{r.san_andreas_id_card || r.san_andreas_phone}</strong></span>
-                                                </div>
-                                                <div className="flex items-center gap-1 text-slate-500">
-                                                    <span className="material-symbols-outlined text-[13px] text-slate-400">call</span>
-                                                    <span>Kontak: <strong>{r.contact_phone || r.san_andreas_phone}</strong></span>
-                                                </div>
-                                            </div>
+                            filteredRentals.map((r) => {
+                                const isIssuer = !r.admin_id || r.admin_id === currentUser?.id;
+                                const issuerName = r.admin?.name || r.admin_name || 'Admin Penerbit';
+                                const issuerPosition = r.admin?.position || (r.admin?.role === 'staff' ? 'Staff Operasional' : 'Administrator');
 
-                                            {/* Licenses badges */}
-                                            <div className="flex flex-wrap gap-1 mt-1.5">
-                                                {r.licenses && r.licenses.length > 0 ? (
-                                                    r.licenses.map((lic) => (
-                                                        <span
-                                                            key={lic}
-                                                            className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider ${
-                                                                lic === 'trucker'
-                                                                    ? 'bg-blue-100 text-blue-800 border border-blue-200'
-                                                                    : lic === 'lumber'
-                                                                    ? 'bg-amber-100 text-amber-900 border border-amber-200'
-                                                                    : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                                                            }`}
-                                                        >
-                                                            {lic === 'trucker' ? 'Trucker' : lic === 'lumber' ? 'Lumber' : 'Driver'}
+                                return (
+                                    <tr key={r.id} className={`hover:bg-slate-50/70 transition-colors ${r.is_overdue ? 'bg-rose-50/20' : ''}`}>
+                                        {/* 1. Renter & Licenses */}
+                                        <td className="px-4 py-3.5">
+                                            <div>
+                                                <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                                    <span>{r.renter_name}</span>
+                                                </div>
+                                                <div className="flex flex-col gap-0.5 mt-1 text-[11px] font-mono">
+                                                    <div className="flex items-center gap-1 text-slate-600">
+                                                        <span className="material-symbols-outlined text-[13px] text-brand-600">badge</span>
+                                                        <span>KTP: <strong className="text-slate-800">{r.san_andreas_id_card || r.san_andreas_phone}</strong></span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1 text-slate-500">
+                                                        <span className="material-symbols-outlined text-[13px] text-slate-400">call</span>
+                                                        <span>Kontak: <strong>{r.contact_phone || r.san_andreas_phone}</strong></span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Licenses badges */}
+                                                <div className="flex flex-wrap gap-1 mt-1.5">
+                                                    {r.licenses && r.licenses.length > 0 ? (
+                                                        r.licenses.map((lic) => (
+                                                            <span
+                                                                key={lic}
+                                                                className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider ${
+                                                                    lic === 'trucker'
+                                                                        ? 'bg-blue-100 text-blue-800 border border-blue-200'
+                                                                        : lic === 'lumber'
+                                                                        ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                                                                        : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                                                }`}
+                                                            >
+                                                                {lic === 'trucker' ? 'Trucker' : lic === 'lumber' ? 'Lumber' : 'Driver'}
+                                                            </span>
+                                                        ))
+                                                    ) : (
+                                                        <span className="text-[10px] text-slate-400 italic">Tanpa Lisensi</span>
+                                                    )}
+                                                </div>
+
+                                                {/* Contract number & MoU quick link */}
+                                                <div className="flex items-center gap-1.5 mt-2 pt-1.5 border-t border-slate-100">
+                                                    <a
+                                                        href={r.mou_url || `/mou/${r.mou_code || r.id}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-colors"
+                                                        title="Buka Dokumen Kontrak MoU Publik"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[13px] text-brand-600">description</span>
+                                                        <span>MoU Resmi</span>
+                                                    </a>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const targetUrl = r.mou_url || `${window.location.origin}/mou/${r.mou_code || r.id}`;
+                                                            navigator.clipboard?.writeText(targetUrl);
+                                                            setCopiedRentalId(r.id);
+                                                            setTimeout(() => setCopiedRentalId(null), 2000);
+                                                        }}
+                                                        className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer"
+                                                        title="Salin Link MoU untuk penyewa"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[12px]">
+                                                            {copiedRentalId === r.id ? 'check' : 'content_copy'}
                                                         </span>
-                                                    ))
+                                                        <span>{copiedRentalId === r.id ? 'Tersalin' : 'Link'}</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        {/* 2. Vehicle & Health Initial */}
+                                        <td className="px-4 py-3.5">
+                                            <div>
+                                                <div className="font-bold text-slate-900 text-xs">
+                                                    {r.vehicle?.name || 'Unit Dihapus'}
+                                                </div>
+                                                <div className="font-mono text-[11px] font-semibold text-slate-600 mt-0.5">
+                                                    {r.vehicle?.plate_number}
+                                                </div>
+                                                <div className="flex items-center gap-1.5 mt-1">
+                                                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">
+                                                        {r.vehicle?.category?.name || 'Armada Hauling'}
+                                                    </span>
+                                                    <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                        Awal: {r.initial_health || 2000} HP
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        {/* 3. Schedule */}
+                                        <td className="px-4 py-3.5">
+                                            <div className="space-y-1">
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-brand-50 text-brand-700 border border-brand-200">
+                                                        {r.duration} {r.rental_type}
+                                                    </span>
+                                                </div>
+                                                <div className="text-[11px] text-slate-600">
+                                                    <span className="text-slate-400">Mulai:</span> {r.start_time}
+                                                </div>
+                                                <div className="text-[11px] font-semibold text-slate-800">
+                                                    <span className="text-slate-400">Batas:</span>{' '}
+                                                    <span className={r.is_overdue ? 'text-rose-600 font-bold' : 'text-blue-700'}>
+                                                        {r.expected_return_time}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        {/* 4. Petugas Penerbit (Admin / Staff) */}
+                                        <td className="px-4 py-3.5">
+                                            <div className="space-y-1">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-7 h-7 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs shrink-0 border border-purple-200">
+                                                        {issuerName.charAt(0).toUpperCase()}
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+                                                            <span className="truncate">{issuerName}</span>
+                                                            {r.admin_id && r.admin_id === currentUser?.id && (
+                                                                <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-blue-100 text-brand-700 shrink-0">
+                                                                    Anda
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <div className="text-[10px] text-slate-500 truncate" title={issuerPosition}>
+                                                            {issuerPosition}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1 pl-9">
+                                                    <span className="material-symbols-outlined text-[12px]">schedule</span>
+                                                    <span>{r.created_at || r.start_time}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        {/* 5. Status & Condition */}
+                                        <td className="px-4 py-3.5">
+                                            <div className="space-y-1.5">
+                                                {r.status === 'active' ? (
+                                                    r.is_overdue ? (
+                                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-rose-100 text-rose-700 border border-rose-300 animate-pulse">
+                                                            <span className="material-symbols-outlined text-[14px]">warning</span>
+                                                            <span>TERLAMBAT ({r.overdue_hours} Jam)</span>
+                                                        </span>
+                                                    ) : (
+                                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                                            <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                                                            <span>Sedang Berjalan</span>
+                                                        </span>
+                                                    )
                                                 ) : (
-                                                    <span className="text-[10px] text-slate-400 italic">Tanpa Lisensi</span>
+                                                    <div className="space-y-1">
+                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                            <span className="material-symbols-outlined text-[13px]">done_all</span>
+                                                            <span>Selesai Dikembalikan</span>
+                                                        </span>
+                                                        <div>{getConditionBadge(r.vehicle_condition, r.return_health ?? r.truck_health)}</div>
+                                                        <div className="text-[10px] font-mono text-slate-500">
+                                                            Kembali: {r.return_health ?? r.truck_health} HP
+                                                            {(r.initial_health || 2000) - (r.return_health ?? r.truck_health) > 0 && (
+                                                                <span className="text-rose-600 font-bold ml-1">
+                                                                    (-{(r.initial_health || 2000) - (r.return_health ?? r.truck_health)} HP)
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </div>
+                                        </td>
 
-                                            {/* Contract number & MoU quick link */}
-                                            <div className="flex items-center gap-1.5 mt-2 pt-1.5 border-t border-slate-100">
-                                                <a
-                                                    href={r.mou_url || `/mou/${r.mou_code || r.id}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-colors"
-                                                    title="Buka Dokumen Kontrak MoU Publik"
-                                                >
-                                                    <span className="material-symbols-outlined text-[13px] text-brand-600">description</span>
-                                                    <span>MoU Resmi</span>
-                                                </a>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        const targetUrl = r.mou_url || `${window.location.origin}/mou/${r.mou_code || r.id}`;
-                                                        navigator.clipboard?.writeText(targetUrl);
-                                                        setCopiedRentalId(r.id);
-                                                        setTimeout(() => setCopiedRentalId(null), 2000);
-                                                    }}
-                                                    className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer"
-                                                    title="Salin Link MoU untuk penyewa"
-                                                >
-                                                    <span className="material-symbols-outlined text-[12px]">
-                                                        {copiedRentalId === r.id ? 'check' : 'content_copy'}
-                                                    </span>
-                                                    <span>{copiedRentalId === r.id ? 'Tersalin' : 'Link'}</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    {/* 2. Vehicle & Health Initial */}
-                                    <td className="px-4 py-3.5">
-                                        <div>
-                                            <div className="font-bold text-slate-900 text-xs">
-                                                {r.vehicle?.name || 'Unit Dihapus'}
-                                            </div>
-                                            <div className="font-mono text-[11px] font-semibold text-slate-600 mt-0.5">
-                                                {r.vehicle?.plate_number}
-                                            </div>
-                                            <div className="flex items-center gap-1.5 mt-1">
-                                                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">
-                                                    {r.vehicle?.category?.name || 'Armada Hauling'}
-                                                </span>
-                                                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                    Awal: {r.initial_health || 2000} HP
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    {/* 3. Schedule */}
-                                    <td className="px-4 py-3.5">
-                                        <div className="space-y-1">
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-brand-50 text-brand-700 border border-brand-200">
-                                                    {r.duration} {r.rental_type}
-                                                </span>
-                                            </div>
-                                            <div className="text-[11px] text-slate-600">
-                                                <span className="text-slate-400">Mulai:</span> {r.start_time}
-                                            </div>
-                                            <div className="text-[11px] font-semibold text-slate-800">
-                                                <span className="text-slate-400">Batas:</span>{' '}
-                                                <span className={r.is_overdue ? 'text-rose-600 font-bold' : 'text-blue-700'}>
-                                                    {r.expected_return_time}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    {/* 4. Status & Condition */}
-                                    <td className="px-4 py-3.5">
-                                        <div className="space-y-1.5">
-                                            {r.status === 'active' ? (
-                                                r.is_overdue ? (
-                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-rose-100 text-rose-700 border border-rose-300 animate-pulse">
-                                                        <span className="material-symbols-outlined text-[14px]">warning</span>
-                                                        <span>TERLAMBAT ({r.overdue_hours} Jam)</span>
-                                                    </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                                                        <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
-                                                        <span>Sedang Berjalan</span>
-                                                    </span>
-                                                )
-                                            ) : (
-                                                <div className="space-y-1">
-                                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                        <span className="material-symbols-outlined text-[13px]">done_all</span>
-                                                        <span>Selesai Dikembalikan</span>
-                                                    </span>
-                                                    <div>{getConditionBadge(r.vehicle_condition, r.return_health ?? r.truck_health)}</div>
-                                                    <div className="text-[10px] font-mono text-slate-500">
-                                                        Kembali: {r.return_health ?? r.truck_health} HP
-                                                        {(r.initial_health || 2000) - (r.return_health ?? r.truck_health) > 0 && (
-                                                            <span className="text-rose-600 font-bold ml-1">
-                                                                (-{(r.initial_health || 2000) - (r.return_health ?? r.truck_health)} HP)
+                                        {/* 6. Costs */}
+                                        <td className="px-4 py-3.5">
+                                            <div className="space-y-0.5 text-xs">
+                                                <div className="font-bold text-slate-900">
+                                                    Rp {r.total_cost.toLocaleString('id-ID')}
+                                                </div>
+                                                {r.status === 'completed' && (r.late_penalty_fee > 0 || r.damage_fee > 0) ? (
+                                                    <div className="text-[10px] text-slate-500 space-y-0.5">
+                                                        {r.late_penalty_fee > 0 && (
+                                                            <span className="text-rose-600 block">
+                                                                + Telat: Rp {r.late_penalty_fee.toLocaleString('id-ID')}
+                                                            </span>
+                                                        )}
+                                                        {r.damage_fee > 0 && (
+                                                            <span className="text-amber-700 block font-semibold">
+                                                                {r.damage_fee_type === 'insurance'
+                                                                    ? `+ Asuransi: Rp ${r.damage_fee.toLocaleString('id-ID')}`
+                                                                    : `+ Mechanic: Rp ${r.damage_fee.toLocaleString('id-ID')}`}
                                                             </span>
                                                         )}
                                                     </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </td>
-
-                                    {/* 5. Costs */}
-                                    <td className="px-4 py-3.5">
-                                        <div className="space-y-0.5 text-xs">
-                                            <div className="font-bold text-slate-900">
-                                                Rp {r.total_cost.toLocaleString('id-ID')}
+                                                ) : (
+                                                    <div className="text-[10px] text-slate-400">
+                                                        Tarif: Rp {r.rate_per_unit.toLocaleString('id-ID')}/{r.rental_type}
+                                                    </div>
+                                                )}
                                             </div>
-                                            {r.status === 'completed' && (r.late_penalty_fee > 0 || r.damage_fee > 0) ? (
-                                                <div className="text-[10px] text-slate-500 space-y-0.5">
-                                                    {r.late_penalty_fee > 0 && (
-                                                        <span className="text-rose-600 block">
-                                                            + Telat: Rp {r.late_penalty_fee.toLocaleString('id-ID')}
-                                                        </span>
-                                                    )}
-                                                    {r.damage_fee > 0 && (
-                                                        <span className="text-amber-700 block font-semibold">
-                                                            {r.damage_fee_type === 'insurance'
-                                                                ? `+ Asuransi: Rp ${r.damage_fee.toLocaleString('id-ID')}`
-                                                                : `+ Mechanic: Rp ${r.damage_fee.toLocaleString('id-ID')}`}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div className="text-[10px] text-slate-400">
-                                                    Tarif: Rp {r.rate_per_unit.toLocaleString('id-ID')}/{r.rental_type}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </td>
+                                        </td>
 
-                                    {/* 6. Action */}
-                                    <td className="px-4 py-3.5 text-right">
-                                        <div className="flex flex-col items-end gap-1.5">
-                                            {r.status === 'active' ? (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleReturnClick && handleReturnClick(r)}
-                                                    className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-all shadow-xs flex items-center gap-1 cursor-pointer ${
-                                                        r.is_overdue
-                                                            ? 'bg-rose-600 hover:bg-rose-700 text-white'
-                                                            : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                                                    }`}
-                                                >
-                                                    <span className="material-symbols-outlined text-[15px]">assignment_turned_in</span>
-                                                    <span>Pengembalian</span>
-                                                </button>
-                                            ) : r.vehicle?.status === 'perawatan' ? (
-                                                <div className="flex flex-col items-end gap-1">
-                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                                                        <span className="material-symbols-outlined text-[12px]">build</span>
-                                                        <span>Perawatan</span>
-                                                    </span>
-                                                    {onCompleteMaintenance && (
+                                        {/* 7. Action */}
+                                        <td className="px-4 py-3.5 text-right">
+                                            <div className="flex flex-col items-end gap-1.5">
+                                                {r.status === 'active' ? (
+                                                    isIssuer ? (
                                                         <button
                                                             type="button"
-                                                            onClick={() => onCompleteMaintenance(r.vehicle)}
-                                                            className="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
-                                                            title="Tandai perbaikan unit telah selesai & siap disewa"
+                                                            onClick={() => handleReturnClick && handleReturnClick(r)}
+                                                            className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-all shadow-xs flex items-center gap-1 cursor-pointer ${
+                                                                r.is_overdue
+                                                                    ? 'bg-rose-600 hover:bg-rose-700 text-white'
+                                                                    : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                                            }`}
                                                         >
-                                                            <span className="material-symbols-outlined text-[13px]">build_circle</span>
-                                                            <span>Selesai Servis</span>
+                                                            <span className="material-symbols-outlined text-[15px]">assignment_turned_in</span>
+                                                            <span>Pengembalian</span>
                                                         </button>
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <span className="text-[11px] font-semibold text-slate-400">
-                                                    Terselesaikan
-                                                </span>
-                                            )}
+                                                    ) : (
+                                                        <div className="flex flex-col items-end gap-1">
+                                                            <div
+                                                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 text-slate-400 border border-slate-200 text-xs font-bold cursor-not-allowed select-none shadow-2xs"
+                                                                title={`Hanya petugas penerbit (${issuerName}) yang berhak mengonfirmasi pengembalian unit.`}
+                                                            >
+                                                                <span className="material-symbols-outlined text-[14px] text-slate-400">lock</span>
+                                                                <span>Pengembalian</span>
+                                                            </div>
+                                                            <span className="text-[9px] font-semibold text-slate-400 max-w-[125px] text-right truncate">
+                                                                Penerbit: {issuerName}
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                ) : r.vehicle?.status === 'perawatan' ? (
+                                                    <div className="flex flex-col items-end gap-1">
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                                                            <span className="material-symbols-outlined text-[12px]">build</span>
+                                                            <span>Perawatan</span>
+                                                        </span>
+                                                        {onCompleteMaintenance && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => onCompleteMaintenance(r.vehicle)}
+                                                                className="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
+                                                                title="Tandai perbaikan unit telah selesai & siap disewa"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[13px]">build_circle</span>
+                                                                <span>Selesai Servis</span>
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-[11px] font-semibold text-slate-400">
+                                                        Terselesaikan
+                                                    </span>
+                                                )}
 
-                                            <a
-                                                href={r.mou_url || `/mou/${r.mou_code || r.id}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-colors"
-                                                title="Lihat MoU Lengkap"
-                                            >
-                                                <span className="material-symbols-outlined text-[13px] text-brand-600">visibility</span>
-                                                <span>Lihat MoU</span>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
+                                                <div className="flex items-center gap-1.5">
+                                                    {r.status === 'completed' && r.invoice_url && (
+                                                        <a
+                                                            href={r.invoice_url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors"
+                                                            title="Lihat & Cetak Kwitansi Resmi"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[13px] text-emerald-600">receipt</span>
+                                                            <span>Kwitansi</span>
+                                                        </a>
+                                                    )}
+
+                                                    <a
+                                                        href={r.mou_url || `/mou/${r.mou_code || r.id}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-colors"
+                                                        title="Lihat MoU Lengkap"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[13px] text-brand-600">visibility</span>
+                                                        <span>Lihat MoU</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })
                         )}
                     </tbody>
                 </table>

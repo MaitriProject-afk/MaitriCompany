@@ -8,7 +8,7 @@ export default function AdminFooter() {
                         alt="Maitri Company"
                         className="h-4 w-auto object-contain opacity-75"
                     />
-                    <span>© 2026 PT Maitri Perkasa Indonesia. Seluruh hak cipta dilindungi.</span>
+                    <span>© 2026 Maitri Company. Seluruh hak cipta dilindungi.</span>
                 </div>
                 <div className="flex items-center gap-4 text-slate-500">
                     <a href="#api" className="hover:text-brand-600 transition-colors">Dokumentasi API</a>

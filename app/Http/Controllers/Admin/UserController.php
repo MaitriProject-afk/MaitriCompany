@@ -39,6 +39,8 @@ class UserController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
+                'position' => $user->position,
+                'position_title' => $user->getPositionTitle(),
                 'email_verified_at' => $user->email_verified_at?->format('d M Y, H:i'),
                 'created_at' => $user->created_at?->format('d M Y, H:i'),
             ];
@@ -62,23 +64,33 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user's role.
+     * Update the specified user's role and position.
      */
     public function updateRole(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
             'role' => ['required', 'string', Rule::in([User::ROLE_ADMIN, User::ROLE_STAFF, User::ROLE_WARGA])],
+            'position' => ['nullable', 'string', 'max:100'],
         ]);
 
-        if ($user->id === $request->user()->id) {
+        $newRole = $validated['role'];
+        $newPosition = $validated['position'] ?? null;
+
+        // If user is editing themselves, prevent locking out by demoting own role
+        if ($user->id === $request->user()->id && $newRole !== $user->role) {
             return back()->with('error', 'Anda tidak dapat mengubah hak akses (role) akun Anda sendiri saat sedang login.');
         }
 
-        $previousRole = $user->role;
+        // Warga users do not have positions
+        if ($newRole === User::ROLE_WARGA) {
+            $newPosition = null;
+        }
+
         $user->update([
-            'role' => $validated['role'],
+            'role' => $newRole,
+            'position' => $newPosition,
         ]);
 
-        return back()->with('success', "Role untuk pengguna {$user->name} berhasil diubah dari {$previousRole} menjadi {$validated['role']}.");
+        return back()->with('success', "Role dan Jabatan untuk {$user->name} berhasil diperbarui.");
     }
 }

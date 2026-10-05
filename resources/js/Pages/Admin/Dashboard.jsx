@@ -48,7 +48,7 @@ export default function AdminDashboard() {
                         </h1>
 
                         <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
-                            Pemantauan operasional dua pilar bisnis PT Maitri Perkasa Indonesia:{' '}
+                            Pemantauan operasional dua pilar bisnis Maitri Company:{' '}
                             <span className="font-bold text-brand-700">Divisi Logistik &amp; Armada Niaga</span>{' '}
                             serta{' '}
                             <span className="font-bold text-amber-700">Divisi Studio Desain Arsitektur &amp; Interior</span>.

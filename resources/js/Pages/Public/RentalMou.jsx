@@ -293,10 +293,15 @@ export default function RentalMou({ rental, categories = [] }) {
                             <strong>Penyitaan oleh Kepolisian (Impounded):</strong> Jika kendaraan disita oleh pihak SAPD / Kepolisian karena pelanggaran lalu lintas atau tindakan ilegal Pihak Kedua, maka seluruh biaya tebusan <em>impound</em> menjadi tanggung jawab penuh Pihak Kedua.
                         </li>
                         <li>
-                            <strong>Keterlambatan Pengembalian:</strong> Keterlambatan pengembalian unit melebihi waktu perjanjian sewa dikenakan denda keterlambatan (1.5x tarif sewa normal).
+                            <strong>Keterlambatan Pengembalian (Late Penalty Fee):</strong> Keterlambatan pengembalian unit melebihi batas waktu perjanjian sewa yang disepakati pada Pasal 4 dikenakan sanksi denda keterlambatan dengan rincian skema berikut:
+                            <ul className="list-disc list-inside pl-4 mt-1 text-[11px] text-slate-600 space-y-0.5">
+                                <li><strong>Skema Per Jam:</strong> Dikenakan denda sebesar <strong>1.5x tarif sewa per jam</strong> untuk setiap jam keterlambatan (dihitung proporsional per pecahan jam/menit).</li>
+                                <li><strong>Skema Per Hari:</strong> Dikenakan denda sebesar <strong>1.25x tarif sewa harian</strong> per hari keterlambatan berjalan.</li>
+                                <li><strong>Skema Per Trip:</strong> Dikenakan denda sebesar <strong>50% dari tarif trip</strong> jika penahanan unit melebihi batas waktu operasional rute.</li>
+                            </ul>
                         </li>
                         <li>
-                            <strong>Tindakan Pembangkangan (Scammed / Fail RP):</strong> Tindakan membawa lari kendaraan melebihi masa perjanjian tanpa perpanjangan resmi akan dilaporkan ke kepolisian IC dan diproses hukum pidana serta dilaporkan ke OOC Server Rules.
+                            <strong>Tindakan Pembangkangan (Scammed / Fail RP):</strong> Tindakan membawa lari kendaraan melebihi masa perjanjian tanpa konfirmasi perpanjangan resmi akan dilaporkan ke kepolisian IC dan diproses hukum pidana serta dilaporkan ke OOC Server Rules.
                         </li>
                     </ol>
                 </div>

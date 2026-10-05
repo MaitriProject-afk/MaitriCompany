@@ -382,4 +382,67 @@ class VehicleRentalTest extends TestCase
         $responseById = $this->get("/mou/{$rental->id}");
         $responseById->assertStatus(200);
     }
+
+    public function test_other_admin_cannot_confirm_return_for_rental_issued_by_different_admin(): void
+    {
+        $issuerAdmin = User::factory()->admin()->create(['name' => 'Admin Penerbit']);
+        $otherAdmin = User::factory()->admin()->create(['name' => 'Admin Lain']);
+
+        $category = VehicleCategory::create([
+            'name' => 'Hauler',
+            'rental_price_per_hour' => 100000,
+        ]);
+
+        $vehicle = Vehicle::create([
+            'vehicle_category_id' => $category->id,
+            'name' => 'Roadtrain Alpha',
+            'plate_number' => 'RT-001',
+            'status' => Vehicle::STATUS_RENTED,
+        ]);
+
+        $rental = VehicleRental::create([
+            'vehicle_id' => $vehicle->id,
+            'admin_id' => $issuerAdmin->id,
+            'renter_name' => 'Ryder',
+            'san_andreas_id_card' => 'SA-9988',
+            'contact_phone' => '555-1122',
+            'san_andreas_phone' => '555-1122',
+            'initial_health' => 2000,
+            'truck_health' => 2000,
+            'licenses' => ['driving', 'trucker'],
+            'rental_type' => 'jam',
+            'duration' => 2,
+            'rate_per_unit' => 100000,
+            'rental_price' => 200000,
+            'start_time' => Carbon::now()->subHour(),
+            'expected_return_time' => Carbon::now()->addHour(),
+            'status' => VehicleRental::STATUS_ACTIVE,
+        ]);
+
+        // Attempt return as otherAdmin (should be blocked)
+        $response = $this->actingAs($otherAdmin)->post("/admin/rentals/{$rental->id}/return", [
+            'actual_return_time' => Carbon::now()->format('Y-m-d H:i:s'),
+            'vehicle_condition' => VehicleRental::CONDITION_NORMAL,
+            'return_health' => 2000,
+            'damage_fee_type' => VehicleRental::DAMAGE_TYPE_NONE,
+            'damage_fee' => 0,
+            'late_penalty_fee' => 0,
+        ]);
+
+        $response->assertSessionHas('error');
+        $this->assertEquals(VehicleRental::STATUS_ACTIVE, $rental->fresh()->status);
+
+        // Attempt return as the actual issuerAdmin (should succeed)
+        $responseIssuer = $this->actingAs($issuerAdmin)->post("/admin/rentals/{$rental->id}/return", [
+            'actual_return_time' => Carbon::now()->format('Y-m-d H:i:s'),
+            'vehicle_condition' => VehicleRental::CONDITION_NORMAL,
+            'return_health' => 2000,
+            'damage_fee_type' => VehicleRental::DAMAGE_TYPE_NONE,
+            'damage_fee' => 0,
+            'late_penalty_fee' => 0,
+        ]);
+
+        $responseIssuer->assertSessionHas('success');
+        $this->assertEquals(VehicleRental::STATUS_COMPLETED, $rental->fresh()->status);
+    }
 }

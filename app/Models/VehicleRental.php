@@ -136,4 +136,24 @@ class VehicleRental extends Model
 
         return $now->isAfter($this->expected_return_time);
     }
+
+    /**
+     * Get the official invoice number.
+     */
+    public function getInvoiceNumber(): string
+    {
+        $year = $this->created_at ? $this->created_at->format('Y') : date('Y');
+
+        return sprintf('MTR/INV/TRK/%s/%04d', $year, $this->id);
+    }
+
+    /**
+     * Get the URL-friendly invoice code.
+     */
+    public function getInvoiceCode(): string
+    {
+        $year = $this->created_at ? $this->created_at->format('Y') : date('Y');
+
+        return sprintf('MTR-INV-%s-%04d', $year, $this->id);
+    }
 }

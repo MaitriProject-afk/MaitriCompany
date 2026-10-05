@@ -106,4 +106,57 @@ class AdminUserManagementTest extends TestCase
             'role' => User::ROLE_ADMIN,
         ]);
     }
+
+    public function test_admin_can_assign_position_to_staff(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $targetUser = User::factory()->staff()->create();
+
+        $response = $this->actingAs($admin)->patch("/admin/users/{$targetUser->id}/role", [
+            'role' => User::ROLE_STAFF,
+            'position' => 'Dispatcher Lead & Logistics Coordinator',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('users', [
+            'id' => $targetUser->id,
+            'role' => User::ROLE_STAFF,
+            'position' => 'Dispatcher Lead & Logistics Coordinator',
+        ]);
+    }
+
+    public function test_admin_can_update_own_position(): void
+    {
+        $admin = User::factory()->admin()->create(['position' => null]);
+
+        $response = $this->actingAs($admin)->patch("/admin/users/{$admin->id}/role", [
+            'role' => User::ROLE_ADMIN,
+            'position' => 'Chief Executive Officer / Fleet Director',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('users', [
+            'id' => $admin->id,
+            'role' => User::ROLE_ADMIN,
+            'position' => 'Chief Executive Officer / Fleet Director',
+        ]);
+    }
+
+    public function test_demoting_to_warga_clears_position(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $targetUser = User::factory()->staff()->create(['position' => 'Fleet Supervisor']);
+
+        $response = $this->actingAs($admin)->patch("/admin/users/{$targetUser->id}/role", [
+            'role' => User::ROLE_WARGA,
+            'position' => 'Some Position',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('users', [
+            'id' => $targetUser->id,
+            'role' => User::ROLE_WARGA,
+            'position' => null,
+        ]);
+    }
 }

@@ -1,26 +1,48 @@
 <?php
 
+use App\Http\Controllers\Admin\FinanceController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VehicleCategoryController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\Admin\VehicleRentalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleRentalMouController;
+use App\Models\VehicleCategory;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $vehicleCategories = [];
+
+    if (Schema::hasTable('vehicle_categories')) {
+        $vehicleCategories = VehicleCategory::orderBy('id', 'asc')->get()->map(function ($cat) {
+            return [
+                'id' => $cat->id,
+                'name' => $cat->name,
+                'slug' => $cat->slug,
+                'description' => $cat->description,
+                'rental_price_per_hour' => $cat->rental_price_per_hour !== null ? (float) $cat->rental_price_per_hour : null,
+                'rental_price_per_day' => $cat->rental_price_per_day !== null ? (float) $cat->rental_price_per_day : null,
+                'rental_price_per_trip' => $cat->rental_price_per_trip !== null ? (float) $cat->rental_price_per_trip : null,
+                'icon' => $cat->icon ?: 'local_shipping',
+            ];
+        });
+    }
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'vehicleCategories' => $vehicleCategories,
     ]);
 });
 
-// Public Official Truck Rental MoU Contract
+// Public Official Truck Rental MoU Contract & Invoice Receipts
 Route::get('/mou/{code}', [VehicleRentalMouController::class, 'show'])->name('rentals.mou');
+Route::get('/invoice/{code}', [FinanceController::class, 'publicInvoice'])->name('rentals.invoice');
 
 Route::get('/dashboard', function () {
     $role = auth()->user()->role ?? 'warga';
@@ -56,6 +78,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Vehicle Rentals & Dispatch
     Route::post('/rentals', [VehicleRentalController::class, 'store'])->name('rentals.store');
     Route::post('/rentals/{rental}/return', [VehicleRentalController::class, 'processReturn'])->name('rentals.return');
+
+    // Finance & Invoice Management
+    Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
 });
 
 // Protected Staff Routes

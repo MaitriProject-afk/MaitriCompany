@@ -125,6 +125,13 @@ class VehicleRentalController extends Controller
             return back()->with('error', 'Transaksi sewa ini sudah selesai atau tidak aktif.');
         }
 
+        // Only the admin who issued the rental can confirm the return
+        if ($rental->admin_id && $rental->admin_id !== $request->user()->id) {
+            $issuerName = $rental->admin?->name ?? 'Admin yang menerbitkan sewa';
+
+            return back()->with('error', "Akses Ditolak: Hanya petugas yang menerbitkan transaksi sewa ini ({$issuerName}) yang berhak mengonfirmasi pengembalian unit kendaraan.");
+        }
+
         $validated = $request->validate([
             'actual_return_time' => ['required', 'date'],
             'vehicle_condition' => ['required', 'string', Rule::in([

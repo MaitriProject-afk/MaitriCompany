@@ -33,16 +33,7 @@ class VehicleRentalMouController extends Controller
         });
 
         $adminUser = $rental->admin;
-        $adminRoleTitle = 'Chief Executive Officer';
-        if ($adminUser) {
-            if ($adminUser->isAdmin()) {
-                $adminRoleTitle = 'Chief Executive Officer / Fleet Director';
-            } elseif ($adminUser->isStaff()) {
-                $adminRoleTitle = 'Fleet Logistics Operations Manager';
-            } else {
-                $adminRoleTitle = 'Authorized Fleet Representative';
-            }
-        }
+        $adminRoleTitle = $adminUser?->getPositionTitle() ?? 'Chief Executive Officer';
 
         return Inertia::render('Public/RentalMou', [
             'rental' => [
@@ -84,9 +75,10 @@ class VehicleRentalMouController extends Controller
                 'admin' => [
                     'name' => $adminUser?->name ?? 'Lucian Castellano',
                     'email' => $adminUser?->email ?? 'admin@maitri.com',
+                    'position' => $adminRoleTitle,
                     'title' => $adminRoleTitle,
-                    'company' => 'Maitri Company (PT Maitri Perkasa Indonesia)',
-                    'contact' => 'HQ East Beach / Palomino Logistics Hub',
+                    'company' => 'Maitri Company',
+                    'contact' => 'Maitri HQ Verona Beach No 12 Los Santos, San Andreas',
                 ],
             ],
             'categories' => $vehicleCategories,
