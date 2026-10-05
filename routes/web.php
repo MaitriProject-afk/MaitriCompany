@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VehicleCategoryController;
+use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +35,17 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
+
+    // Hauling Fleet & Vehicle Management
+    Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
+    Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
+    Route::put('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
+    Route::delete('/vehicles/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
+
+    // Vehicle Category & Rental Pricing
+    Route::post('/vehicle-categories', [VehicleCategoryController::class, 'store'])->name('vehicle-categories.store');
+    Route::put('/vehicle-categories/{category}', [VehicleCategoryController::class, 'update'])->name('vehicle-categories.update');
+    Route::delete('/vehicle-categories/{category}', [VehicleCategoryController::class, 'destroy'])->name('vehicle-categories.destroy');
 });
 
 // Protected Staff Routes

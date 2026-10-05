@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -73,5 +74,15 @@ class User extends Authenticatable
         $roleList = is_array($roles) ? $roles : explode(',', $roles);
 
         return in_array($this->role, array_map('trim', $roleList), true);
+    }
+
+    /**
+     * The hauling vehicles assigned to this user.
+     */
+    public function vehicles(): BelongsToMany
+    {
+        return $this->belongsToMany(Vehicle::class, 'vehicle_user')
+            ->withPivot('role_note')
+            ->withTimestamps();
     }
 }

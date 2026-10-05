@@ -13,7 +13,7 @@ export default function AdminLayout({ children, activeMenu = 'overview' }) {
             section: 'Core Navigation',
             items: [
                 { id: 'overview', label: 'Overview / Ringkasan', icon: 'grid_view', href: route('admin.dashboard') },
-                { id: 'armada', label: 'Divisi Armada & Muatan', icon: 'local_shipping', href: '#armada' },
+                { id: 'vehicles', label: 'Divisi Armada & Hauling', icon: 'local_shipping', href: route('admin.vehicles.index') },
                 { id: 'proyek', label: 'Divisi Proyek Desain & Interior', icon: 'architecture', href: '#proyek' },
                 { id: 'dispatch', label: 'Jadwal & Dispatch', icon: 'calendar_clock', href: '#dispatch' },
             ],
