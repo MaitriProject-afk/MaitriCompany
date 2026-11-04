@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>The Daily Globes — Media Berita San Andreas</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,600;0,700;1,600&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-primary-fixed":"#40000c","on-tertiary-fixed":"#001a42","outline-variant":"#5c3f40","on-primary-container":"#fffaf9","on-primary":"#68001a","on-secondary-container":"#432100","secondary-fixed-dim":"#ffb77d","on-background":"#e3e2e6","secondary-fixed":"#ffdcc3","on-surface":"#e3e2e6","secondary":"#ffb77d","on-tertiary-container":"#fdfbff","tertiary-fixed-dim":"#adc6ff","on-error-container":"#ffdad6","on-error":"#690005","primary-fixed":"#ffdada","surface-container-high":"#292a2d","secondary-container":"#d97707","tertiary-fixed":"#d8e2ff","surface-tint":"#ffb3b6","on-primary-fixed-variant":"#920028","surface-bright":"#38393c","on-secondary-fixed":"#2f1500","surface-variant":"#343538","on-surface-variant":"#e5bdbe","surface-container-low":"#1b1b1f","surface-container-lowest":"#0d0e11","error-container":"#93000a","primary-container":"#e11d48","inverse-primary":"#be0037","outline":"#ac8889","surface":"#121316","primary-fixed-dim":"#ffb3b6","on-tertiary-fixed-variant":"#004395","tertiary":"#adc6ff","error":"#ffb4ab","background":"#121316","on-secondary-fixed-variant":"#6e3900","on-secondary":"#4d2600","tertiary-container":"#1f70e3","surface-container":"#1f1f23","primary":"#ffb3b6","surface-dim":"#121316","inverse-on-surface":"#303034","on-tertiary":"#002e6a","inverse-surface":"#e3e2e6","surface-container-highest":"#343538"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"1.25rem","gutter-desktop":"2rem","margin":"1rem","space-md":"1rem","space-lg":"1.5rem","margin-desktop":"3rem","space-sm":"0.5rem","space-xl":"2.5rem","space-xs":"0.25rem"},"fontFamily":{"headline-xl-mobile":["EB Garamond"],"headline-md":["EB Garamond"],"headline-sm":["EB Garamond"],"body-sm":["Work Sans"],"body-lg":["Work Sans"],"label-sm":["Space Grotesk"],"label-lg":["Space Grotesk"],"label-md":["Space Grotesk"],"title-md":["Work Sans"],"title-lg":["Work Sans"],"headline-xl":["EB Garamond"],"headline-lg":["EB Garamond"],"headline-lg-mobile":["EB Garamond"],"body-md":["Work Sans"]},"fontSize":{"headline-xl-mobile":["36px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"700"}],"headline-md":["28px",{"lineHeight":"34px","fontWeight":"600"}],"headline-sm":["22px",{"lineHeight":"28px","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"label-sm":["10px",{"lineHeight":"12px","letterSpacing":"0.12em","fontWeight":"600"}],"label-lg":["13px",{"lineHeight":"16px","letterSpacing":"0.08em","fontWeight":"700"}],"label-md":["11px",{"lineHeight":"14px","letterSpacing":"0.1em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"22px","fontWeight":"600"}],"title-lg":["20px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"700"}],"headline-xl":["56px",{"lineHeight":"60px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["40px",{"lineHeight":"46px","letterSpacing":"-0.015em","fontWeight":"700"}],"headline-lg-mobile":["28px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"700"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="w-full bg-surface-container-lowest"><div class="w-full bg-surface-container-lowest border-b border-surface-container-high"><div class="max-w-7xl mx-auto px-margin lg:px-margin-desktop h-10 flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg overflow-hidden"><div class="hidden md:flex items-center gap-space-md text-on-surface font-label-sm text-label-sm tracking-wider uppercase"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-primary">schedule</span> 22:45 SAST</span><span class="h-3 w-px bg-surface-container-high"></span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-secondary">sunny</span> LS 24°C</span><span class="h-3 w-px bg-surface-container-high"></span><span class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-sm">foggy</span> FLINT FOGGY</span></div><div class="flex items-center gap-space-sm min-w-0"><span class="bg-primary-container text-on-primary-container px-2 py-0.5 font-label-sm text-label-sm uppercase font-bold shrink-0">BREAKING</span><p class="truncate font-body-sm text-body-sm text-on-surface-variant"><span class="text-on-surface font-medium">Aktivitas mencurigakan</span> meningkat di pedesaan Flint County; SAPD tingkatkan patroli malam perbatasan.</p></div></div><div class="flex items-center gap-space-md shrink-0"><a class="hidden sm:flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" data-path="citizen-hotline" href="#"><span class="material-symbols-outlined text-sm text-primary">call</span> HOTLINE #911</a><a class="bg-[#5865F2] hover:bg-[#4752C4] text-white font-label-sm text-label-sm px-3 py-1 flex items-center gap-1 uppercase tracking-wide font-bold transition-colors" href="https://discord.gg/QKfsxuKzU5" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-sm">forum</span> DISCORD ROLEPLAY</a><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-container-high" src="https://lh3.googleusercontent.com/aida/AEtjO1UUkUBlZNRaz3ijZ4WIz6A7ahzLEt6XAhyJJOm8Eas-_Qcd7tsu8cy9kGUUoZ6CtGFMVySqg23DUsCiVUAGeI2hiUYlc-CUOTpshjbA3_DGWNYd-4yp-SLBC9fRwlesV7eb7B7wNK2xJfTnCEOj8KZNa7Ot_zT8ZTs6ZQstg-7wjq12fopO23r4HTm2zJ_iXcmP9KYPDNwFCM5T8dq67iJ3TQIzn-Z_lEM9YkVmhdGX3yt5ljUml-LJWmoDz0j4TZnXD7HocZnFkL4"/></div></div></div><div class="w-full bg-surface border-b border-surface-container-high"><div class="max-w-7xl mx-auto px-margin lg:px-margin-desktop py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-md w-full md:w-auto justify-between md:justify-start"><div class="flex items-center gap-space-md"><img alt="The Daily Globes Monogram" class="w-12 h-12 object-cover border border-surface-container-high grayscale contrast-125" src="https://lh3.googleusercontent.com/aida/AEtjO1UUkUBlZNRaz3ijZ4WIz6A7ahzLEt6XAhyJJOm8Eas-_Qcd7tsu8cy9kGUUoZ6CtGFMVySqg23DUsCiVUAGeI2hiUYlc-CUOTpshjbA3_DGWNYd-4yp-SLBC9fRwlesV7eb7B7wNK2xJfTnCEOj8KZNa7Ot_zT8ZTs6ZQstg-7wjq12fopO23r4HTm2zJ_iXcmP9KYPDNwFCM5T8dq67iJ3TQIzn-Z_lEM9YkVmhdGX3yt5ljUml-LJWmoDz0j4TZnXD7HocZnFkL4"/><div class="text-left"><p class="font-label-md text-label-md tracking-widest uppercase text-primary font-bold">TABLOID INVESTIGASI RESMI</p><span class="font-headline-xl-mobile lg:font-headline-xl text-headline-xl-mobile lg:text-headline-xl tracking-tight text-on-surface block leading-none font-bold">The Daily Globes</span><p class="font-body-sm text-body-sm text-on-surface-variant italic mt-0.5">Media Berita dan Informasi San Andreas Terpercaya</p></div></div></div><div class="flex flex-row md:flex-col items-end gap-space-xs text-right w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-surface-container pt-2 md:pt-0"><div class="flex items-center gap-2"><span class="bg-surface-container-high text-on-surface px-2 py-0.5 font-label-sm text-label-sm tracking-wider uppercase border border-surface-variant">EDISI SAN ANDREAS #142</span><span class="font-label-sm text-label-sm text-secondary uppercase font-bold">LEMBARAN NEGARA</span></div><p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Los Santos • San Fierro • Las Venturas • Flint Co.</p></div></div></div><div class="w-full bg-surface-container-low border-b border-surface-container-high"><div class="max-w-7xl mx-auto px-margin lg:px-margin-desktop h-12 flex items-center justify-between gap-space-md"><nav class="flex items-center gap-space-md lg:gap-space-lg overflow-x-auto whitespace-nowrap py-2 h-full" data-active-classes="text-primary-container font-bold border-b-2 border-primary-container pb-2"><a class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors" data-path="beranda" href="#">Home / Beranda</a><a class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors" data-path="kriminal-hukum" href="#">Kriminal &amp; Hukum</a><a class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors" data-path="otomotif-bisnis" href="#">Otomotif &amp; Bisnis</a><a class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors" data-path="pedesaan" href="#">Pedesaan (Flint &amp; Bone)</a><a class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors" data-path="opini-warga" href="#">Opini &amp; Warga</a><a class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors" data-path="edisi-cetak" href="#">Edisi Cetak</a></nav><div class="flex items-center gap-space-sm shrink-0"><div class="hidden xl:flex items-center bg-surface-container border border-surface-container-high px-2 py-1"><span class="material-symbols-outlined text-sm text-on-surface-variant mr-1">search</span><input class="bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none w-32" placeholder="Arsip investigasi..." type="text"/></div><a class="bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md uppercase tracking-wider px-3 py-1.5 flex items-center gap-1 transition-colors font-bold" data-path="kirim-laporan" href="#"><span class="material-symbols-outlined text-sm">campaign</span> KIRIM LAPORAN</a></div></div></div></header><main class="w-full bg-surface min-h-[60vh]"><div class="flex flex-col w-full">
+<!-- Article Breadcrumb Strip -->
+<div class="w-full bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto px-margin lg:px-margin-desktop py-space-sm flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<nav class="flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+<a class="hover:text-primary transition-colors flex items-center gap-1" data-path="beranda" href="#">
+<span class="material-symbols-outlined text-sm">home</span> Beranda
+        </a>
+<span class="text-outline">/</span>
+<a class="hover:text-primary transition-colors" data-path="pedesaan" href="#">Pedesaan (Flint &amp; Bone)</a>
+<span class="text-outline">/</span>
+<a class="hover:text-primary transition-colors" data-path="otomotif-bisnis" href="#">Otomotif &amp; Bisnis</a>
+<span class="text-outline">/</span>
+<span class="text-on-surface font-bold text-secondary">Artikel #9024</span>
+</nav>
+<div class="hidden md:flex items-center gap-3 text-outline">
+<span class="flex items-center gap-1 font-label-sm text-label-sm"><span class="material-symbols-outlined text-sm text-secondary">verified</span> LEMBARAN INVESTIGASI RESMI</span>
+<span>•</span>
+<span class="font-label-sm text-label-sm uppercase">KLASIFIKASI: TERBUKA</span>
+</div>
+</div>
+</div>
+<!-- Editorial Headline Header Section -->
+<section class="w-full bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-margin lg:px-margin-desktop py-space-xl">
+<div class="flex flex-wrap items-center gap-2 mb-space-md">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 font-label-md text-label-md uppercase font-bold tracking-widest shadow-md">
+          INVESTIGASI EKSKLUSIF
+        </span>
+<span class="bg-surface-container-high text-secondary px-3 py-1 font-label-md text-label-md uppercase font-semibold tracking-wider">
+          OTOMOTIF PEDESAAN
+        </span>
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 font-label-sm text-label-sm uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary">pin_drop</span> Flint County Route 89
+        </span>
+</div>
+<h1 class="font-headline-lg lg:font-headline-xl text-headline-lg lg:text-headline-xl text-on-surface font-bold leading-tight tracking-tight mb-space-md max-w-5xl">
+        Workshop Pedesaan Ini Tak Pernah Sepi, Ini Alasannya: Dari Modifikasi Rahasia Hingga Pelayanan Cepat 24 Jam
+      </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-4xl leading-relaxed mb-space-lg">
+        Menembus dinginnya kabut malam Flint Range, bengkel terpencil beratap seng dengan siluet mural jembatan merah ini menjadi titik kumpul para pengemudi San Andreas yang mencari keahlian mesin tanpa banyak tanya.
+      </p>
+<!-- Byline & Toolbar Row -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pt-space-md bg-surface-container-lowest p-space-md shadow-sm">
+<div class="flex flex-wrap items-center gap-y-2 gap-x-space-lg text-on-surface-variant font-label-md text-label-md">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold font-label-sm text-label-sm">RV</span>
+<div>
+<span class="text-on-surface font-bold">Raymond "Gull" Vance</span>
+<span class="text-outline text-xs block">Kepala Biro Flint County</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-secondary">photo_camera</span>
+<span>Foto: Tim Lapangan Globes</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-primary">calendar_today</span>
+<span>24 Oktober 2024</span>
+</div>
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>Waktu Baca: 4 Menit</span>
+</div>
+</div>
+<!-- Utility Interactive Actions -->
+<div class="flex items-center gap-2 shrink-0 self-end lg:self-center">
+<button class="p-2 bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-sm text-label-sm font-bold flex items-center justify-center" id="font-decrease-btn" title="Kecilkan Teks">
+            A-
+          </button>
+<button class="p-2 bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-sm text-label-sm font-bold flex items-center justify-center" id="font-increase-btn" title="Besarkan Teks">
+            A+
+          </button>
+<button class="px-3 py-1.5 bg-surface-container text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors font-label-sm text-label-sm uppercase flex items-center gap-1 font-bold" id="copy-link-btn" title="Salin Tautan Berita">
+<span class="material-symbols-outlined text-sm">link</span> Salin
+          </button>
+<a class="px-3 py-1.5 bg-[#5865F2] hover:bg-[#4752C4] text-white transition-colors font-label-sm text-label-sm uppercase flex items-center gap-1 font-bold" href="https://discord.gg/QKfsxuKzU5" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-sm">forum</span> Diskusi Discord
+          </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content 2-Column Editorial Grid -->
+<main class="w-full bg-surface py-space-xl">
+<div class="max-w-7xl mx-auto px-margin lg:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Left Column: Article Body (8 cols) -->
+<article class="lg:col-span-8 flex flex-col gap-space-lg" id="article-reader-container">
+<!-- Hero Evidence Photo Card -->
+<figure class="bg-surface-container-lowest p-space-sm shadow-md flex flex-col">
+<div class="relative w-full aspect-video md:aspect-[16/9] overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover grayscale-[20%] contrast-110 brightness-95" data-alt="A gritty retro photograph taken at dusk in rural Flint County, San Andreas. An austere corrugated metal industrial workshop with a large open roll-up bay door reveals an interior lit by warm sodium-vapor lighting. Inside, two mechanics wearing work clothes stand by an open-hood muscle car next to a red spray-painted mural of the San Fierro Gant Bridge. Above the bay hangs a weathered promotional banner reading HUGE SALE and a sign reading OPEN 7 DAYS TIL MIDNIGHT. Beside the garage sits an outdoor soda vending machine and an ATM under dark, misty pine trees with an asphalt two-lane road in the foreground." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkofH48K2G4fhjENzwyuIHsEDRB6UjpHLMJZFrKPiGgcgas4g9p_yJiO8kPxaOo5apgF35_uADv0ceyb6nc-rEZ2p1LDAcyElaNsIYvX2RVHqsgRyd7JTnGjpcylhDrszisiCfyNnJlOUI082vsQ6RH4Fgp3HfqgkcUooyMLjcuBpPi1uj8cwW_ODP4_qV3TiFdVn2R_dPciL9qsbU41eNH8wyaIwmmuatPRtmGyZ28ZX6kCLCfIQ53w"/>
+<div class="absolute top-3 left-3 bg-primary-container text-on-primary-container font-label-sm text-label-sm px-2 py-0.5 uppercase tracking-wider font-bold shadow-md">
+              EVIDENCE D-409
+            </div>
+<div class="absolute bottom-3 right-3 bg-surface-container-lowest/90 backdrop-blur text-on-surface-variant font-label-sm text-label-sm px-2 py-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-secondary">location_on</span> Flint County / Leafy Hollow Road
+            </div>
+</div>
+<figcaption class="p-space-sm font-body-sm text-body-sm text-on-surface-variant italic bg-surface-container-low flex items-start gap-2">
+<span class="material-symbols-outlined text-sm text-primary shrink-0 mt-0.5">info</span>
+<span><strong>DOKUMENTASI EKSKLUSIF:</strong> Tampak muka bengkel Flint County kala senja dengan plang iklan lecet <em>'HUGE SALE'</em> dan <em>'OPEN 7 DAYS TIL MIDNIGHT'</em>. Fasilitas tetap beroperasi meski lampu penerangan jalan utama minim.</span>
+</figcaption>
+</figure>
+<!-- Intro Text -->
+<div class="prose-container font-body-md text-body-md text-on-surface leading-relaxed space-y-space-md">
+<p class="font-body-lg text-body-lg leading-relaxed text-on-surface first-letter:float-left first-letter:text-6xl first-letter:font-headline-xl first-letter:text-primary first-letter:mr-3 first-letter:font-bold">
+            Di sebuah belokan tajam yang menghubungkan dataran sunyi Flint County dengan akses lingkar San Fierro, kepulan asap knalpot dan deru mesin silinder ganda terdengar memecah keheningan rimba pinus. Bangunan beratap seng dengan struktur logam abu-abu kusam ini bukanlah bengkel resmi berlisensi merk kota besar, namun namanya menggema di kalangan pengemudi malam, kurir kargo lintas batas, hingga para pembalap jalanan bawah tanah.
+          </p>
+<p>
+            Fenomena tingginya antrean kendaraan di garasi ini menarik perhatian investigasi <em>The Daily Globes</em>. Mengapa bengkel yang terletak berkilo-kilometer dari gemerlap neon Los Santos dan kasino Las Venturas ini hampir tidak pernah sepi, bahkan saat jarum jam menunjuk angka 03:00 dini hari?
+          </p>
+</div>
+<!-- Section: Kerahasiaan & Kualitas -->
+<div class="space-y-space-sm pt-space-sm">
+<div class="flex items-center gap-2 text-secondary font-label-md text-label-md uppercase tracking-widest font-bold">
+<span class="w-3 h-3 bg-secondary"></span> BAB I — ETOS BAWAH TANAH
+          </div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">
+            Kerahasiaan dan Keahlian: Tempat Pelarian Pembalap &amp; Supir Logistik
+          </h2>
+<div class="font-body-md text-body-md text-on-surface leading-relaxed space-y-space-md">
+<p>
+              Tidak ada ruang tunggu mewah berpendingin udara. Yang ada hanyalah sebuah mesin pendingin minuman kaleng kusam di bibir pintu dan mesin ATM sewaan di pojok trotoar. Namun yang ditawarkan bengkel ini jauh melampaui fasilitas konvensional: kerahasiaan penuh dan keterampilan membongkar mesin blok V8 yang sulit ditandingi teknisi kota.
+            </p>
+</div>
+</div>
+<!-- Pull-Quote Tabloid Noir Box -->
+<blockquote class="bg-surface-container-high p-space-lg shadow-lg relative overflow-hidden">
+<div class="absolute -right-4 -bottom-6 text-surface-container-highest/30 font-headline-xl text-[120px] select-none pointer-events-none font-bold">
+            ”
+          </div>
+<p class="font-headline-sm text-headline-sm text-on-surface italic leading-snug relative z-10 mb-space-sm">
+            “Di sini kita nggak banyak tanya siapa kamu atau dari mana mobil ini berasal. Yang penting mesin dingin, bodi mulus kembali ke jalan, dan bayaran beres di muka tanpa nota birokrasi berbelit.”
+          </p>
+<footer class="font-label-md text-label-md uppercase tracking-wider text-secondary font-bold relative z-10 flex items-center gap-2">
+<span class="w-4 h-0.5 bg-secondary"></span> Mekanik Senior (Anonim), Kaos Abu-Abu Flint Workshop
+          </footer>
+</blockquote>
+<!-- Data Metric Breakdown Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm bg-surface-container-lowest p-space-md shadow-sm">
+<div class="bg-surface-container p-space-md flex flex-col justify-between">
+<div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-2">Estimasi Trafik Harian</div>
+<div class="font-headline-lg text-headline-lg text-primary font-bold">48+</div>
+<div class="text-on-surface-variant font-body-sm text-body-sm">Unit mobil dan truk semi per 24 jam rotasi kerja.</div>
+</div>
+<div class="bg-surface-container p-space-md flex flex-col justify-between">
+<div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-2">Waktu Pengerjaan Bodi</div>
+<div class="font-headline-lg text-headline-lg text-secondary font-bold">~12 Menit</div>
+<div class="text-on-surface-variant font-body-sm text-body-sm">Perbaikan baret dan benturan tanpa antrean panjang.</div>
+</div>
+<div class="bg-surface-container p-space-md flex flex-col justify-between">
+<div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-2">Tingkat Ketuntasan Kasus</div>
+<div class="font-headline-lg text-headline-lg text-tertiary font-bold">99.4%</div>
+<div class="text-on-surface-variant font-body-sm text-body-sm">Kepuasan pengemudi lintasan malam San Andreas.</div>
+</div>
+</div>
+<!-- Section: Lokasi Strategis -->
+<div class="space-y-space-sm pt-space-sm">
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md uppercase tracking-widest font-bold">
+<span class="w-3 h-3 bg-primary"></span> BAB II — GEOGRAFIS STRATEGIS
+          </div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">
+            Lokasi Simpang Tiga Antara Dua Otoritas Kepolisian
+          </h2>
+<div class="font-body-md text-body-md text-on-surface leading-relaxed space-y-space-md">
+<p>
+              Investigasi Globes mendapati bahwa bengkel ini berdiri persis di wilayah abu-abu perbatasan yurisdiksi. Terletak di luar lingkar pengawasan intensif Los Santos Police Department (LSPD) dan tepat sebelum titik patroli rutin San Fierro Police Department (SFPD). Posisi ini memungkinkan pelanggan dengan nomor polisi luar kota atau kendaraan tanpa plat resmi singgah untuk sekadar mengisi nitro kit atau mengganti cat samaran.
+            </p>
+<p>
+              Mural jembatan merah San Fierro di dinding belakang bengkel disinyalir sebagai penanda visual bagi pengemudi yang datang dari arah gurun Bone County menuju pesisir barat. "Kalau sudah lihat mural jembatan merah di garasi seng, kamu tahu kamu aman untuk istirahat sejenak," ujar seorang supir pengangkut kayu yang kami temui di warung terdekat.
+            </p>
+</div>
+</div>
+<!-- Field Evidence Photo Grid -->
+<div class="bg-surface-container-low p-space-md space-y-space-sm">
+<div class="flex items-center justify-between pb-2">
+<span class="font-label-md text-label-md uppercase font-bold text-on-surface tracking-wider">
+              CATATAN BUKTI LAPANGAN RELEVAN
+            </span>
+<span class="font-label-sm text-label-sm text-primary uppercase">ARCHIVE #FLINT-08</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="bg-surface-container p-space-sm flex flex-col gap-2">
+<div class="h-44 bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[30%]" data-alt="Close up archival evidence photograph of high-performance car engine components, turbochargers, and racing suspension tools arranged on a stained grease-covered wooden workbench inside a rustic mechanic garage in Flint County San Andreas." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMHIK9H3BtcRRbQYLTy3RNIwPGQls4GxTByGVs4qJd1NB37Vi1m4oqPjT00BX7K1_-fmngnxJ85Q_4VRx6C0o_Vi7saPTVyZCyoZGq7cgtDE_f52UGqddIPRRD0hj3sCc3p8jyqUM_KEswSgSnzGBPPLdmEUETglNIIKSTz7ioGsgvvTRzl27On5300ltxmASr8jZVmkzQRgxye0O7FI_eLz4YibNAjZIo47uAf5QY3pd-wO4vn5aabQ"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong>Bukti 01:</strong> Deretan peralatan bubut dan suku cadang performa tinggi impor yang tidak terdaftar di katalog resmi dealer kota.
+              </p>
+</div>
+<div class="bg-surface-container p-space-sm flex flex-col gap-2">
+<div class="h-44 bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[30%]" data-alt="Atmospheric nocturnal photograph of a vintage soda vending machine and an ATM glowing quietly against a corrugated metal wall outside a roadside garage on a foggy night in the San Andreas countryside." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY2TNw6g4iLo5FUYTfTzHWI8LzVKTFgmVrnJp2x4ss-FI-EAKtgmv_PKCxheMmMQBrbnNfKfcffuVgUqPAV8q5xogBMXGIC3luRUY6TD-Z1X-eGaimCDxl9m7TOEzWnnOhAeS7YPy4O6v0BW4F3t2NqYahuNKSIYFk1pSeBDP3MQxEUVmdbJbC-11_6NqNcIJqB_Yn9I4xy1sFhgwg_z6zfWwIjp2trWqfPTg3KN3gOBXgwXafaX9asg"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong>Bukti 02:</strong> Titik transaksi tunai ATM mandiri di samping tong sampah bengkel yang kerap dimanfaatkan pelanggan transaksi cepat.
+              </p>
+</div>
+</div>
+</div>
+<!-- Section: Respon SAPD -->
+<div class="bg-surface-container-low p-space-lg space-y-space-sm">
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md uppercase tracking-wider font-bold">
+<span class="material-symbols-outlined text-base">local_police</span> PERNYATAAN OTORITAS KEAMANAN
+          </div>
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">
+            Patroli Wilayah Flint County Diperketat Mulai Akhir Pekan
+          </h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Menanggapi laporan eksklusif ini, perwakilan divisi patroli jalan raya San Andreas State Police mengonfirmasi bahwa pihaknya tengah mengkaji penambahan pos pemeriksaan knalpot brong dan verifikasi nomor rangka mesin di koridor barat daya. Warga sipil diimbau tetap melapor bila menjumpai konvoi ilegal mencurigakan di malam hari.
+          </p>
+</div>
+<!-- Roleplay Citizen Feedback / Comments Section -->
+<section class="bg-surface-container-lowest p-space-lg space-y-space-md shadow-md mt-space-md">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">chat</span>
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold uppercase tracking-tight">
+                Suara Warga San Andreas (4 Respon)
+              </h3>
+</div>
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold">FORUM ROLEPLAY IC</span>
+</div>
+<!-- Comment Submission Form -->
+<form class="space-y-space-sm bg-surface-container p-space-md" id="comment-form">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-label-sm text-label-sm uppercase text-on-surface-variant mb-1">Nama Karakter / Alias IC</label>
+<input class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm p-2 outline-none focus:ring-1 focus:ring-primary-container" id="comment-author" placeholder="Misal: Johnny_Vercetti" required="" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase text-on-surface-variant mb-1">Domisili / Wilayah</label>
+<input class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm p-2 outline-none focus:ring-1 focus:ring-primary-container" id="comment-region" placeholder="Misal: Angel Pine, Flint County" required="" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase text-on-surface-variant mb-1">Pendapat / Kesaksian</label>
+<textarea class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm p-2 outline-none focus:ring-1 focus:ring-primary-container" id="comment-text" placeholder="Tuliskan pengalaman atau opini warga terkait bengkel ini..." required="" rows="3"></textarea>
+</div>
+<div class="flex justify-end">
+<button class="bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md uppercase tracking-wider px-4 py-2 font-bold flex items-center gap-1 transition-colors" type="submit">
+<span class="material-symbols-outlined text-sm">send</span> Kirim Pendapat IC
+              </button>
+</div>
+</form>
+<!-- Existing Comments List -->
+<div class="space-y-space-sm pt-space-sm" id="comments-list">
+<!-- Comment 1 -->
+<div class="p-space-sm bg-surface-container flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-bold">Frank_Castiglione <span class="text-on-surface-variant text-xs font-normal">(@Angel Pine)</span></span>
+<span class="font-label-sm text-label-sm text-outline">Hari ini, 18:32 SAST</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Jangan dibocorkan semua min! Itu bengkel langganan trucker pas alternator jebol tengah malam di hutan. Kalau polisi ngetem di sana, repot kita yang nyari nafkah legal.
+              </p>
+</div>
+<!-- Comment 2 -->
+<div class="p-space-sm bg-surface-container flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-secondary font-bold">Sergeant_Mendoza <span class="text-on-surface-variant text-xs font-normal">(@LSPD Traffic Div)</span></span>
+<span class="font-label-sm text-label-sm text-outline">Hari ini, 19:10 SAST</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Unit kami sudah mencatat koordinat bengkel terkait. Setiap modifikasi mesin yang melanggar baku emisi dan batas desibel San Andreas Code akan ditindak tegas di checkpoint berikutnya.
+              </p>
+</div>
+<!-- Comment 3 -->
+<div class="p-space-sm bg-surface-container flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-bold">Speedy_Clover <span class="text-on-surface-variant text-xs font-normal">(@San Fierro)</span></span>
+<span class="font-label-sm text-label-sm text-outline">Hari ini, 20:45 SAST</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Pelayanan bodi 12 menit itu nyata bukan mitos. Kemarin mobil gue penyok abis nyenggol pagar ladang gandum, kelar dalam sebatang rokok. Mantap rekomen!
+              </p>
+</div>
+</div>
+</section>
+</article>
+<!-- Right Column: Editorial Sticky Sidebar (4 cols) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Live Investigation Bulletin -->
+<div class="bg-surface-container-lowest p-space-md shadow-md space-y-space-sm">
+<div class="flex items-center justify-between pb-2 bg-surface-container-high px-2 py-1">
+<span class="font-label-sm text-label-sm uppercase font-bold text-primary flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> BERITA TERKAIT PEDESAAN
+            </span>
+<span class="font-label-sm text-label-sm text-outline">EDISI KHUSUS</span>
+</div>
+<div class="space-y-space-sm">
+<a class="block bg-surface-container p-space-sm hover:bg-surface-container-high transition-colors group" href="#">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold block mb-1">Misteri • Whetstone</span>
+<h4 class="font-title-md text-title-md text-on-surface font-bold group-hover:text-primary transition-colors leading-snug">
+                Misteri Rumah Tua Dekat Kaki Gunung Chiliad: Saksi Bisu Pelarian 1992
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">
+                Warga lokal laporkan suara deru mesin misterius di lereng bukit saat malam berkabut tebal.
+              </p>
+<div class="flex items-center gap-1 text-outline font-label-sm text-label-sm mt-2">
+<span class="material-symbols-outlined text-xs">schedule</span> 5 jam lalu • 820 pembaca
+              </div>
+</a>
+<a class="block bg-surface-container p-space-sm hover:bg-surface-container-high transition-colors group" href="#">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold block mb-1">Agraria • Red County</span>
+<h4 class="font-title-md text-title-md text-on-surface font-bold group-hover:text-primary transition-colors leading-snug">
+                Harga Gandum Naik Drastis, Petani Flint County Gelar Aksi di Balai Desa
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">
+                Distribusi pupuk tersendat akibat penutupan jalur jembatan lama oleh otoritas perhubungan.
+              </p>
+<div class="flex items-center gap-1 text-outline font-label-sm text-label-sm mt-2">
+<span class="material-symbols-outlined text-xs">schedule</span> 8 jam lalu • 1.4k pembaca
+              </div>
+</a>
+<a class="block bg-surface-container p-space-sm hover:bg-surface-container-high transition-colors group" href="#">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold block mb-1">Investigasi Kargo</span>
+<h4 class="font-title-md text-title-md text-on-surface font-bold group-hover:text-primary transition-colors leading-snug">
+                Truk Kontainer Ilegal Ditemukan Terbengkalai di Jurang Shady Creeks
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">
+                Polisi amankan kargo berisi suku cadang modifikasi tanpa izin impor resmi.
+              </p>
+<div class="flex items-center gap-1 text-outline font-label-sm text-label-sm mt-2">
+<span class="material-symbols-outlined text-xs">schedule</span> 1 hari lalu • 2.1k pembaca
+              </div>
+</a>
+</div>
+</div>
+<!-- Official Discord Roleplay Community Card -->
+<div class="bg-[#5865F2]/10 p-space-md shadow-md space-y-space-sm bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="p-2 bg-[#5865F2] text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">forum</span>
+</span>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface font-bold uppercase leading-tight">Discord Resmi Roleplay</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Bergabung dalam ekosistem pemberitaan San Andreas</p>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Dapatkan notifikasi berita breaking terkini langsung dari reporter lapangan, ajukan klarifikasi IC, atau diskusikan kasus ini dengan sesama pemain.
+          </p>
+<a class="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-label-md text-label-md uppercase tracking-wider py-2.5 px-4 font-bold flex items-center justify-center gap-2 transition-colors" href="https://discord.gg/QKfsxuKzU5" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-sm">open_in_new</span> GABUNG DISCORD SEKARANG
+          </a>
+</div>
+<!-- Anonymous Citizen Tip / Whistleblower Box -->
+<div class="bg-surface-container-lowest p-space-md shadow-md space-y-space-sm">
+<div class="flex items-center gap-2 pb-2">
+<span class="material-symbols-outlined text-primary text-xl">security</span>
+<div>
+<h4 class="font-label-lg text-label-lg uppercase text-on-surface font-bold tracking-wider">KIRIM TIP INVESTIGASI ANONIM</h4>
+<p class="font-label-sm text-label-sm text-outline">Biro Redaksi The Daily Globes</p>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Punya rekaman foto, informasi gudang rahasia, atau aktivitas kriminalitas di daerah Anda? Sampaikan ke meja redaksi kami. Identitas Anda terenkripsi 100%.
+          </p>
+<form class="space-y-2" id="whistleblower-form">
+<input class="w-full bg-surface-container text-on-surface font-body-sm text-body-sm p-2 outline-none focus:ring-1 focus:ring-primary-container" id="tip-subject" placeholder="Subjek Temuan / Lokasi" required="" type="text"/>
+<textarea class="w-full bg-surface-container text-on-surface font-body-sm text-body-sm p-2 outline-none focus:ring-1 focus:ring-primary-container" id="tip-details" placeholder="Deskripsi temuan, tanggal, plat nomor, atau saksi..." required="" rows="3"></textarea>
+<button class="w-full bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container text-on-surface font-label-md text-label-md uppercase tracking-wider py-2 font-bold transition-colors flex items-center justify-center gap-1" type="submit">
+<span class="material-symbols-outlined text-sm">lock</span> KIRIM TIP SECARA RAHASIA
+            </button>
+</form>
+<div class="hidden p-2 bg-secondary/10 text-secondary font-label-sm text-label-sm uppercase font-bold text-center" id="tip-success-msg">
+            Tip berhasil dikirimkan ke meja redaktur biro!
+          </div>
+</div>
+<!-- Archival Print Metadata Stamp Card -->
+<div class="bg-surface-container-low p-space-md space-y-2 text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex justify-between items-center text-outline">
+<span>REGISTRASI ARSIP PERS</span>
+<span class="font-mono">SA-GLOBES-9024</span>
+</div>
+<div class="flex justify-between items-center text-outline">
+<span>STATUS INVESTIGASI</span>
+<span class="text-secondary font-bold">VERIFIKASI TINGKAT 2</span>
+</div>
+<div class="flex justify-between items-center text-outline">
+<span>PERCETAKAN TERAKHIR</span>
+<span>Los Santos Press Center, #42</span>
+</div>
+<div class="pt-2">
+<a class="text-secondary hover:underline flex items-center gap-1 font-bold" href="http://bit.ly/TheDailyGlobesCentral" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-sm">public</span> Portal Pusat: bit.ly/TheDailyGlobesCentral
+            </a>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Inline Script for Interactive Elements -->
+<script>
+    (function() {
+      // Font Sizing Toggle
+      const readerContainer = document.getElementById('article-reader-container');
+      const incBtn = document.getElementById('font-increase-btn');
+      const decBtn = document.getElementById('font-decrease-btn');
+      let currentScale = 1;
+
+      if (incBtn && decBtn && readerContainer) {
+        incBtn.addEventListener('click', function() {
+          if (currentScale < 1.3) {
+            currentScale += 0.1;
+            readerContainer.style.fontSize = (currentScale * 100) + '%';
+          }
+        });
+        decBtn.addEventListener('click', function() {
+          if (currentScale > 0.9) {
+            currentScale -= 0.1;
+            readerContainer.style.fontSize = (currentScale * 100) + '%';
+          }
+        });
+      }
+
+      // Copy Link Interactive Toast
+      const copyBtn = document.getElementById('copy-link-btn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(window.location.href);
+          }
+          const originalContent = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<span class="material-symbols-outlined text-sm text-secondary">check</span> Tersalin!';
+          setTimeout(function() {
+            copyBtn.innerHTML = originalContent;
+          }, 2500);
+        });
+      }
+
+      // Roleplay Comment Form Submission
+      const commentForm = document.getElementById('comment-form');
+      const commentsList = document.getElementById('comments-list');
+      if (commentForm && commentsList) {
+        commentForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const author = document.getElementById('comment-author').value.trim();
+          const region = document.getElementById('comment-region').value.trim();
+          const text = document.getElementById('comment-text').value.trim();
+
+          if (!author || !text) return;
+
+          const newCard = document.createElement('div');
+          newCard.className = 'p-space-sm bg-surface-container flex flex-col gap-1 transition-all duration-300';
+          newCard.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-label-md text-label-md text-primary font-bold">${author} <span class="text-on-surface-variant text-xs font-normal">(@${region || 'San Andreas'})</span></span>
+              <span class="font-label-sm text-label-sm text-outline">Baru Saja</span>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface">${text}</p>
+          `;
+
+          commentsList.insertBefore(newCard, commentsList.firstChild);
+          commentForm.reset();
+        });
+      }
+
+      // Whistleblower Box Interactive Submission
+      const tipForm = document.getElementById('whistleblower-form');
+      const tipMsg = document.getElementById('tip-success-msg');
+      if (tipForm && tipMsg) {
+        tipForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          tipMsg.classList.remove('hidden');
+          tipForm.reset();
+          setTimeout(function() {
+            tipMsg.classList.add('hidden');
+          }, 4000);
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest border-t-2 border-surface-container-high text-on-surface-variant"><div class="max-w-7xl mx-auto px-margin lg:px-margin-desktop py-space-xl"><div class="grid grid-cols-1 md:grid-cols-4 gap-space-xl pb-space-lg border-b border-surface-container-high"><div class="md:col-span-1"><h4 class="font-headline-sm text-headline-sm text-on-surface font-bold uppercase mb-space-sm">The Daily Globes</h4><p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">The Daily Globes Publishing Co. Pers investigasi independen, menyajikan dinamika kriminalitas, birokrasi, dan kehidupan jalanan di seluruh wilayah Negara Bagian San Andreas.</p><div class="flex items-center gap-space-sm"><a class="p-1.5 bg-surface-container border border-surface-container-high text-on-surface hover:text-primary transition-colors flex items-center" href="https://discord.gg/QKfsxuKzU5" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-base">forum</span></a><a class="p-1.5 bg-surface-container border border-surface-container-high text-on-surface hover:text-secondary transition-colors flex items-center" href="http://bit.ly/TheDailyGlobesCentral" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-base">public</span></a><a class="p-1.5 bg-surface-container border border-surface-container-high text-on-surface hover:text-primary transition-colors flex items-center" data-path="citizen-hotline" href="#"><span class="material-symbols-outlined text-base">call</span></a></div></div><div><h5 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface font-bold mb-space-sm border-l-2 border-primary-container pl-2">Kanal Utama</h5><ul class="space-y-1 font-body-sm text-body-sm"><li><a class="hover:text-primary transition-colors" data-path="kriminal-hukum" href="#">Kriminal &amp; Peradilan SAPD</a></li><li><a class="hover:text-primary transition-colors" data-path="otomotif-bisnis" href="#">Bisnis, Ekspor &amp; Bawah Tanah</a></li><li><a class="hover:text-primary transition-colors" data-path="pedesaan" href="#">Warta Flint County &amp; Red County</a></li><li><a class="hover:text-primary transition-colors" data-path="opini-warga" href="#">Suara Warga &amp; Editorial Redaksi</a></li><li><a class="hover:text-primary transition-colors" data-path="edisi-cetak" href="#">Arsip Edisi Cetak Tabloid</a></li></ul></div><div><h5 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface font-bold mb-space-sm border-l-2 border-secondary-container pl-2">Dewan Redaksi &amp; Biro</h5><ul class="space-y-1 font-body-sm text-body-sm"><li class="text-on-surface font-medium">Redaktur Pelaksana: <span class="text-on-surface-variant font-normal">R. Vance &amp; Rekan</span></li><li class="text-on-surface font-medium">Biro Los Santos: <span class="text-on-surface-variant font-normal">Market &amp; Commerce</span></li><li class="text-on-surface font-medium">Biro Pedesaan: <span class="text-on-surface-variant font-normal">Angel Pine Post Office</span></li><li class="text-on-surface font-medium">Pusat Pengaduan: <span class="text-on-surface-variant font-normal">Whistleblower Desk #04</span></li><li><a class="text-secondary hover:underline inline-block mt-1 font-label-sm text-label-sm tracking-wide" href="http://bit.ly/TheDailyGlobesCentral" rel="noopener noreferrer" target="_blank">CENTRAL PORTAL: bit.ly/TheDailyGlobesCentral</a></li></ul></div><div><h5 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface font-bold mb-space-sm border-l-2 border-outline pl-2">Maklumat Roleplay</h5><p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed bg-surface-container-low p-space-sm border border-surface-container-high">Situs dan publikasi ini sepenuhnya bagian dari fiksi in-character (In-Character Roleplay / IC). Segala nama tokoh, peristiwa kriminal, dan instansi adalah rekaan untuk kebutuhan simulasi komunitas San Andreas Roleplay.</p></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm font-label-sm text-label-sm"><p class="text-on-surface-variant">© 2024 The Daily Globes Publishing Co. Seluruh hak cipta dilindungi undang-undang pers San Andreas.</p><div class="flex items-center gap-space-md"><a class="hover:text-on-surface transition-colors" data-path="pedoman-pemberitaan" href="#">Pedoman Kode Etik Jurnalistik IC</a><span class="text-surface-container-high">/</span><a class="text-[#5865F2] hover:underline font-bold" href="https://discord.gg/QKfsxuKzU5" rel="noopener noreferrer" target="_blank">Discord Server Resmi</a></div></div></div></footer></body></html>

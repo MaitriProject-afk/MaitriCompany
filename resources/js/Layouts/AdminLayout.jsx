@@ -14,6 +14,9 @@ export default function AdminLayout({ children, activeMenu = 'overview' }) {
             items: [
                 { id: 'overview', label: 'Overview / Ringkasan', icon: 'grid_view', href: route('admin.dashboard') },
                 { id: 'vehicles', label: 'Divisi Armada & Hauling', icon: 'local_shipping', href: route('admin.vehicles.index') },
+                { id: 'workshop', label: 'Divisi Automotive & Workshop', icon: 'build', href: route('admin.workshop.index') },
+                { id: 'daily-globe', label: 'Redaksi The Daily Globes', icon: 'newspaper', href: route('admin.daily-globe.index') },
+                { id: 'radio', label: 'Studio Radio & Boombox SA-MP', icon: 'radio', href: route('admin.radio.index') },
                 { id: 'proyek', label: 'Divisi Proyek Desain & Interior', icon: 'architecture', href: '#proyek' },
                 { id: 'dispatch', label: 'Jadwal & Dispatch', icon: 'calendar_clock', href: '#dispatch' },
             ],
@@ -22,6 +25,7 @@ export default function AdminLayout({ children, activeMenu = 'overview' }) {
             section: 'Finance & Governance',
             items: [
                 { id: 'keuangan', label: 'Keuangan & Invoice', icon: 'receipt_long', href: route('admin.finance.index') },
+                { id: 'recruitment', label: 'Rekrutmen & Divisi', icon: 'how_to_reg', href: route('admin.recruitment.index') },
                 { id: 'users', label: 'Manajemen Pengguna & Role', icon: 'manage_accounts', href: route('admin.users.index') },
                 { id: 'sistem', label: 'Pengaturan & Log Sistem', icon: 'settings_account_box', href: '#sistem' },
             ],

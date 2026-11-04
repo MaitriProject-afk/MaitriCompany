@@ -307,6 +307,13 @@ export default function Welcome({ auth, canLogin, canRegister, vehicleCategories
                                     <span className="material-symbols-outlined text-[17px] text-slate-400">star</span>
                                     <span>Testimoni</span>
                                 </a>
+                                <Link
+                                    href={route('dailyglobe.index')}
+                                    className="px-3 py-1.5 text-xs sm:text-sm font-bold text-rose-700 hover:text-rose-800 hover:bg-rose-50 rounded-lg transition-all flex items-center gap-1.5 shadow-xs shadow-transparent hover:shadow-rose-100"
+                                >
+                                    <span className="material-symbols-outlined text-[17px] text-rose-600">newspaper</span>
+                                    <span>The Daily Globes</span>
+                                </Link>
                             </nav>
 
                             {/* Desktop Action Buttons */}
@@ -392,6 +399,14 @@ export default function Welcome({ auth, canLogin, canRegister, vehicleCategories
                                         <span className="material-symbols-outlined text-cyan-600 text-[20px]">apartment</span>
                                         <span>Desain Interior &amp; Arsitektur</span>
                                     </a>
+                                    <Link
+                                        href={route('dailyglobe.index')}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="px-3 py-2.5 text-sm font-bold text-rose-700 hover:bg-rose-50 rounded-xl flex items-center gap-2.5"
+                                    >
+                                        <span className="material-symbols-outlined text-rose-600 text-[20px]">newspaper</span>
+                                        <span>The Daily Globes (Warta Pers)</span>
+                                    </Link>
                                     <a
                                         href="#kalkulator-pemesanan"
                                         onClick={() => {

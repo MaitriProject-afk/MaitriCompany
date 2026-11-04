@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\DailyGlobeArticle;
+use App\Models\DailyGlobeSetting;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\VehicleCategory;
@@ -201,5 +203,9 @@ class DatabaseSeeder extends Seeder
                 'notes' => 'Unit shuttle operasional intra-kota.',
             ]
         );
+
+        // Seed default Daily Globe Articles & Settings
+        DailyGlobeArticle::ensureDefaultArticlesExist();
+        DailyGlobeSetting::current();
     }
 }

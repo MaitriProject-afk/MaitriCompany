@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Staff\WorkshopStaffController;
+use App\Models\RecruitmentDivision;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,10 +19,12 @@ class UserController extends Controller
      */
     public function index(Request $request): Response
     {
+        WorkshopStaffController::ensureInitialized();
+
         $search = $request->input('search');
         $roleFilter = $request->input('role');
 
-        $query = User::query();
+        $query = User::with('division');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -41,6 +45,14 @@ class UserController extends Controller
                 'role' => $user->role,
                 'position' => $user->position,
                 'position_title' => $user->getPositionTitle(),
+                'recruitment_division_id' => $user->recruitment_division_id,
+                'division' => $user->division ? [
+                    'id' => $user->division->id,
+                    'code' => $user->division->code,
+                    'title' => $user->division->title,
+                    'department' => $user->division->department,
+                    'icon' => $user->division->icon,
+                ] : null,
                 'email_verified_at' => $user->email_verified_at?->format('d M Y, H:i'),
                 'created_at' => $user->created_at?->format('d M Y, H:i'),
             ];
@@ -53,8 +65,13 @@ class UserController extends Controller
             'warga' => User::where('role', User::ROLE_WARGA)->count(),
         ];
 
+        $divisions = RecruitmentDivision::orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get(['id', 'code', 'title', 'department', 'icon']);
+
         return Inertia::render('Admin/Users/Index', [
             'users' => $users,
+            'divisions' => $divisions,
             'filters' => [
                 'search' => $search ?? '',
                 'role' => $roleFilter ?? 'all',
@@ -71,26 +88,30 @@ class UserController extends Controller
         $validated = $request->validate([
             'role' => ['required', 'string', Rule::in([User::ROLE_ADMIN, User::ROLE_STAFF, User::ROLE_WARGA])],
             'position' => ['nullable', 'string', 'max:100'],
+            'recruitment_division_id' => ['nullable', 'exists:recruitment_divisions,id'],
         ]);
 
         $newRole = $validated['role'];
         $newPosition = $validated['position'] ?? null;
+        $newDivisionId = $validated['recruitment_division_id'] ?? null;
 
         // If user is editing themselves, prevent locking out by demoting own role
         if ($user->id === $request->user()->id && $newRole !== $user->role) {
             return back()->with('error', 'Anda tidak dapat mengubah hak akses (role) akun Anda sendiri saat sedang login.');
         }
 
-        // Warga users do not have positions
+        // Warga users do not have positions or divisions
         if ($newRole === User::ROLE_WARGA) {
             $newPosition = null;
+            $newDivisionId = null;
         }
 
         $user->update([
             'role' => $newRole,
             'position' => $newPosition,
+            'recruitment_division_id' => $newDivisionId,
         ]);
 
-        return back()->with('success', "Role dan Jabatan untuk {$user->name} berhasil diperbarui.");
+        return back()->with('success', "Role dan Divisi untuk {$user->name} berhasil diperbarui.");
     }
 }

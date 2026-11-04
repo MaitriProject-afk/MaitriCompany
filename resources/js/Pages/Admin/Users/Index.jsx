@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Head, router, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 
-export default function UsersIndex({ users, filters, counts }) {
+export default function UsersIndex({ users, divisions = [], filters, counts }) {
     const { auth, flash } = usePage().props;
     const currentUser = auth.user;
 
@@ -10,12 +10,13 @@ export default function UsersIndex({ users, filters, counts }) {
     const [selectedRoleFilter, setSelectedRoleFilter] = useState(filters.role || 'all');
     const [updatingUserId, setUpdatingUserId] = useState(null);
 
-    // Modal state for editing role & position
+    // Modal state for editing role, position & division
     const [editModal, setEditModal] = useState({
         isOpen: false,
         user: null,
         role: 'warga',
         position: '',
+        recruitment_division_id: '',
     });
 
     const handleSearchSubmit = (e) => {
@@ -48,6 +49,7 @@ export default function UsersIndex({ users, filters, counts }) {
             user,
             role: user.role,
             position: user.position || '',
+            recruitment_division_id: user.recruitment_division_id || '',
         });
     };
 
@@ -57,6 +59,7 @@ export default function UsersIndex({ users, filters, counts }) {
             user: null,
             role: 'warga',
             position: '',
+            recruitment_division_id: '',
         });
     };
 
@@ -72,6 +75,7 @@ export default function UsersIndex({ users, filters, counts }) {
             {
                 role: editModal.role,
                 position: editModal.role === 'warga' ? '' : editModal.position.trim(),
+                recruitment_division_id: editModal.role === 'staff' ? (editModal.recruitment_division_id ? Number(editModal.recruitment_division_id) : null) : null,
             },
             {
                 preserveScroll: true,
@@ -92,11 +96,12 @@ export default function UsersIndex({ users, filters, counts }) {
     ];
 
     const staffPositionPresets = [
+        'Kepala Mekanik Workshop',
+        'Senior Mechanic 2000 HP',
+        'Teknisi Bodi & Custom Workshop',
         'Fleet Operations Manager',
         'Dispatcher Lead',
         'Hauling Logistics Coordinator',
-        'Fleet Maintenance Staff',
-        'Field Logistics Officer',
     ];
 
     const getRoleBadge = (role) => {
@@ -341,6 +346,21 @@ export default function UsersIndex({ users, filters, counts }) {
                                                 {/* Current Role */}
                                                 <td className="px-4 py-3.5">
                                                     {getRoleBadge(u.role)}
+                                                    {u.role === 'staff' && (
+                                                        <div className="mt-1.5">
+                                                            {u.division ? (
+                                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-900 border border-amber-200">
+                                                                    <span className="material-symbols-outlined text-[12px]">{u.division.icon || 'badge'}</span>
+                                                                    <span>{u.division.title}</span>
+                                                                </span>
+                                                            ) : (
+                                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                                                    <span className="material-symbols-outlined text-[12px] text-amber-500">pending</span>
+                                                                    <span>Onboarding (Tanpa Divisi)</span>
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    )}
                                                 </td>
 
                                                 {/* Position / Jabatan */}
@@ -579,6 +599,38 @@ export default function UsersIndex({ users, filters, counts }) {
 
                                     <p className="text-[11px] text-slate-500 leading-relaxed pt-1">
                                         *Jabatan ini akan otomatis dicetak pada kolom <strong>PIHAK PERTAMA (PENYEDIA)</strong> di dokumen resmi Memorandum of Understanding (MoU) sewa truk.
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* Division Selector (Specifically for Staff) */}
+                            {editModal.role === 'staff' && (
+                                <div className="space-y-2 pt-3 border-t border-slate-200">
+                                    <div className="flex items-center justify-between">
+                                        <label htmlFor="user_division" className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                            <span className="material-symbols-outlined text-[16px] text-amber-500">domain</span>
+                                            <span>Divisi Penugasan Staff (1 Staff = 1 Divisi):</span>
+                                        </label>
+                                        <span className="text-[11px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                                            Khusus Staff
+                                        </span>
+                                    </div>
+
+                                    <select
+                                        id="user_division"
+                                        value={editModal.recruitment_division_id || ''}
+                                        onChange={(e) => setEditModal((prev) => ({ ...prev, recruitment_division_id: e.target.value }))}
+                                        className="w-full h-10 px-3 text-xs bg-slate-50 focus:bg-white text-slate-900 rounded-xl border border-slate-300 focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20 transition-all outline-none font-medium"
+                                    >
+                                        <option value="">— Belum Ditugaskan / Onboarding (Tanpa Divisi) —</option>
+                                        {divisions.map((div) => (
+                                            <option key={div.id} value={div.id}>
+                                                {div.title} ({div.department})
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                                        *Staf akan otomatis diarahkan ke Dashboard sesuai divisi yang dipilih saat login. Jika dikosongkan, staf akan melihat halaman Onboarding.
                                     </p>
                                 </div>
                             )}
