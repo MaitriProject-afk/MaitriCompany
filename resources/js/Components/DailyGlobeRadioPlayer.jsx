@@ -30,13 +30,17 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
 
     // Primary audio element (loads /radio/boombox.mp3 which is pre-sliced by the server at the exact live second!)
     const audioRef = useRef(null);
-    // Secondary background audio element for soft music ducking during Live Mic mode
-    const bgDuckingAudioRef = useRef(null);
 
     const activeSignatureRef = useRef('');
+    const lastStreamModeRef = useRef(initialBroadcast?.streamMode || 'playlist');
     const baseOffsetWhenStartedRef = useRef(Number(initialBroadcast?.offsetSeconds || 0));
     const isPlayingRef = useRef(false);
     const volumeRef = useRef(0.85);
+
+    // Real-Time Voice Chunk Queue for mic_live mode (zero music, seamless voice chunks)
+    const micChunkQueueRef = useRef([]);
+    const lastEnqueuedMicUrlRef = useRef('');
+    const isMicChunkPlayingRef = useRef(false);
 
     useEffect(() => {
         isPlayingRef.current = isPlaying;
@@ -53,45 +57,103 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
         return `${String(m).padStart(2, '0')}:${String(rem).padStart(2, '0')}`;
     };
 
-    // Connect audio element to the server's live-sliced /radio/boombox.mp3 endpoint
-    const startLiveSlicedStream = useCallback((data, forceReconnect = false, advanceSecs = 0) => {
-        if (!audioRef.current || !isPlayingRef.current) return;
+    const playNextMicChunkIfIdle = useCallback(() => {
+        if (
+            !audioRef.current ||
+            !isPlayingRef.current ||
+            isMicChunkPlayingRef.current ||
+            micChunkQueueRef.current.length === 0
+        ) {
+            return;
+        }
 
-        const mode = data.streamMode || 'playlist';
-        const sig = `${mode}_${data.activeTrackId || ''}_${data.activeAudioUrl || ''}_${data.playlistPlaybackMode || ''}_${data.playlistStartedAt || ''}_${data.updatedAtTimestamp || ''}`;
+        const nextChunkUrl = micChunkQueueRef.current.shift();
+        isMicChunkPlayingRef.current = true;
+        setIsBuffering(false);
 
-        // Handle background music ducking during Live Mic mode
-        if (mode === 'mic_live') {
-            if (bgDuckingAudioRef.current) {
-                if (!bgDuckingAudioRef.current.src) {
-                    bgDuckingAudioRef.current.src = `/radio/boombox.mp3?raw=1&single=1&bg=1`;
+        audioRef.current.src = nextChunkUrl;
+        audioRef.current.volume = volumeRef.current;
+        audioRef.current
+            .play()
+            .then(() => {
+                setIsBuffering(false);
+            })
+            .catch((err) => {
+                isMicChunkPlayingRef.current = false;
+                setIsBuffering(false);
+                if (err && err.name === 'AbortError') {
+                    return;
                 }
-                bgDuckingAudioRef.current.volume = Math.max(0.05, volumeRef.current * 0.18);
-            }
-        } else if (bgDuckingAudioRef.current && !bgDuckingAudioRef.current.paused) {
-            bgDuckingAudioRef.current.pause();
-        }
-
-        if (activeSignatureRef.current !== sig || forceReconnect) {
-            activeSignatureRef.current = sig;
-            const serverOffset = Number(data.offsetSeconds || 0);
-            baseOffsetWhenStartedRef.current = serverOffset;
-            setLiveClockSeconds(serverOffset);
-            setIsBuffering(true);
-
-            const advQuery = advanceSecs > 0 ? `&advance=${advanceSecs}` : '';
-            // /radio/boombox.mp3?raw=1&single=1 slices the MP3 right at serverOffset on the server,
-            // so byte 0 of this response IS the exact current live second of the broadcast!
-            audioRef.current.src = `/radio/boombox.mp3?raw=1&single=1${advQuery}&_live=${Date.now()}`;
-            audioRef.current.volume = volumeRef.current;
-            audioRef.current
-                .play()
-                .then(() => setIsBuffering(false))
-                .catch(() => setIsBuffering(false));
-        }
+            });
     }, []);
 
-    // Poll /radio/status every 1.2s to keep metadata, live clock, and mid-song track/mic switches in sync
+    // Connect audio element to the server's live-sliced /radio/boombox.mp3 endpoint
+    const startLiveSlicedStream = useCallback(
+        (data, forceReconnect = false, advanceSecs = 0) => {
+            if (!audioRef.current || !isPlayingRef.current) return;
+
+            const prevMode = lastStreamModeRef.current;
+            const mode = data.streamMode || 'playlist';
+            lastStreamModeRef.current = mode;
+
+            // 1. LIVE MIC MODE: Pure announcer voice ONLY (Zero playlist music!)
+            if (mode === 'mic_live') {
+                if (prevMode !== 'mic_live') {
+                    // Immediately stop any playing playlist song when switching to Live Mic!
+                    audioRef.current.pause();
+                    audioRef.current.removeAttribute('src');
+                    audioRef.current.load();
+                    micChunkQueueRef.current = [];
+                    isMicChunkPlayingRef.current = false;
+                    activeSignatureRef.current = '';
+                    setLiveClockSeconds(0);
+                    setIsBuffering(false);
+                }
+
+                if (
+                    data.activeAudioUrl &&
+                    (data.activeAudioUrl !== lastEnqueuedMicUrlRef.current || forceReconnect)
+                ) {
+                    lastEnqueuedMicUrlRef.current = data.activeAudioUrl;
+                    const chunkPlayUrl = `/radio/boombox.mp3?raw=1&single=1&chunk=${encodeURIComponent(data.activeAudioUrl)}&_t=${Date.now()}`;
+                    micChunkQueueRef.current.push(chunkPlayUrl);
+                    if (micChunkQueueRef.current.length > 3) {
+                        micChunkQueueRef.current.shift();
+                    }
+                    playNextMicChunkIfIdle();
+                }
+                return;
+            }
+
+            if (prevMode === 'mic_live') {
+                micChunkQueueRef.current = [];
+                lastEnqueuedMicUrlRef.current = '';
+                isMicChunkPlayingRef.current = false;
+            }
+
+            // 2. PLAYLIST OR OFFLINE STATIC MODE
+            const sig = `${mode}_${data.activeTrackId || ''}_${data.activeAudioUrl || ''}_${data.playlistPlaybackMode || ''}_${data.playlistStartedAt || ''}_${data.updatedAtTimestamp || ''}`;
+
+            if (activeSignatureRef.current !== sig || forceReconnect) {
+                activeSignatureRef.current = sig;
+                const serverOffset = Number(data.offsetSeconds || 0);
+                baseOffsetWhenStartedRef.current = serverOffset;
+                setLiveClockSeconds(serverOffset);
+                setIsBuffering(true);
+
+                const advQuery = advanceSecs > 0 ? `&advance=${advanceSecs}` : '';
+                audioRef.current.src = `/radio/boombox.mp3?raw=1&single=1${advQuery}&_live=${Date.now()}`;
+                audioRef.current.volume = volumeRef.current;
+                audioRef.current
+                    .play()
+                    .then(() => setIsBuffering(false))
+                    .catch(() => setIsBuffering(false));
+            }
+        },
+        [playNextMicChunkIfIdle]
+    );
+
+    // Poll /radio/status every 800ms to keep metadata, live clock, and mid-song track/mic switches in sync
     useEffect(() => {
         const pollStatus = async () => {
             try {
@@ -102,30 +164,35 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
 
                 if (isPlayingRef.current) {
                     startLiveSlicedStream(data, false, 0);
-                } else {
+                } else if (data.streamMode !== 'mic_live') {
                     setLiveClockSeconds(Number(data.offsetSeconds || 0));
                 }
             } catch (e) {}
         };
 
-        const interval = setInterval(pollStatus, 1200);
+        const interval = setInterval(pollStatus, 800);
         return () => clearInterval(interval);
     }, [startLiveSlicedStream]);
 
-    // 1-second smooth clock ticker when paused so the user sees the live broadcast clock running
+    // 1-second smooth clock ticker when paused or in mic_live mode
     useEffect(() => {
         const timer = setInterval(() => {
-            if (!isPlayingRef.current) {
+            if (!isPlayingRef.current || lastStreamModeRef.current === 'mic_live') {
                 setLiveClockSeconds((prev) => prev + 1);
             }
         }, 1000);
         return () => clearInterval(timer);
     }, []);
 
-    // When the remaining slice of the current track finishes, immediately reconnect to /radio/boombox.mp3
-    // to stream the next track (or next cycle) from its current live second!
+    // When the remaining slice of the current track finishes: in mic_live play next queued voice chunk; in playlist advance song
     const handleStreamSliceEnded = async () => {
         if (!isPlayingRef.current) return;
+
+        if (lastStreamModeRef.current === 'mic_live') {
+            isMicChunkPlayingRef.current = false;
+            playNextMicChunkIfIdle();
+            return;
+        }
 
         try {
             const res = await fetch('/radio/status?advance=4', { cache: 'no-store' });
@@ -149,27 +216,34 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
 
         if (isPlaying) {
             audioRef.current.pause();
-            if (bgDuckingAudioRef.current) {
-                bgDuckingAudioRef.current.pause();
-            }
+            micChunkQueueRef.current = [];
+            isMicChunkPlayingRef.current = false;
             setIsPlaying(false);
             setIsBuffering(false);
             isPlayingRef.current = false;
         } else {
             setIsPlaying(true);
-            setIsBuffering(true);
             isPlayingRef.current = true;
+            isMicChunkPlayingRef.current = false;
+            lastEnqueuedMicUrlRef.current = '';
+            activeSignatureRef.current = '';
 
-            // Connect immediately inside user gesture so browser autoplay policy is satisfied,
-            // using current liveClockSeconds as initial offset
-            baseOffsetWhenStartedRef.current = liveClockSeconds;
-            activeSignatureRef.current = `${status?.streamMode || 'playlist'}_${status?.activeTrackId || ''}_${status?.activeAudioUrl || ''}_${status?.playlistPlaybackMode || ''}_${status?.playlistStartedAt || ''}_${status?.updatedAtTimestamp || ''}`;
-            audioRef.current.src = `/radio/boombox.mp3?raw=1&single=1&_live=${Date.now()}`;
-            audioRef.current.volume = volumeRef.current;
-            audioRef.current
-                .play()
-                .then(() => setIsBuffering(false))
-                .catch(() => setIsBuffering(false));
+            if (status?.streamMode === 'mic_live') {
+                lastStreamModeRef.current = 'mic_live';
+                setLiveClockSeconds(0);
+                startLiveSlicedStream(status, true, 0);
+            } else {
+                setIsBuffering(true);
+                lastStreamModeRef.current = status?.streamMode || 'playlist';
+                baseOffsetWhenStartedRef.current = liveClockSeconds;
+                activeSignatureRef.current = `${status?.streamMode || 'playlist'}_${status?.activeTrackId || ''}_${status?.activeAudioUrl || ''}_${status?.playlistPlaybackMode || ''}_${status?.playlistStartedAt || ''}_${status?.updatedAtTimestamp || ''}`;
+                audioRef.current.src = `/radio/boombox.mp3?raw=1&single=1&_live=${Date.now()}`;
+                audioRef.current.volume = volumeRef.current;
+                audioRef.current
+                    .play()
+                    .then(() => setIsBuffering(false))
+                    .catch(() => setIsBuffering(false));
+            }
 
             // Sync exact offset from /radio/status
             try {
@@ -177,7 +251,11 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
                 if (res.ok) {
                     const fresh = await res.json();
                     setStatus(fresh);
-                    baseOffsetWhenStartedRef.current = Number(fresh.offsetSeconds || 0);
+                    if (fresh.streamMode !== 'mic_live') {
+                        baseOffsetWhenStartedRef.current = Number(fresh.offsetSeconds || 0);
+                    } else {
+                        startLiveSlicedStream(fresh, false, 0);
+                    }
                 }
             } catch (e) {}
         }
@@ -189,9 +267,6 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
         volumeRef.current = val;
         if (audioRef.current) {
             audioRef.current.volume = val;
-        }
-        if (bgDuckingAudioRef.current) {
-            bgDuckingAudioRef.current.volume = Math.max(0.05, val * 0.18);
         }
     };
 
@@ -207,11 +282,25 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
             <audio
                 ref={audioRef}
                 onEnded={handleStreamSliceEnded}
-                onWaiting={() => setIsBuffering(true)}
+                onError={() => {
+                    if (lastStreamModeRef.current === 'mic_live') {
+                        isMicChunkPlayingRef.current = false;
+                        playNextMicChunkIfIdle();
+                    }
+                }}
+                onWaiting={() => {
+                    if (lastStreamModeRef.current !== 'mic_live') {
+                        setIsBuffering(true);
+                    }
+                }}
                 onPlaying={() => setIsBuffering(false)}
                 onCanPlay={() => setIsBuffering(false)}
                 onTimeUpdate={() => {
-                    if (audioRef.current && isPlayingRef.current) {
+                    if (
+                        audioRef.current &&
+                        isPlayingRef.current &&
+                        lastStreamModeRef.current !== 'mic_live'
+                    ) {
                         setLiveClockSeconds(
                             baseOffsetWhenStartedRef.current +
                                 Math.floor(audioRef.current.currentTime || 0)
@@ -220,7 +309,6 @@ export default function DailyGlobeRadioPlayer({ initialBroadcast }) {
                 }}
                 className="hidden"
             />
-            <audio ref={bgDuckingAudioRef} loop className="hidden" />
 
             {isMinimized ? (
                 <button

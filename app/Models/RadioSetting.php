@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 #[Fillable([
     'station_name',
@@ -199,6 +202,116 @@ class RadioSetting extends Model
             'offsetSeconds' => $offsetSeconds,
             'rotationQueue' => $rotationQueue,
         ];
+    }
+
+    /**
+     * Pre-cache a custom external static_audio_url to local disk when settings are saved
+     * so switching to offline_static mode in-game is 0ms instant and never stalls BASS.dll.
+     */
+    public function cacheCustomStaticAudioUrl(): ?string
+    {
+        $raw = trim((string) $this->static_audio_url);
+        if ($raw === '' || str_starts_with($raw, '/storage/') || str_contains($raw, 'soundhelix.com')) {
+            return $this->resolveLocalStaticAudioFile();
+        }
+
+        $hash = md5($raw);
+        $cacheRelPath = "radio/cache/static_{$hash}.mp3";
+        $fullCachePath = Storage::disk('public')->path($cacheRelPath);
+
+        if (is_file($fullCachePath) && filesize($fullCachePath) > 4096) {
+            return $fullCachePath;
+        }
+
+        try {
+            Storage::disk('public')->makeDirectory('radio/cache');
+            $response = Http::withOptions(['verify' => false, 'timeout' => 15, 'connect_timeout' => 8])
+                ->withHeaders(['User-Agent' => 'Mozilla/5.0'])
+                ->get($raw);
+
+            if ($response->successful()) {
+                $body = $response->body();
+                if (strlen($body) > 4096 && ! str_starts_with(ltrim($body), 'Error:') && ! str_starts_with(ltrim($body), '<!DOCTYPE')) {
+                    file_put_contents($fullCachePath, $body);
+
+                    return $fullCachePath;
+                }
+            }
+        } catch (\Throwable) {
+            // Fallback to local standby file
+        }
+
+        return $this->resolveLocalStaticAudioFile();
+    }
+
+    /**
+     * Resolve a guaranteed local MP3 file for offline_static mode without blocking live streams.
+     * Uses the uploaded /storage/ file or pre-cached custom URL if present on disk; otherwise
+     * generates & returns a frame-compatible local standby MP3 in storage/app/public/radio/static/.
+     */
+    public function resolveLocalStaticAudioFile(): ?string
+    {
+        $raw = trim((string) $this->static_audio_url);
+
+        // 1. Uploaded local file in /storage/
+        if ($raw !== '' && str_starts_with($raw, '/storage/')) {
+            $rel = ltrim(Str::after($raw, '/storage/'), '/');
+            $fullPath = Storage::disk('public')->path($rel);
+            if (is_file($fullPath) && filesize($fullPath) > 2048) {
+                return $fullPath;
+            }
+        }
+
+        // 2. Pre-cached external URL on disk
+        if ($raw !== '' && ! str_contains($raw, 'soundhelix.com')) {
+            $hash = md5($raw);
+            $fullCachePath = Storage::disk('public')->path("radio/cache/static_{$hash}.mp3");
+            if (is_file($fullCachePath) && filesize($fullCachePath) > 4096) {
+                return $fullCachePath;
+            }
+        }
+
+        // 3. Guaranteed local standby loop MP3 built with compatible MPEG Layer III frames
+        $standbyRel = 'radio/static/default_standby_loop.mp3';
+        $standbyFull = Storage::disk('public')->path($standbyRel);
+        if (is_file($standbyFull) && filesize($standbyFull) > 8192) {
+            return $standbyFull;
+        }
+
+        Storage::disk('public')->makeDirectory('radio/static');
+
+        // Build a frame-compatible standby loop from an existing cached track so sample rate & stereo headers match 100%
+        $donorTrack = RadioTrack::where('is_active', true)->orderBy('sort_order', 'asc')->first()
+            ?? RadioTrack::first();
+
+        if ($donorTrack) {
+            $donorPath = $donorTrack->ensureLocalAudioFile();
+            if ($donorPath && is_file($donorPath) && filesize($donorPath) > 16384) {
+                $bounds = RadioTrack::getCleanAudioByteRange($donorPath);
+                $clipLen = min(max(32768, $bounds['end'] - $bounds['start']), 480000);
+                $endAligned = RadioTrack::findNextMp3FrameOffset($donorPath, $bounds['start'] + $clipLen, false);
+                $actualLen = max(16384, $endAligned - $bounds['start']);
+
+                $fp = @fopen($donorPath, 'rb');
+                if ($fp) {
+                    fseek($fp, $bounds['start']);
+                    $clipBytes = fread($fp, $actualLen);
+                    fclose($fp);
+
+                    if ($clipBytes && strlen($clipBytes) > 8192) {
+                        file_put_contents($standbyFull, $clipBytes);
+
+                        return $standbyFull;
+                    }
+                }
+            }
+        }
+
+        // Synthetic valid MPEG-1 Layer III 128kbps 44.1kHz stereo fallback for isolated unit test environments
+        $frame = "\xFF\xFB\x90\x00".str_repeat("\x55", 413);
+        file_put_contents($standbyFull, str_repeat($frame, 120));
+
+        return $standbyFull;
     }
 
     /**

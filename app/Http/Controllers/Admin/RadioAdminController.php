@@ -90,6 +90,7 @@ class RadioAdminController extends Controller
         }
 
         $shouldResetSequentialTimer = $setting->playlist_playback_mode !== $validated['playlist_playback_mode']
+            || $setting->stream_mode !== $validated['stream_mode']
             || ! $setting->playlist_started_at;
 
         $setting->update([
@@ -105,6 +106,8 @@ class RadioAdminController extends Controller
             'static_audio_url' => $staticUrl,
             'is_public_player_enabled' => (bool) ($validated['is_public_player_enabled'] ?? true),
         ]);
+        $setting->touch();
+        $setting->cacheCustomStaticAudioUrl();
 
         $modeLabels = [
             'playlist' => 'Mode Playlist Musik ('
@@ -121,31 +124,69 @@ class RadioAdminController extends Controller
 
     /**
      * Quick 1-click mode switcher (Playlist vs Live Mic vs Offline Static).
+     * Uses the exact same state-reset & timestamp-touch mechanism as selectTrack()
+     * so in-game SA-MP Boombox hot-swaps audio immediately without needing to walk away!
      */
     public function quickSwitchMode(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'stream_mode' => ['required', 'string', 'in:playlist,mic_live,offline_static'],
             'playlist_playback_mode' => ['nullable', 'string', 'in:jockey_selected,sequential'],
+            'dj_name' => ['nullable', 'string', 'max:120'],
+            'on_air_title' => ['nullable', 'string', 'max:200'],
+            'reset_mic_chunk' => ['nullable', 'boolean'],
         ]);
 
         $setting = RadioSetting::current();
+        $targetMode = $validated['stream_mode'];
+        $targetPlaybackMode = $validated['playlist_playback_mode'] ?? $setting->playlist_playback_mode ?: 'sequential';
 
-        $updates = [
-            'stream_mode' => $validated['stream_mode'],
-        ];
-
-        if (! empty($validated['playlist_playback_mode'])) {
-            $updates['playlist_playback_mode'] = $validated['playlist_playback_mode'];
-            if ($validated['playlist_playback_mode'] === 'sequential') {
-                $updates['playlist_started_at'] = now();
+        $activeTrackId = $setting->current_track_id;
+        if ($targetMode === 'playlist') {
+            if ($targetPlaybackMode === 'sequential') {
+                $firstOrdered = RadioTrack::where('is_active', true)
+                    ->orderBy('sort_order', 'asc')
+                    ->orderBy('id', 'asc')
+                    ->first();
+                if ($firstOrdered) {
+                    $activeTrackId = $firstOrdered->id;
+                }
+            } elseif (! $activeTrackId || ! RadioTrack::where('is_active', true)->where('id', $activeTrackId)->exists()) {
+                $fallbackTrack = RadioTrack::where('is_active', true)
+                    ->orderBy('sort_order', 'asc')
+                    ->orderBy('id', 'asc')
+                    ->first();
+                $activeTrackId = $fallbackTrack?->id;
             }
         }
 
-        $setting->update($updates);
+        if ($targetMode === 'offline_static') {
+            $setting->resolveLocalStaticAudioFile();
+        }
+
+        $updateData = [
+            'stream_mode' => $targetMode,
+            'playlist_playback_mode' => $targetPlaybackMode,
+            'current_track_id' => $activeTrackId,
+            'playlist_started_at' => now(),
+        ];
+
+        if ($targetMode === 'mic_live') {
+            if (! empty($validated['dj_name'])) {
+                $updateData['dj_name'] = trim($validated['dj_name']);
+            }
+            if (! empty($validated['on_air_title'])) {
+                $updateData['on_air_title'] = trim($validated['on_air_title']);
+            }
+            if ($request->boolean('reset_mic_chunk')) {
+                $updateData['mic_stream_url'] = null;
+            }
+        }
+
+        $setting->update($updateData);
         $setting->touch();
 
-        return back()->with('success', 'Mode pancaran Boombox SA-MP berhasil dialihkan.');
+        return back()->with('success', 'Mode pancaran Boombox SA-MP berhasil dialihkan secara real-time.');
     }
 
     /**
@@ -357,15 +398,15 @@ class RadioAdminController extends Controller
 
         $setting = RadioSetting::current();
 
-        // Keep only the last 4 live chunks so disk usage stays tiny on Shared Hosting
+        // Keep the last 10 live chunks so disk usage stays tiny on Shared Hosting while never deleting a chunk mid-play
         $existingFiles = Storage::disk('public')->files('radio/mic_live');
-        if (count($existingFiles) > 4) {
+        if (count($existingFiles) > 10) {
             sort($existingFiles);
-            $toDelete = array_slice($existingFiles, 0, count($existingFiles) - 4);
+            $toDelete = array_slice($existingFiles, 0, count($existingFiles) - 10);
             Storage::disk('public')->delete($toDelete);
         }
 
-        $filename = 'live_'.now()->format('His_v').'.wav';
+        $filename = 'live_'.now()->format('Ymd_His_u').'.wav';
         $path = $request->file('chunk')->storeAs('radio/mic_live', $filename, 'public');
         $micUrl = '/storage/'.$path;
 

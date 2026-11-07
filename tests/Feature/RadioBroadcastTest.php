@@ -164,4 +164,88 @@ class RadioBroadcastTest extends TestCase
         $this->assertSame($trackA->id, $resolved['nextTrack']->id);
         $this->assertEqualsWithDelta(15, $resolved['offsetSeconds'], 2);
     }
+
+    public function test_offline_static_mode_serves_compatible_local_mp3_frames_immediately(): void
+    {
+        Storage::fake('public');
+
+        $mp3A = $this->makeValidTestMp3Binary(100);
+        Storage::disk('public')->put('radio/tracks/song_a.mp3', $mp3A);
+
+        $trackA = RadioTrack::create([
+            'title' => 'Lagu Utama',
+            'artist' => 'Artis A',
+            'source_type' => 'upload',
+            'audio_url' => '/storage/radio/tracks/song_a.mp3',
+            'duration_seconds' => 100,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        RadioSetting::create([
+            'station_name' => 'The Daily Globes FM',
+            'stream_mode' => 'offline_static',
+            'playlist_playback_mode' => 'sequential',
+            'current_track_id' => $trackA->id,
+            'playlist_started_at' => now(),
+            'static_audio_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
+            'is_public_player_enabled' => true,
+        ]);
+
+        $response = $this->withHeaders(['Accept' => '*/*'])->get('/radio/boombox.mp3');
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'audio/mpeg');
+
+        $streamedContent = $response->streamedContent();
+        $this->assertGreaterThan(16384, strlen($streamedContent));
+        $this->assertSame(0xFF, ord($streamedContent[0]));
+        $this->assertSame(0xFB, ord($streamedContent[1]));
+    }
+
+    public function test_mic_live_mode_never_plays_playlist_music_and_streams_voice_chunks_directly(): void
+    {
+        Storage::fake('public');
+
+        $mp3A = $this->makeValidTestMp3Binary(100);
+        Storage::disk('public')->put('radio/tracks/song_a.mp3', $mp3A);
+
+        $trackA = RadioTrack::create([
+            'title' => 'Lagu Playlist',
+            'artist' => 'Artis A',
+            'source_type' => 'upload',
+            'audio_url' => '/storage/radio/tracks/song_a.mp3',
+            'duration_seconds' => 100,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        // 1. When mic_live mode is started before the first voice chunk arrives (mic_stream_url is null),
+        // it must return 204 (waiting for voice) and NEVER fall back to playing the playlist song!
+        $setting = RadioSetting::create([
+            'station_name' => 'The Daily Globes FM',
+            'stream_mode' => 'mic_live',
+            'playlist_playback_mode' => 'sequential',
+            'current_track_id' => $trackA->id,
+            'mic_stream_url' => null,
+            'playlist_started_at' => now(),
+            'is_public_player_enabled' => true,
+        ]);
+
+        $waitingResponse = $this->withHeaders(['Accept' => '*/*'])->get('/radio/boombox.mp3?raw=1&single=1');
+        $waitingResponse->assertStatus(204);
+
+        // 2. When a live mic WAV chunk is stored, /radio/boombox.mp3 streams the exact voice WAV (not playlist MP3)
+        $fakeWav = 'RIFF'.pack('V', 1036).'WAVEfmt '.pack('VvvVVvv', 16, 1, 1, 22050, 44100, 2, 16).'data'.pack('V', 1000).str_repeat("\x10\x20", 500);
+        Storage::disk('public')->put('radio/mic_live/live_test_chunk.wav', $fakeWav);
+
+        $setting->update([
+            'mic_stream_url' => '/storage/radio/mic_live/live_test_chunk.wav',
+        ]);
+
+        $voiceResponse = $this->withHeaders(['Accept' => '*/*'])
+            ->get('/radio/boombox.mp3?raw=1&single=1&chunk='.urlencode('http://127.0.0.1:8000/storage/radio/mic_live/live_test_chunk.wav'));
+        $voiceResponse->assertStatus(200);
+        $voiceResponse->assertHeader('Content-Type', 'audio/wav');
+        $this->assertSame($fakeWav, $voiceResponse->streamedContent());
+    }
 }

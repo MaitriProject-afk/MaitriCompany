@@ -72,30 +72,42 @@ class RadioBroadcastController extends Controller
         $isBgDucking = $request->boolean('bg');
         $singleSliceOnly = $request->boolean('single') || $request->boolean('raw');
 
-        // 1. LIVE MIC MODE: Serve latest live mic audio directly without redirect
-        if ($mode === 'mic_live' && ! $isBgDucking && ! empty($setting->mic_stream_url)) {
-            $localMicPath = $this->resolveOrCacheUrlToFile($setting->mic_stream_url, 'mic');
-            if ($localMicPath && is_file($localMicPath)) {
-                $mime = str_ends_with(strtolower($localMicPath), '.wav') ? 'audio/wav' : 'audio/mpeg';
-                $fileSize = max(0, (int) @filesize($localMicPath));
+        // 1. LIVE MIC MODE: Serve latest live mic audio directly (NEVER fall back to playlist music!)
+        if ($mode === 'mic_live' && ! $isBgDucking) {
+            $requestedChunk = trim((string) $request->query('chunk', ''));
+            $micTargetUrl = ($requestedChunk !== '' && str_contains($requestedChunk, '/storage/radio/mic'))
+                ? $requestedChunk
+                : $setting->mic_stream_url;
 
-                return $this->streamMultiTrackSegments([
-                    ['path' => $localMicPath, 'start' => 0, 'end' => $fileSize],
-                ], $mime);
+            if (! empty($micTargetUrl)) {
+                $localMicPath = $this->resolveOrCacheUrlToFile($micTargetUrl, 'mic');
+                if ($localMicPath && is_file($localMicPath)) {
+                    $mime = str_ends_with(strtolower($localMicPath), '.wav') ? 'audio/wav' : 'audio/mpeg';
+                    $fileSize = max(0, (int) @filesize($localMicPath));
+
+                    return $this->streamMultiTrackSegments([
+                        ['path' => $localMicPath, 'start' => 0, 'end' => $fileSize],
+                    ], $mime);
+                }
             }
+
+            return response('', 204, [
+                'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            ]);
         }
 
-        // 2. OFFLINE STATIC MODE: Serve static audio loop
-        if ($mode === 'offline_static' && ! $isBgDucking && ! empty($setting->static_audio_url)) {
-            $localStaticPath = $this->resolveOrCacheUrlToFile($setting->static_audio_url, 'static');
+        // 2. OFFLINE STATIC MODE: Serve guaranteed local frame-compatible static audio loop
+        if ($mode === 'offline_static' && ! $isBgDucking) {
+            $localStaticPath = $setting->resolveLocalStaticAudioFile();
             if ($localStaticPath && is_file($localStaticPath)) {
                 $bounds = RadioTrack::getCleanAudioByteRange($localStaticPath);
+                $startByte = RadioTrack::findNextMp3FrameOffset($localStaticPath, $bounds['start'], true);
                 $staticSegments = [];
-                $repeatCount = $singleSliceOnly ? 1 : 4;
+                $repeatCount = $singleSliceOnly ? 1 : 6;
                 for ($i = 0; $i < $repeatCount; $i++) {
                     $staticSegments[] = [
                         'path' => $localStaticPath,
-                        'start' => $bounds['start'],
+                        'start' => $startByte,
                         'end' => $bounds['end'],
                     ];
                 }
@@ -158,8 +170,9 @@ class RadioBroadcastController extends Controller
 
     /**
      * Real-time paced Icecast-style MP3 stream for SA-MP BASS.dll on multi-worker servers.
-     * Sends audio at real-time playback speed without Content-Length and hot-swaps tracks immediately
-     * when the Admin changes the active song or mode in the studio!
+     * Sends audio at real-time playback speed without Content-Length and hot-swaps tracks/modes
+     * immediately using the exact same clean Frame #0 swap as selectTrack() so players never
+     * need to walk away from the boombox!
      */
     private function streamRealTimeIcecastMp3(): StreamedResponse
     {
@@ -170,6 +183,7 @@ class RadioBroadcastController extends Controller
             $endByte = 0;
             $bytesPerHalfSecond = 16000;
             $isFirstBurst = true;
+            $isInitialConnection = true;
 
             while (! connection_aborted()) {
                 $setting = RadioSetting::current();
@@ -190,7 +204,7 @@ class RadioBroadcastController extends Controller
 
                 // Open or hot-swap audio source when broadcast state changes or current track ends
                 if ($newSig !== $currentSignature || ! $fp || ftell($fp) >= $endByte || feof($fp)) {
-                    if ($fp && ftell($fp) >= $endByte && $newSig === $currentSignature) {
+                    if ($fp && ftell($fp) >= $endByte && $newSig === $currentSignature && $mode === 'playlist') {
                         $this->nudgePlaylistClockIfNearTrackEnd($setting, 5);
                         $setting->refresh();
                         $resolved = $setting->resolveActivePlaylistTrack();
@@ -212,34 +226,57 @@ class RadioBroadcastController extends Controller
                     }
 
                     $currentSignature = $newSig;
+                    $isFirstBurst = true;
                     $targetPath = null;
                     $startByte = 0;
 
-                    if ($mode === 'mic_live' && ! empty($setting->mic_stream_url)) {
+                    if ($mode === 'mic_live' && ! empty($setting->mic_stream_url) && str_ends_with(strtolower($setting->mic_stream_url), '.mp3')) {
                         $targetPath = $this->resolveOrCacheUrlToFile($setting->mic_stream_url, 'mic');
                         if ($targetPath && is_file($targetPath)) {
-                            $endByte = (int) filesize($targetPath);
+                            $bounds = RadioTrack::getCleanAudioByteRange($targetPath);
+                            $cleanLen = max(1, $bounds['end'] - $bounds['start']);
+                            $dur = max(5, RadioTrack::estimateMp3DurationSeconds($targetPath));
+                            $startByte = RadioTrack::findNextMp3FrameOffset($targetPath, $bounds['start'], true);
+                            $endByte = $bounds['end'];
+                            $bytesPerHalfSecond = max(4096, (int) round(($cleanLen / $dur) * 0.5));
                         }
-                    } elseif ($mode === 'offline_static' && ! empty($setting->static_audio_url)) {
-                        $targetPath = $this->resolveOrCacheUrlToFile($setting->static_audio_url, 'static');
+                    } elseif ($mode === 'offline_static') {
+                        $targetPath = $setting->resolveLocalStaticAudioFile();
                         if ($targetPath && is_file($targetPath)) {
                             $bounds = RadioTrack::getCleanAudioByteRange($targetPath);
-                            $startByte = $bounds['start'];
+                            $cleanLen = max(1, $bounds['end'] - $bounds['start']);
+                            $dur = max(5, RadioTrack::estimateMp3DurationSeconds($targetPath));
+                            $startByte = RadioTrack::findNextMp3FrameOffset($targetPath, $bounds['start'], true);
                             $endByte = $bounds['end'];
+                            $bytesPerHalfSecond = max(4096, (int) round(($cleanLen / $dur) * 0.5));
                         }
-                    } elseif ($track) {
+                    }
+
+                    // Playlist Mode ONLY (never fall back to playlist music when in mic_live mode!)
+                    if ($mode === 'playlist' && ! $targetPath && $track) {
                         $targetPath = $track->ensureLocalAudioFile();
                         if ($targetPath && is_file($targetPath)) {
                             $bounds = RadioTrack::getCleanAudioByteRange($targetPath);
                             $cleanLen = max(1, $bounds['end'] - $bounds['start']);
                             $dur = max(10, (int) $track->duration_seconds);
-                            $ratio = min(0.98, max(0.0, $offsetSeconds / $dur));
-                            $rawTarget = $bounds['start'] + (int) floor($cleanLen * $ratio);
-                            $startByte = RadioTrack::findNextMp3FrameOffset($targetPath, $rawTarget, true);
+
+                            // On initial connection, slice to live $offsetSeconds;
+                            // on mid-stream mode/track hot-swap, start cleanly at Frame #0 ($bounds['start'])
+                            // just like selectTrack() so BASS.dll's bit-reservoir never stalls!
+                            if ($isInitialConnection && $offsetSeconds > 2) {
+                                $ratio = min(0.98, max(0.0, $offsetSeconds / $dur));
+                                $rawTarget = $bounds['start'] + (int) floor($cleanLen * $ratio);
+                                $startByte = RadioTrack::findNextMp3FrameOffset($targetPath, $rawTarget, true);
+                            } else {
+                                $startByte = RadioTrack::findNextMp3FrameOffset($targetPath, $bounds['start'], true);
+                            }
+
                             $endByte = $bounds['end'];
                             $bytesPerHalfSecond = max(4096, (int) round(($cleanLen / $dur) * 0.5));
                         }
                     }
+
+                    $isInitialConnection = false;
 
                     if ($targetPath && is_file($targetPath)) {
                         $fp = @fopen($targetPath, 'rb');
@@ -249,11 +286,19 @@ class RadioBroadcastController extends Controller
                     }
                 }
 
+                // Never break and close the SA-MP Boombox HTTP stream; if no file is open, keep alive with valid MP3 frames
                 if (! $fp) {
-                    break;
+                    echo str_repeat("\xFF\xFB\x90\x00".str_repeat("\x00", 413), 18);
+                    if (ob_get_level() > 0) {
+                        @ob_flush();
+                    }
+                    flush();
+                    usleep(480000);
+
+                    continue;
                 }
 
-                // Initial 2-second burst for instant playback, then 0.5-second real-time chunks
+                // 2-second burst on initial connect & every mode/track switch, then 0.5-second real-time chunks
                 $chunkBytes = $isFirstBurst ? ($bytesPerHalfSecond * 4) : $bytesPerHalfSecond;
                 $isFirstBurst = false;
 
@@ -406,8 +451,9 @@ class RadioBroadcastController extends Controller
             return null;
         }
 
-        if (str_starts_with($raw, '/storage/')) {
+        if (str_contains($raw, '/storage/')) {
             $rel = ltrim(Str::after($raw, '/storage/'), '/');
+            $rel = explode('?', $rel)[0];
             $fullPath = Storage::disk('public')->path($rel);
 
             return is_file($fullPath) ? $fullPath : null;

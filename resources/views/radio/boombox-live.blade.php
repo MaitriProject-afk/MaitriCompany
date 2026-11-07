@@ -189,7 +189,6 @@
 </head>
 <body>
     <audio id="liveAudio" preload="none"></audio>
-    <audio id="bgDuckAudio" loop preload="none"></audio>
 
     <div class="stream-card">
         <div class="top-row">
@@ -251,7 +250,6 @@
         (function () {
             const initialData = @json($payload);
             const audio = document.getElementById('liveAudio');
-            const bgDuckAudio = document.getElementById('bgDuckAudio');
             const playBtn = document.getElementById('playBtn');
             const iconPlay = document.getElementById('iconPlay');
             const iconPause = document.getElementById('iconPause');
@@ -265,9 +263,16 @@
 
             let currentData = initialData;
             let isPlaying = false;
+            let userHasUnlockedAudio = false;
             let activeSignature = '';
+            let lastStreamMode = initialData.streamMode || 'playlist';
             let baseOffsetWhenStarted = Number(initialData.offsetSeconds || 0);
             let liveClockSeconds = Number(initialData.offsetSeconds || 0);
+
+            // Real-Time Voice Chunk Queue for mic_live mode (no background music, no cutoffs)
+            let micChunkQueue = [];
+            let lastEnqueuedMicUrl = '';
+            let isMicChunkPlaying = false;
 
             function formatTime(secs) {
                 const s = Math.max(0, Math.floor(secs || 0));
@@ -316,27 +321,82 @@
                 }
             }
 
-            function connectToLiveEdge(data, forceReconnect, advanceSecs) {
-                currentData = data;
-                renderMetadata(data);
-
-                const sig = computeSignature(data);
-                if (!isPlaying) {
-                    liveClockSeconds = Number(data.offsetSeconds || 0);
-                    timerEl.textContent = formatTime(liveClockSeconds);
+            function playNextMicChunkIfIdle() {
+                if (!isPlaying || isMicChunkPlaying || micChunkQueue.length === 0) {
                     return;
                 }
 
-                if (data.streamMode === 'mic_live') {
-                    if (!bgDuckAudio.src) {
-                        bgDuckAudio.src = '/radio/boombox.mp3?raw=1&single=1&bg=1&_t=' + Date.now();
+                const nextChunkUrl = micChunkQueue.shift();
+                isMicChunkPlaying = true;
+                audio.src = nextChunkUrl;
+                audio.volume = parseFloat(volSlider.value);
+                audio.play().then(function () {
+                    isPlaying = true;
+                    userHasUnlockedAudio = true;
+                    updatePlayButtonUI();
+                }).catch(function (err) {
+                    isMicChunkPlaying = false;
+                    if (err && err.name === 'AbortError') {
+                        return;
                     }
-                    bgDuckAudio.volume = Math.max(0.05, parseFloat(volSlider.value) * 0.18);
-                    bgDuckAudio.play().catch(function () {});
-                } else if (!bgDuckAudio.paused) {
-                    bgDuckAudio.pause();
+                    if (!userHasUnlockedAudio && err && err.name === 'NotAllowedError') {
+                        isPlaying = false;
+                        updatePlayButtonUI();
+                        autoplayPrompt.style.display = 'block';
+                    }
+                });
+            }
+
+            function connectToLiveEdge(data, forceReconnect, advanceSecs) {
+                const prevMode = lastStreamMode;
+                const newMode = data.streamMode || 'playlist';
+                lastStreamMode = newMode;
+                currentData = data;
+                renderMetadata(data);
+
+                if (!isPlaying) {
+                    if (newMode !== 'mic_live') {
+                        liveClockSeconds = Number(data.offsetSeconds || 0);
+                        timerEl.textContent = formatTime(liveClockSeconds);
+                    }
+                    return;
                 }
 
+                // 1. LIVE MIC MODE: Pure announcer voice ONLY (Zero music!)
+                if (newMode === 'mic_live') {
+                    if (prevMode !== 'mic_live') {
+                        // Immediately stop any playing playlist song when switching to Live Mic!
+                        audio.pause();
+                        audio.removeAttribute('src');
+                        audio.load();
+                        micChunkQueue = [];
+                        isMicChunkPlaying = false;
+                        activeSignature = '';
+                        liveClockSeconds = 0;
+                        timerEl.textContent = '00:00';
+                    }
+
+                    if (data.activeAudioUrl && (data.activeAudioUrl !== lastEnqueuedMicUrl || forceReconnect)) {
+                        lastEnqueuedMicUrl = data.activeAudioUrl;
+                        const chunkPlayUrl = '/radio/boombox.mp3?raw=1&single=1&chunk=' + encodeURIComponent(data.activeAudioUrl) + '&_t=' + Date.now();
+                        micChunkQueue.push(chunkPlayUrl);
+                        if (micChunkQueue.length > 3) {
+                            micChunkQueue.shift();
+                        }
+                        playNextMicChunkIfIdle();
+                    }
+                    return;
+                }
+
+                // Reset mic queue state when leaving mic_live mode
+                if (prevMode === 'mic_live') {
+                    micChunkQueue = [];
+                    lastEnqueuedMicUrl = '';
+                    isMicChunkPlaying = false;
+                }
+
+                // 2. PLAYLIST OR OFFLINE STATIC MODE
+                const sig = computeSignature(data);
                 if (activeSignature !== sig || forceReconnect) {
                     activeSignature = sig;
                     baseOffsetWhenStarted = Number(data.offsetSeconds || 0);
@@ -348,11 +408,17 @@
                     audio.volume = parseFloat(volSlider.value);
                     audio.play().then(function () {
                         isPlaying = true;
+                        userHasUnlockedAudio = true;
                         updatePlayButtonUI();
-                    }).catch(function () {
-                        isPlaying = false;
-                        updatePlayButtonUI();
-                        autoplayPrompt.style.display = 'block';
+                    }).catch(function (err) {
+                        if (err && err.name === 'AbortError') {
+                            return;
+                        }
+                        if (!userHasUnlockedAudio && err && err.name === 'NotAllowedError') {
+                            isPlaying = false;
+                            updatePlayButtonUI();
+                            autoplayPrompt.style.display = 'block';
+                        }
                     });
                 }
             }
@@ -369,27 +435,43 @@
                 } catch (e) {}
             }
 
-            // When current song slice ends, immediately advance to the next song in real-time
+            // When current audio ends: in mic_live play next queued voice chunk; in playlist advance to next song
             audio.addEventListener('ended', function () {
                 if (!isPlaying) return;
+                if (currentData && currentData.streamMode === 'mic_live') {
+                    isMicChunkPlaying = false;
+                    playNextMicChunkIfIdle();
+                    return;
+                }
                 pollStatus(4);
             });
 
+            audio.addEventListener('error', function () {
+                if (currentData && currentData.streamMode === 'mic_live') {
+                    isMicChunkPlaying = false;
+                    playNextMicChunkIfIdle();
+                }
+            });
+
             audio.addEventListener('timeupdate', function () {
-                if (isPlaying) {
+                if (isPlaying && (!currentData || currentData.streamMode !== 'mic_live')) {
                     liveClockSeconds = baseOffsetWhenStarted + Math.floor(audio.currentTime || 0);
                     timerEl.textContent = formatTime(liveClockSeconds);
                 }
             });
 
             function startOrPauseStream() {
+                userHasUnlockedAudio = true;
                 if (isPlaying) {
                     isPlaying = false;
+                    isMicChunkPlaying = false;
+                    micChunkQueue = [];
                     audio.pause();
-                    bgDuckAudio.pause();
                     updatePlayButtonUI();
                 } else {
                     isPlaying = true;
+                    isMicChunkPlaying = false;
+                    lastEnqueuedMicUrl = '';
                     updatePlayButtonUI();
                     connectToLiveEdge(currentData, true, 0);
                     pollStatus(0);
@@ -402,17 +484,16 @@
             volSlider.addEventListener('input', function (e) {
                 const v = parseFloat(e.target.value);
                 audio.volume = v;
-                bgDuckAudio.volume = Math.max(0.05, v * 0.18);
             });
 
-            // Poll server broadcast state every 1.2 seconds so any song change / mic switch by Admin happens immediately!
+            // Poll server broadcast state every 800ms so any song change / live mic voice chunk arrives immediately!
             setInterval(function () {
                 pollStatus(0);
-            }, 1200);
+            }, 800);
 
-            // 1-second live clock ticker even when paused
+            // 1-second live clock ticker
             setInterval(function () {
-                if (!isPlaying) {
+                if (!isPlaying || (currentData && currentData.streamMode === 'mic_live')) {
                     liveClockSeconds += 1;
                     timerEl.textContent = formatTime(liveClockSeconds);
                 }

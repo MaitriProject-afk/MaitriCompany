@@ -20,10 +20,19 @@ function encodePcmToWavBlob(buffers, sampleRate) {
     const newLength = Math.max(1, Math.round(merged.length / ratio));
     const result = new Float32Array(newLength);
 
+    let maxPeak = 0;
     for (let i = 0; i < newLength; i++) {
         const idx = Math.min(merged.length - 1, Math.floor(i * ratio));
-        result[i] = merged[idx];
+        const val = merged[idx];
+        result[i] = val;
+        const abs = Math.abs(val);
+        if (abs > maxPeak) {
+            maxPeak = abs;
+        }
     }
+
+    // Smart Auto-Gain Normalization (Voice Boost) so announcer voice is loud & clear even at 15-20% mic input
+    const voiceGain = maxPeak > 0.006 ? Math.min(5.5, Math.max(1.6, 0.92 / maxPeak)) : 1.5;
 
     const buffer = new ArrayBuffer(44 + result.length * 2);
     const view = new DataView(buffer);
@@ -50,7 +59,7 @@ function encodePcmToWavBlob(buffers, sampleRate) {
 
     let byteOffset = 44;
     for (let i = 0; i < result.length; i++, byteOffset += 2) {
-        const s = Math.max(-1, Math.min(1, result[i]));
+        const s = Math.max(-1, Math.min(1, result[i] * voiceGain));
         view.setInt16(byteOffset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
     }
 
@@ -96,6 +105,20 @@ export default function RadioAdminIndex({
     // Auto-switch Studio Monitor audio immediately whenever track or mode changes mid-playback
     useEffect(() => {
         if (!isMonitoring || !monitorAudioRef.current || !liveStatus) return;
+
+        if (liveStatus.streamMode === 'mic_live') {
+            if (!liveStatus.activeAudioUrl) {
+                monitorAudioRef.current.pause();
+                return;
+            }
+            const micSig = `mic_live_${liveStatus.activeAudioUrl}`;
+            if (monitorSignatureRef.current !== micSig) {
+                monitorSignatureRef.current = micSig;
+                monitorAudioRef.current.src = `/radio/boombox.mp3?raw=1&single=1&chunk=${encodeURIComponent(liveStatus.activeAudioUrl)}&_t=${Date.now()}`;
+                monitorAudioRef.current.play().catch(() => {});
+            }
+            return;
+        }
 
         const sig = `${liveStatus.streamMode}_${liveStatus.activeTrackId || ''}_${liveStatus.activeAudioUrl || ''}_${liveStatus.playlistPlaybackMode || ''}_${liveStatus.playlistStartedAt || ''}_${liveStatus.updatedAtTimestamp || ''}`;
         if (monitorSignatureRef.current !== sig) {
@@ -327,6 +350,8 @@ export default function RadioAdminIndex({
             const audioCtx = new AudioCtx();
             const source = audioCtx.createMediaStreamSource(stream);
             const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+            const silentGain = audioCtx.createGain();
+            silentGain.gain.value = 0;
 
             pcmBuffersRef.current = [];
             liveStreamBuffersRef.current = [];
@@ -344,11 +369,12 @@ export default function RadioAdminIndex({
                     sum += inputData[i] * inputData[i];
                 }
                 const rms = Math.sqrt(sum / (inputData.length / 8));
-                setMicLevel(Math.min(100, Math.round(rms * 280)));
+                setMicLevel(Math.min(100, Math.round(rms * 340)));
             };
 
             source.connect(processor);
-            processor.connect(audioCtx.destination);
+            processor.connect(silentGain);
+            silentGain.connect(audioCtx.destination);
 
             audioContextRef.current = audioCtx;
             mediaStreamRef.current = stream;
@@ -364,14 +390,37 @@ export default function RadioAdminIndex({
 
             if (continuousLiveMode) {
                 setChunksSentCount(0);
-                // Every 2.5 seconds, flush the captured voice buffer to the live radio stream!
+
+                // Immediately switch broadcast mode to mic_live & clear old mic chunk so playlist music stops at 0.0s!
+                router.post(
+                    route('admin.radio.mode.switch'),
+                    {
+                        stream_mode: 'mic_live',
+                        dj_name: micForm.data.dj_name || 'DJ Redaksi Daily Globes',
+                        on_air_title:
+                            micForm.data.on_air_title || 'Siaran Langsung Penyiar (ON AIR)',
+                        reset_mic_chunk: true,
+                    },
+                    { preserveScroll: true, preserveState: true }
+                );
+
+                // Flush the first voice chunk after 1.1s so listeners hear the announcer right away
+                setTimeout(() => {
+                    if (liveStreamBuffersRef.current.length > 0 && audioContextRef.current) {
+                        const firstBatch = [...liveStreamBuffersRef.current];
+                        liveStreamBuffersRef.current = [];
+                        pushLiveMicChunk(firstBatch, audioCtx.sampleRate || 44100);
+                    }
+                }, 1100);
+
+                // Every 1.8 seconds, flush the captured voice buffer to the live radio stream!
                 chunkPushIntervalRef.current = setInterval(() => {
                     if (liveStreamBuffersRef.current.length > 0) {
                         const batch = [...liveStreamBuffersRef.current];
                         liveStreamBuffersRef.current = [];
                         pushLiveMicChunk(batch, audioCtx.sampleRate || 44100);
                     }
-                }, 2500);
+                }, 1800);
             }
         } catch (err) {
             alert(
@@ -1255,7 +1304,7 @@ export default function RadioAdminIndex({
                                         Studio Ambil Alih Siaran Mic (Live On-Air)
                                     </h2>
                                     <p className="text-xs text-slate-500 mt-0.5">
-                                        Saat Anda menekan tombol <strong>Mulai Siaran Mic Live</strong>, suara Anda otomatis dipancarkan secara langsung setiap 2 detik ke seluruh pendengar (musik otomatis mengecil menjadi backsound)!
+                                        Saat Anda menekan tombol <strong>Mulai Siaran Mic Live</strong>, musik playlist dihentikan sementara dan suara mikrofon Anda langsung dipancarkan secara real-time ke seluruh pendengar!
                                     </p>
                                 </div>
                             </div>
@@ -1482,7 +1531,7 @@ export default function RadioAdminIndex({
                                     <div className="font-bold text-slate-900 mb-1">
                                         1. Klik &quot;Mulai Siaran Mic Live&quot;
                                     </div>
-                                    Begitu ditekan, mode radio langsung berubah menjadi <strong>ON-AIR MIC</strong>, musik di pendengar otomatis mengecil (<em>audio ducking</em>), dan suara Anda langsung dikirim setiap 2 detik saat Anda berbicara.
+                                    Begitu ditekan, mode radio langsung berubah menjadi <strong>ON-AIR MIC</strong>, musik playlist otomatis berhenti, dan hanya suara mikrofon Anda yang dipancarkan secara jernih ke seluruh pendengar.
                                 </div>
                                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                                     <div className="font-bold text-slate-900 mb-1">
