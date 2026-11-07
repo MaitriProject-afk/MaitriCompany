@@ -180,6 +180,10 @@ class RadioAdminController extends Controller
             }
             if ($request->boolean('reset_mic_chunk')) {
                 $updateData['mic_stream_url'] = null;
+                $oldMicChunks = Storage::disk('public')->files('radio/mic_live');
+                if (! empty($oldMicChunks)) {
+                    Storage::disk('public')->delete($oldMicChunks);
+                }
             }
         }
 
@@ -398,16 +402,22 @@ class RadioAdminController extends Controller
 
         $setting = RadioSetting::current();
 
-        // Keep the last 10 live chunks so disk usage stays tiny on Shared Hosting while never deleting a chunk mid-play
+        // Keep the last 12 live chunks so disk usage stays tiny on Shared Hosting while never deleting a chunk mid-play
         $existingFiles = Storage::disk('public')->files('radio/mic_live');
-        if (count($existingFiles) > 10) {
+        if (count($existingFiles) > 12) {
             sort($existingFiles);
-            $toDelete = array_slice($existingFiles, 0, count($existingFiles) - 10);
+            $toDelete = array_slice($existingFiles, 0, count($existingFiles) - 12);
             Storage::disk('public')->delete($toDelete);
         }
 
-        $filename = 'live_'.now()->format('Ymd_His_u').'.wav';
-        $path = $request->file('chunk')->storeAs('radio/mic_live', $filename, 'public');
+        $uploadedChunk = $request->file('chunk');
+        $ext = strtolower($uploadedChunk->getClientOriginalExtension() ?: 'mp3');
+        if (! in_array($ext, ['mp3', 'wav'], true)) {
+            $ext = 'mp3';
+        }
+
+        $filename = 'live_'.now()->format('Ymd_His_u').'.'.$ext;
+        $path = $uploadedChunk->storeAs('radio/mic_live', $filename, 'public');
         $micUrl = '/storage/'.$path;
 
         $setting->update([

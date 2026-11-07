@@ -2,11 +2,36 @@ import { useState, useRef, useEffect } from 'react';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 
+let lameLoadPromise = null;
+
+function ensureLameEncoderLoaded() {
+    if (typeof window === 'undefined') return Promise.resolve(false);
+    if (window.lamejs && window.lamejs.Mp3Encoder) {
+        return Promise.resolve(true);
+    }
+    if (lameLoadPromise) {
+        return lameLoadPromise;
+    }
+
+    lameLoadPromise = new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = '/vendor/lame.min.js';
+        script.async = true;
+        script.onload = () => resolve(Boolean(window.lamejs && window.lamejs.Mp3Encoder));
+        script.onerror = () => resolve(false);
+        document.head.appendChild(script);
+    });
+
+    return lameLoadPromise;
+}
+
 /**
- * Encode Float32 PCM audio chunks recorded from Web Audio API into a standard 16-bit PCM WAV Blob.
- * 100% compatible with GTA SA-MP BASS.dll PlayAudioStreamForPlayer without requiring server FFmpeg.
+ * Encode Float32 PCM audio chunks recorded from Web Audio API into a 44.1kHz 128kbps Stereo MP3 Blob
+ * (or fallback WAV Blob if lame.min.js is unavailable).
+ * Producing 44.1kHz 128kbps Stereo MP3 frames (0xFF 0xFB 0x90) ensures 100% native compatibility with
+ * GTA SA-MP In-Game Boombox (BASS.dll) AND all web browsers without requiring server FFmpeg!
  */
-function encodePcmToWavBlob(buffers, sampleRate) {
+function encodePcmToMp3OrWav(buffers, sampleRate) {
     const totalLength = buffers.reduce((acc, buf) => acc + buf.length, 0);
     const merged = new Float32Array(totalLength);
     let offset = 0;
@@ -15,15 +40,18 @@ function encodePcmToWavBlob(buffers, sampleRate) {
         offset += buf.length;
     }
 
-    const downsampledRate = 22050;
-    const ratio = sampleRate / downsampledRate;
+    const targetRate = 44100;
+    const ratio = sampleRate / targetRate;
     const newLength = Math.max(1, Math.round(merged.length / ratio));
     const result = new Float32Array(newLength);
 
     let maxPeak = 0;
     for (let i = 0; i < newLength; i++) {
-        const idx = Math.min(merged.length - 1, Math.floor(i * ratio));
-        const val = merged[idx];
+        const exactIdx = i * ratio;
+        const idx0 = Math.min(merged.length - 1, Math.floor(exactIdx));
+        const idx1 = Math.min(merged.length - 1, idx0 + 1);
+        const frac = exactIdx - idx0;
+        const val = merged[idx0] + (merged[idx1] - merged[idx0]) * frac;
         result[i] = val;
         const abs = Math.abs(val);
         if (abs > maxPeak) {
@@ -33,6 +61,38 @@ function encodePcmToWavBlob(buffers, sampleRate) {
 
     // Smart Auto-Gain Normalization (Voice Boost) so announcer voice is loud & clear even at 15-20% mic input
     const voiceGain = maxPeak > 0.006 ? Math.min(5.5, Math.max(1.6, 0.92 / maxPeak)) : 1.5;
+
+    if (typeof window !== 'undefined' && window.lamejs && window.lamejs.Mp3Encoder) {
+        const samples16 = new Int16Array(newLength);
+        for (let i = 0; i < newLength; i++) {
+            const s = Math.max(-1, Math.min(1, result[i] * voiceGain));
+            samples16[i] = s < 0 ? Math.round(s * 0x8000) : Math.round(s * 0x7fff);
+        }
+
+        // 2-channel Stereo, 44100 Hz, 128 kbps CBR -> matches playlist MP3 stream for SA-MP BASS.dll!
+        const mp3Encoder = new window.lamejs.Mp3Encoder(2, targetRate, 128);
+        const mp3Parts = [];
+        const blockSize = 1152;
+
+        for (let i = 0; i < samples16.length; i += blockSize) {
+            const chunk = samples16.subarray(i, i + blockSize);
+            const mp3buf = mp3Encoder.encodeBuffer(chunk, chunk);
+            if (mp3buf && mp3buf.length > 0) {
+                mp3Parts.push(new Int8Array(mp3buf));
+            }
+        }
+
+        const flushed = mp3Encoder.flush();
+        if (flushed && flushed.length > 0) {
+            mp3Parts.push(new Int8Array(flushed));
+        }
+
+        return {
+            blob: new Blob(mp3Parts, { type: 'audio/mpeg' }),
+            ext: 'mp3',
+            mime: 'audio/mpeg',
+        };
+    }
 
     const buffer = new ArrayBuffer(44 + result.length * 2);
     const view = new DataView(buffer);
@@ -50,8 +110,8 @@ function encodePcmToWavBlob(buffers, sampleRate) {
     view.setUint32(16, 16, true);
     view.setUint16(20, 1, true); // PCM
     view.setUint16(22, 1, true); // Mono
-    view.setUint32(24, downsampledRate, true);
-    view.setUint32(28, downsampledRate * 2, true);
+    view.setUint32(24, targetRate, true);
+    view.setUint32(28, targetRate * 2, true);
     view.setUint16(32, 2, true);
     view.setUint16(34, 16, true);
     writeString(36, 'data');
@@ -63,7 +123,11 @@ function encodePcmToWavBlob(buffers, sampleRate) {
         view.setInt16(byteOffset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
     }
 
-    return new Blob([view], { type: 'audio/wav' });
+    return {
+        blob: new Blob([view], { type: 'audio/wav' }),
+        ext: 'wav',
+        mime: 'audio/wav',
+    };
 }
 
 function buildSafePlayableUrl(rawUrl, timestamp) {
@@ -197,6 +261,7 @@ export default function RadioAdminIndex({
     });
 
     useEffect(() => {
+        ensureLameEncoderLoaded();
         return () => {
             stopMicrophoneCapture(false);
         };
@@ -303,14 +368,15 @@ export default function RadioAdminIndex({
         });
     };
 
-    // Send a 2.5-second live microphone chunk to the server in the background
+    // Send a 1.6-second live microphone MP3 chunk to the server in the background
     const pushLiveMicChunk = async (buffersToFlush, sampleRate) => {
         if (!buffersToFlush || buffersToFlush.length === 0) return;
 
         try {
-            const wavBlob = encodePcmToWavBlob(buffersToFlush, sampleRate);
+            await ensureLameEncoderLoaded();
+            const encoded = encodePcmToMp3OrWav(buffersToFlush, sampleRate);
             const formData = new FormData();
-            formData.append('chunk', wavBlob, `live_${Date.now()}.wav`);
+            formData.append('chunk', encoded.blob, `live_${Date.now()}.${encoded.ext}`);
             formData.append('dj_name', micForm.data.dj_name || 'DJ Redaksi Daily Globes');
             formData.append(
                 'on_air_title',
@@ -338,6 +404,7 @@ export default function RadioAdminIndex({
     // Start Browser Microphone (supports both Live Continuous Streaming & Recording)
     const startMicrophoneCapture = async (continuousLiveMode = true) => {
         try {
+            await ensureLameEncoderLoaded();
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: {
                     echoCancellation: true,
@@ -473,13 +540,17 @@ export default function RadioAdminIndex({
         setMicLevel(0);
 
         if (buildWav && pcmBuffersRef.current.length > 0) {
-            const wavBlob = encodePcmToWavBlob(pcmBuffersRef.current, sampleRate);
-            const wavFile = new File([wavBlob], `siaran_mic_${Date.now()}.wav`, {
-                type: 'audio/wav',
-            });
-            const previewUrl = URL.createObjectURL(wavBlob);
+            const encoded = encodePcmToMp3OrWav(pcmBuffersRef.current, sampleRate);
+            const recordedFile = new File(
+                [encoded.blob],
+                `siaran_mic_${Date.now()}.${encoded.ext}`,
+                {
+                    type: encoded.mime,
+                }
+            );
+            const previewUrl = URL.createObjectURL(encoded.blob);
             setRecordedAudioPreviewUrl(previewUrl);
-            micForm.setData('mic_audio_file', wavFile);
+            micForm.setData('mic_audio_file', recordedFile);
         }
 
         if (returnToPlaylist) {
